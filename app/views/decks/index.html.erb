@@ -1,16 +1,7 @@
 <br/>
 <%= render 'decks_index', decks: @all_decks %>
 
-<div class="neutral">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.48.0/min/vs/loader.js"></script>
-    <div id="editor" style="width:500px; height:200px;" ></div>
-    <script>
-      require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.48.0/min/vs' }});
-      require(['vs/editor/editor.main'], function() {
-        monaco.editor.create(document.getElementById('editor'), {
-          value: 'function x() {\nconsole.log("Hello world!");\n}',
-          language: 'javascript',
-        });
-      });
-    </script>
-</div>
+<%# <div id="monacoModal"></div>
+<div id="monacoEditor"></div>
+<div id="monacoInsert"></div> %>
+<div id="textBox"></div>
