@@ -15,6 +15,11 @@ module.exports = {
       'xl': '1.25rem', // 20px
       '2xl': '1.5rem', // 24px
       'small': '0.75rem', // 12px
+    }, 
+    extend: {
+      screens: {
+        'custom': '1100px'
+      }
     }
   }
 }

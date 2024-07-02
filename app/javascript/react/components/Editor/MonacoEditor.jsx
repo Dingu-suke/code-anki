@@ -3,14 +3,21 @@ import React from 'react';
 import Editor from '@monaco-editor/react';
 
 const MonacoEditor = () => {
+  
   return (
     <Editor
-      height="30vh"
+      fontSize="20px"
+      height="25vh"
       theme="vs-dark"
       defaultLanguage="ruby"
-      defaultValue="# ruby"
+      defaultValue=""
+      options={{
+        fontSize: 17
+      }
+    }
     />
   );
 };
+// memo 言語情報はpropsで受け取れば動的にできそう
 
 export default MonacoEditor;
