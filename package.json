@@ -23,7 +23,7 @@
     "build:css-prod": "tailwindcss -o ./app/assets/builds/application.css --minify",
     "build": "if [ \"$NODE_ENV\" = \"production\" ]; then yarn run build:prod; else yarn run build:dev; fi",
     "build:css": "if [ \"$CSS_ENV\" = \"production\" ]; then yarn run build:css-prod; else yarn run build:css-dev; fi",
-    "heroku-postbuild": "yarn run build:prod && yarn run build:css-prod"
+    "heroku-postbuild": "yarn install && yarn run build:prod && yarn run build:css-prod"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
