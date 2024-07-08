@@ -8,7 +8,6 @@ import QuestionCard from "./components/card/QuiestionCard";
 import AnswerCard from "./components/card/AnserCard";
 import CardForm from "./components/form/CardForm";
 import BlockNoteEditor from "./components/Editor/BlockNoteEditor";
-import { BlockNoteDefaultUI } from "@blocknote/react";
 
 document.addEventListener("DOMContentLoaded", () => {
   const monacoModalRoot   = document.getElementById("monacoModal");
@@ -20,8 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const quiestionCardRoot = document.getElementById("questionCard");
   const answerCardRoot    = document.getElementById("answerCard");
   const cardFormRoot      = document.getElementById("cardForm");
-
-  const blockNoteRoot     = document.getElementById("notion")
   
   // -------------------------------------------------------------------------
 
@@ -34,7 +31,5 @@ document.addEventListener("DOMContentLoaded", () => {
   quiestionCardRoot && createRoot(quiestionCardRoot).render(<QuestionCard />);
   answerCardRoot    && createRoot(answerCardRoot)   .render(<AnswerCard />);
   cardFormRoot      && createRoot(cardFormRoot)     .render(<CardForm />);
-
-  blockNoteRoot     && createRoot(blockNoteRoot)    .render(<BlockNoteEditor />)
   }
 );
