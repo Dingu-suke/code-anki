@@ -1,12 +1,20 @@
 class ApplicationController < ActionController::Base
-  before_action :store_current_location, unless: :devise_controller?
-  
+  before_action :store_current_location, :authenticate
+  helper_method :authenticate, :logged_in?, :current_user
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
-  def authenticate_user!
-    unless user_signed_in?
+  def logged_in?
+    !!session[:user_id]
+  end
+
+  def authenticate
+    unless logged_in?
       redirect_to root_path
     end
+  end
+
+  def current_user
+    @current_user ||= User.find_by(id: session[:user_id])
   end
 
   def set_card

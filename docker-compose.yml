@@ -1,6 +1,7 @@
 services:
   db:
     image: postgres
+    platform: linux/arm64/v8 
     volumes:
       - ./db/postgres_data:/var/lib/postgresql/data
     environment:
@@ -9,14 +10,19 @@ services:
     build: .
     command: >
           /bin/sh -c '
-          rm /app/tmp/pids/server.pid &&
+          if [ -f /app/tmp/pids/server.pid ]; then
+            rm /app/tmp/pids/server.pid;
+          fi &&
           bundle exec rails s -p 3000 -b "0.0.0.0"'
+
     volumes:
       - .:/app
       - bundle_data:/app/vendor/bundle
     environment:
       - NODE_ENV=development
       - CSS_ENV=development
+      - GITHUB_ID=${GITHUB_ID}
+      - GITHUB_SECRET=${GITHUB_SECRET}
     ports:
       - "3000:3000"
     depends_on:

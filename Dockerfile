@@ -5,6 +5,8 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
   && apt-get update -qq \
   && apt-get install -y nodejs yarn postgresql-client # Add postgresql-client here
 
+RUN apt-get update -qq && apt-get install -y vim
+
 WORKDIR /app
 COPY Gemfile* /app/
 RUN bundle config --local set path 'vendor/bundle' \

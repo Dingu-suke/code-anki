@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import MonacoEditor from '../Editor/MonacoEditor';
 
-const QuestionCard = () => {
+const QuestionCard = (props) => {
+  const {value, onChange} = props;
   const[questionText, setQuestionText] = useState('');
   const[editorContent, setEditorContent] = useState('');
 
@@ -17,7 +18,10 @@ const QuestionCard = () => {
                 <input type="text" placeholder="問題文   (例:以下のコードを書き換えましょう。)" className="input input-bordered w-full max-w-xs" />
               </label>
               <p>言語:Ruby</p>
-            <MonacoEditor />
+            <MonacoEditor value={editorContent} 
+                          onChange={setEditorContent}
+                          language="ruby"
+                          />
           </div>
         </div>
     </>
