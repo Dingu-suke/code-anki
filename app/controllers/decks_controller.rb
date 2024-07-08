@@ -1,6 +1,6 @@
 class DecksController < ApplicationController
   before_action :set_deck, only: %i[ show edit update destroy ]
-  before_action :authenticate_user!, except: %i[ index deck_cards ]
+  before_action :authenticate, except: %i[ index deck_cards ]
 
   # GET /decks or /decks.json
   def index

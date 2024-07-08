@@ -2,15 +2,6 @@ Rails.application.routes.draw do
   resources :tags
   resources :decks, except: %i[show]
   resources :cards
-
-  # あとで削除
-  get "card/new_compare" => "cards#new_compare"
-  
-  devise_for :users
-  devise_scope :user do
-  
-    get '/users/sign_out' => 'devise/sessions#destroy'
-  end
   
   root 'top#index'
   # root 'hello_console#index'
@@ -26,6 +17,9 @@ Rails.application.routes.draw do
   delete 'destroy_your_deck/:id' => 'decks#destroy_your_deck', as:'destroy_your_deck'
   delete 'destroy_your_card/:id' => 'cards#destroy_your_card', as:'destroy_your_card'
   
+  get "/auth/:provider/callback" => "sessions#create"
+  delete "/logout" => "sessions#destroy"
+
   # Defines the root path route ("/")
   # root "posts#index"
   resources :users

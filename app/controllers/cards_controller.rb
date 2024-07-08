@@ -1,5 +1,5 @@
 class CardsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate
   before_action :set_card, only: [:show, :edit, :update, :destroy_your_card]
   before_action :authorize_user!, only: [:show, :edit, :update, :destroy_your_card]
 
@@ -23,10 +23,12 @@ class CardsController < ApplicationController
   def create
     @card = current_user.cards.build(cards_params)
     if @card.save
-      redirect_to your_cards_path, success: "保存成功"
+      # redirect_to your_cards_path, success: "保存成功"
+      render json: @card
     else
       flash.now[:danger] = "保存失敗"
-      render :new, status: :unprocessable_entity
+      # render :new, status: :unprocessable_entity
+      render json: @card.errors, status: :unprocessable_entity
     end
   end
   

@@ -2,7 +2,7 @@
 
 <%= render @deck %>
 <div class="flex">
-  <% if user_signed_in? && current_user.id == @deck.user_id %>
+  <% if logged_in? && current_user.id == @deck.user_id %>
     <%= link_to "編集", edit_deck_path(@deck), class:"btn btn-accent" %> | 
     <%= link_to "デッキを削除する", destroy_your_deck_path(@deck), class:"btn btn-secondary ", data: { turbo_method: :delete } %>
     <div class="right">
