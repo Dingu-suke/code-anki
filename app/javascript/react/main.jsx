@@ -7,7 +7,6 @@ import TextBox from "./components/TextBox";
 import QuestionCard from "./components/card/QuiestionCard";
 import AnswerCard from "./components/card/AnserCard";
 import CardForm from "./components/form/CardForm";
-import BlockNoteEditor from "./components/Editor/BlockNoteEditor";
 
 document.addEventListener("DOMContentLoaded", () => {
   const monacoModalRoot   = document.getElementById("monacoModal");
