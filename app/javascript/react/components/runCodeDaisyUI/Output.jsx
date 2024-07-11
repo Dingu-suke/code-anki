@@ -1,11 +1,11 @@
 import React from 'react';
-import { Box, Button, Text, useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { executeCode } from '../../js/api';
 
 const Output = (props) => {  
+  console.log("hatena")
   const { editorRef, language } = props;
-  const toast = useToast();
+  // const toast = useToast();
   const [output, setOutput] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -26,26 +26,26 @@ const Output = (props) => {
       result.stderr ? setIsError(true) : setIsError(false)
     } catch (error) {  
       console.log(error);
-      toast({
-            title: "An error occurred.",            
-            description: error.message || "Unable to run code",
-            status: "error",
-            duration: 2500,
-      })
+      // toast({
+      //       title: "An error occurred.",            
+      //       description: error.message || "Unable to run code",
+      //       status: "error",
+      //       duration: 2500,
+      // })
     } finally {
       setIsLoading(false);
     }  
   };
 
   return (
-    <Box>
-      <Text mb={2} fontSize="lg">
+    <div>
+      <div mb={2} fontSize="lg">
         Output
-      </Text>
-      <Button variant="outline" colorScheme="green" mb={4} isLoading={isLoading} onClick={runCode}>
+      </div>
+      <div className='btn' variant="outline" colorScheme="green" mb={4} isLoading={isLoading} onClick={runCode}>
         ▶
-      </Button>
-      <Box
+      </div >
+      <div
         height="40vh"
         color={isError ? "red.500" : ""}
         p={2}
@@ -55,9 +55,9 @@ const Output = (props) => {
           isError ? "red.200" : "#223"}
         >
         {output ? output.map((line, i) => (
-          <Text key={i}>{line}</Text>)) : "Click ▶️ to see the output here"}
-      </Box>
-    </Box>
+          <div key={i}>{line}</div>)) : "Click ▶️ to see the output here"}
+      </div>
+    </div>
   );
 };
 

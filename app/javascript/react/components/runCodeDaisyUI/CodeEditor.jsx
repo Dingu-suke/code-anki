@@ -3,7 +3,6 @@ import { Editor } from '@monaco-editor/react';
 import { useRef, useState } from 'react';
 import LanguageSelector from './LanguageSelector';
 import { CODE_SNIPPETS } from './contents';
-
 import Output from './Output';
 
 const CodeEditor = () => {
@@ -35,7 +34,7 @@ const CodeEditor = () => {
             onChange={(value) => setValue(value)
             }
             />
-          {/* <Output editorRef={editorRef} language={language} /> */}
+          <Output editorRef={editorRef} language={language} />
         </>
 
   );
