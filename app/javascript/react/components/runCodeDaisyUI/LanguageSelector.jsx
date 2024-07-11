@@ -9,28 +9,35 @@ const ACTIVE_COLOR = "blue.400"
 const LanguageSelector = (props) => {
   const { language, onSelect } = props;
   
+  const [isOpen, setIsOpen] = useState(false)
+  
   const onSelectAndUnopen = (lang) => {
     onSelect(lang)
     setIsOpen(false)
   }
 
-  const [isOpen, setIsOpen] = useState(false)
 
   return (
     <div  ml={2} mb={4}>
       <div mb={2} fontSize="lg">
         Language:
       </div >
-        <div className="dropdown"
+        <div className="dropdown dropdown-hover"
+                      onMouseEnter={() => setIsOpen(true)}
+                      onMouseLeave={() => setIsOpen(false)}
         >
           
           <div tabIndex={0} role="button" className="btn m-1">{language}</div>
-          <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+          {isOpen && (
+            <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+            onMouseEnter={() => setIsOpen(true)}
+            onMouseLeave={() => setIsOpen(false)}
+            >
             {languages.map(([lang, version]) => (
               <li
               key={lang}              
-                onClick={() => onSelectAndUnopen(lang)}
-                >
+              onClick={() => onSelectAndUnopen(lang)}
+              >
                 {lang}
                 &nbsp;
                 <div as="span" color="gray.600" fontSize="sm">
@@ -39,6 +46,7 @@ const LanguageSelector = (props) => {
               </li>
             ))}
           </ul>
+          )}
       </div>
     </div>
   );
