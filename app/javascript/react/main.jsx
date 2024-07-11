@@ -6,10 +6,11 @@ import MonacoEditor from "./components/Editor/MonacoEditor";
 import TextBox from "./components/TextBox";
 import QuestionCard from "./components/card/QuiestionCard";
 import AnswerCard from "./components/card/AnserCard";
-import CardForm from "./components/form/CardForm";
-import { Box, ChakraProvider } from "@chakra-ui/react";
-import theme from "./js/theme";
-import CodeEditor from './components/runCodeDaisyUI/CodeEditor';
+import CardForm from "./components/Form/CardForm";
+import RunCodeEditor from './components/RunCodeEditorDaisyUI/CodeEditor';
+import MarkdownView from "./components/EditorView/MarkdownView";
+import MarkdownEditor from "./components/Editor/MarkddownEditor";
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const monacoModalRoot   = document.getElementById("monacoModal");
@@ -23,6 +24,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const cardFormRoot      = document.getElementById("cardForm");
   
   const runCodeEditorRoot = document.getElementById("runCodeEditor");
+  const markdownViewRoot  = document.getElementById("markdownView");
+  const markdownEditorRoot= document.getElementById("markdownEditor");
 
   // -------------------------------------------------------------------------
 
@@ -36,5 +39,12 @@ document.addEventListener("DOMContentLoaded", () => {
   answerCardRoot    && createRoot(answerCardRoot)   .render(<AnswerCard />);
   cardFormRoot      && createRoot(cardFormRoot)     .render(<CardForm />);
 
-  runCodeEditorRoot && createRoot(runCodeEditorRoot).render(<CodeEditor />);
+  runCodeEditorRoot && createRoot(runCodeEditorRoot).render(<RunCodeEditor />);
+  markdownViewRoot  && createRoot(markdownViewRoot) .render(<MarkdownView />);
+  markdownEditorRoot  && createRoot(markdownEditorRoot) .render(<MarkdownEditor />)
+
+
+
+
+
 })
