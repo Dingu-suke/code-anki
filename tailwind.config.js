@@ -3,8 +3,9 @@ module.exports = {
     './app/views/**/*.html.erb',
     './app/helpers/**/*.rb',
     './app/assets/stylesheets/**/*.css',
-    './app/javascript/**/*.js',
-    "./node_modules/@blocknote/shadcn/**/*.{js,ts,jsx,tsx}"
+    './app/javascript/**/*.{js,jsx,ts,tsx}',
+    './app/javascript/**/**/*.{js,jsx,ts,tsx}',
+    './app/javascript/**/**/**/*.{js,jsx,ts,tsx}'
   ],
   plugins: [require("daisyui")],
   theme: {

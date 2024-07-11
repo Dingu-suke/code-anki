@@ -7,6 +7,9 @@ import TextBox from "./components/TextBox";
 import QuestionCard from "./components/card/QuiestionCard";
 import AnswerCard from "./components/card/AnserCard";
 import CardForm from "./components/form/CardForm";
+import { Box, ChakraProvider } from "@chakra-ui/react";
+import theme from "./js/theme";
+import CodeEditor from './components/runCodeDaisyUI/CodeEditor';
 
 document.addEventListener("DOMContentLoaded", () => {
   const monacoModalRoot   = document.getElementById("monacoModal");
@@ -19,6 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const answerCardRoot    = document.getElementById("answerCard");
   const cardFormRoot      = document.getElementById("cardForm");
   
+  const runCodeEditorRoot = document.getElementById("runCodeEditor");
+
   // -------------------------------------------------------------------------
 
   monacoModalRoot   && createRoot(monacoModalRoot)  .render(<MonacoModal />);
@@ -30,5 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
   quiestionCardRoot && createRoot(quiestionCardRoot).render(<QuestionCard />);
   answerCardRoot    && createRoot(answerCardRoot)   .render(<AnswerCard />);
   cardFormRoot      && createRoot(cardFormRoot)     .render(<CardForm />);
-  }
-);
+
+  runCodeEditorRoot && createRoot(runCodeEditorRoot).render(<CodeEditor />);
+})

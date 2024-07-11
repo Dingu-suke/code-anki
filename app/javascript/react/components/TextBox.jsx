@@ -23,7 +23,7 @@ const TextBox = () => {
         </label>
       </>
       {showEditor && (
-        <MonacoEditor/>
+        <MonacoEditor />
       )}
     </div>
   );
