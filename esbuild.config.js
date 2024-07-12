@@ -1,35 +1,38 @@
-// esbuild.config.js
-const esbuild = require("esbuild");
-const { copy } = require('esbuild-plugin-copy');
-
-const isDev = process.argv.includes("--dev");
-const isProd = process.argv.includes("--prod");
+const esbuild = require('esbuild');
+const path = require('path');
 
 const config = {
-  entryPoints: ["app/javascript/application.js"],
+  entryPoints: ['app/javascript/application.js'],
   bundle: true,
-  outdir: "app/assets/builds",
+  outdir: 'app/assets/builds',
   loader: {
-    '.js': 'jsx',
-    '.css': 'css',
     '.woff': 'file',
     '.woff2': 'file',
-    '.ttf': 'file',
-    '.eot': 'file',
-    '.svg': 'file',
   },
-  // 他の必要な設定を追加
+  publicPath: '/assets',
+  assetNames: '[name]-[hash].digested',
   plugins: [
-    copy({
-      assets: {
-        from: ['./node_modules/@blocknote/core/src/fonts/**/*'],
-        to: ['./fonts']
-      }
-    })
-  ]
+    {
+      name: 'font-loader',
+      setup(build) {
+        build.onResolve({ filter: /\.(woff|woff2)$/ }, args => {
+          return {
+            path: path.join(args.resolveDir, args.path),
+            namespace: 'font-loader',
+          }
+        })
+        build.onLoad({ filter: /\.(woff|woff2)$/, namespace: 'font-loader' }, async (args) => {
+          return {
+            contents: await require('fs').promises.readFile(args.path),
+            loader: 'file',
+          }
+        })
+      },
+    },
+  ],
 };
 
-if (isDev) {
+if (process.argv.includes('--watch')) {
   esbuild.context(config).then(context => {
     context.watch();
   });

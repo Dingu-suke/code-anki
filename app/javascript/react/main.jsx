@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
   const runCodeEditorRoot = document.getElementById("runCodeEditor");
   const markdownViewRoot  = document.getElementById("markdownView");
-  const markdownEditorRoot= document.getElementById("markdownEditor");
+  const markdownEditorRoot= document.getElemecntById("markdownEditor");
 
   // -------------------------------------------------------------------------
 
@@ -39,12 +39,8 @@ document.addEventListener("DOMContentLoaded", () => {
   answerCardRoot    && createRoot(answerCardRoot)   .render(<AnswerCard />);
   cardFormRoot      && createRoot(cardFormRoot)     .render(<CardForm />);
 
-  runCodeEditorRoot && createRoot(runCodeEditorRoot).render(<RunCodeEditor />);
-  markdownViewRoot  && createRoot(markdownViewRoot) .render(<MarkdownView />);
-  markdownEditorRoot  && createRoot(markdownEditorRoot) .render(<MarkdownEditor />)
-
-
-
-
+  runCodeEditorRoot && createRoot(runCodeEditorRoot) .render(<RunCodeEditor />);
+  markdownViewRoot  && createRoot(markdownViewRoot)  .render(<MarkdownView />);
+  markdownEditorRoot&& createRoot(markdownEditorRoot).render(<MarkdownEditor />);
 
 })
