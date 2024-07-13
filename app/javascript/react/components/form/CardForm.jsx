@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import MonacoEditor from '../Editor/MonacoEditor';
+import MarkdownEditor from '../Editor/MarkddownEditor';
+import  { Answer, Remarks } from '../card/AnserCard';
+import QuestionCard from '../card/QuiestionCard';
 
 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
@@ -39,22 +42,22 @@ function CardForm() {
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col">
             <h2 className="form-label">カードのタイトル</h2>
-            <input
-              type="text"
-              value={title}
-              onChange={e => setTitle(e.target.value)}
-              className="form-control textarea textarea-bordered textarea-xs w-full max-w-xs"
-            />
-          </div>
-          <div className="flex">
-            <div className="container">
-              <label className="form-label">コードブロック</label>
-              <MonacoEditor
-              value={editorContent}
-              onChange={newValue => setEditorContent(newValue)}
-              language="ruby"
-            />
+
+              <div className="flex flex-col xl:grid xl:grid-cols-2 xl:grid-rows-2 gap-4">
+                <div className='row-start-1 row-end-2 col-start-1 col-end-2'>
+                  <QuestionCard />
+                </div>
+                <div className='row-start-1 row-end-3 col-start-2 col-end-3'>
+                  <Answer height=""/>
+                </div>
+                <div className='row-start-2 row-end-3 col-start-1 col-end-2'>
+                  <Remarks />
+                </div>
+              </div>
+
             </div>
+                
+          <div className="flex">          
             <div className="container">
               <label className="form-label">コードの解答</label>
               <textarea

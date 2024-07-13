@@ -24,7 +24,7 @@ const RunCodeEditor = () => {
         <>
           <LanguageSelector language={language} onSelect={onSelect} />
           <Editor
-            height="30vh"
+            height="45vh"
             theme="vs-dark"
             language={language}
             defaultValue="// some comment"

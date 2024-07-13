@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import MonacoEditor from '../Editor/MonacoEditor';
+import MarkdownEditor from '../Editor/MarkddownEditor';
 
 const QuestionCard = (props) => {
   const {value, onChange} = props;
@@ -11,17 +12,10 @@ const QuestionCard = (props) => {
   };
   return(
     <>
-        <div className="card shadow-xl">
-          <div className="card-body">
-            <h2 className="card-title">カードの表 [問題]</h2>
-              <label className="form-control w-full max-w-xs">
-                <input type="text" placeholder="問題文   (例:以下のコードを書き換えましょう。)" className="input input-bordered w-full max-w-xs" />
-              </label>
-              <p>言語:Ruby</p>
-            <MonacoEditor value={editorContent} 
-                          onChange={setEditorContent}
-                          language="ruby"
-                          />
+        <div className="card shadow-xl bg-sky-900">
+          <div className="card-body ">
+            <h2 className="card-title text-indigo-200 font-courier bg-sky-900">Question Prompt</h2>
+            <MarkdownEditor />
           </div>
         </div>
     </>

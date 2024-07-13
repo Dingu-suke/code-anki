@@ -21,12 +21,13 @@
     "react-markdown": "^9.0.1",
     "react-monaco-editor": "^0.55.0",
     "react-simplemde-editor": "^5.2.0",
+    "styled-components": "^6.1.11",
     "tailwindcss": "^3.4.1"
   },
   "scripts": {
     "build:dev": "esbuild app/javascript/application.js --bundle --outdir=app/assets/builds --watch",
     "build:prod": "esbuild app/javascript/application.js --bundle --outdir=app/assets/builds --minify",
-    "build:css-dev": "tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.tailwind.css ---watch",
+    "build:css-dev": "tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.tailwind.css --watch",
     "build:css-prod": "tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.tailwind.css --minify",
     "build": "if [ \"$NODE_ENV\" = \"production\" ]; then yarn run build:prod; else yarn run build:dev; fi",
     "build:css": "if [ \"$CSS_ENV\" = \"production\" ]; then yarn run build:css-prod; else yarn run build:css-dev; fi",

@@ -7,7 +7,7 @@ import MonacoModal from "./components/Editor/MonacoModal";
 import MonacoEditor from "./components/Editor/MonacoEditor";
 import TextBox from "./components/TextBox";
 import QuestionCard from "./components/card/QuiestionCard";
-import AnswerCard from "./components/card/AnserCard";
+import { Answer } from "./components/card/AnserCard";
 
 const Router = () => {
 
@@ -42,7 +42,7 @@ const Router = () => {
     }
     
     if (answerCardRoot) {
-      createRoot(answerCardRoot).render(<AnswerCard />);
+      createRoot(answerCardRoot).render(<Answer />);
     }
   });
 };

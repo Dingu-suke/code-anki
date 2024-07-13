@@ -5,11 +5,12 @@ import MonacoModal from "./components/Editor/MonacoModal";
 import MonacoEditor from "./components/Editor/MonacoEditor";
 import TextBox from "./components/TextBox";
 import QuestionCard from "./components/card/QuiestionCard";
-import AnswerCard from "./components/card/AnserCard";
+import { Answer } from "./components/card/AnserCard";
 import CardForm from "./components/Form/CardForm";
 import RunCodeEditor from './components/RunCodeEditorDaisyUI/CodeEditor';
 import MarkdownView from "./components/EditorView/MarkdownView";
 import MarkdownEditor from "./components/Editor/MarkddownEditor";
+import Test from "./test/test";
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -26,6 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const runCodeEditorRoot = document.getElementById("runCodeEditor");
   const markdownViewRoot  = document.getElementById("markdownView");
   const markdownEditorRoot= document.getElementById("markdownEditor");
+  const testRoot= document.getElementById("test");
 
   // -------------------------------------------------------------------------
 
@@ -36,13 +38,16 @@ document.addEventListener("DOMContentLoaded", () => {
   textBoxRoot       && createRoot(textBoxRoot)      .render(<TextBox />);
 
   quiestionCardRoot && createRoot(quiestionCardRoot).render(<QuestionCard />);
-  answerCardRoot    && createRoot(answerCardRoot)   .render(<AnswerCard />);
+  answerCardRoot    && createRoot(answerCardRoot)   .render(<Answer />);
   cardFormRoot      && createRoot(cardFormRoot)     .render(<CardForm />);
 
   runCodeEditorRoot && createRoot(runCodeEditorRoot).render(<RunCodeEditor />);
   markdownViewRoot  && createRoot(markdownViewRoot) .render(<MarkdownView />);
   markdownEditorRoot  && createRoot(markdownEditorRoot) .render(<MarkdownEditor />)
 
+
+
+  testRoot && createRoot(testRoot).render(<Test />);
 
 
 

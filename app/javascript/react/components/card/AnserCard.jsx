@@ -1,20 +1,31 @@
 import React from 'react';
 import MonacoEditor from '../Editor/MonacoEditor';
+import MarkdownEditor from '../Editor/MarkddownEditor';
+import RunCodeEditor from '../RunCodeEditorDaisyUI/CodeEditor';
 
-const AnswerCard = () => {
+export const Answer = (props) => {
+  const {} = props;
   return(
     <>
-        <div className="card shadow-xl">
+        <div className="card shadow-xl bg-purple-900">
           <div className="card-body">
-            <h2 className="card-title">カードの裏 [解答例]</h2>
-              <label className="form-control w-full ">
-                <textarea type="text" placeholder="解説や備考など" rows="20" className="input input-bordered w-full max-w-xs" />
-              </label>
-              <p>言語:Ruby</p>
-            <MonacoEditor />
+            <h2 className="card-title text-fuchsia-400 font-courier">Answer Code Prompt</h2>
+            <RunCodeEditor />
           </div>
         </div>
     </>
   ) 
 };
-export default AnswerCard
+
+export const Remarks = () => {
+  return (
+    <>
+      <div className="card shadow-xl  bg-purple-900">
+        <div className="card-body">
+          <h2 className="card-title text-fuchsia-400 font-courier">Remarks Prompt</h2>
+            <MarkdownEditor />
+        </div>
+      </div>
+    </>
+  )
+}
