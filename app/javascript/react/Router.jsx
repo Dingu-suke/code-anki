@@ -3,11 +3,11 @@ import React from "react";
 
 
 import { createRoot } from "react-dom/client";
-import MonacoModal from "./components/Editor/MonacoModal";
 import MonacoEditor from "./components/Editor/MonacoEditor";
+import MonacoModal from "./components/Editor/MonacoModal";
 import TextBox from "./components/TextBox";
+import { Answer } from "./components/card/AnswerCard";
 import QuestionCard from "./components/card/QuiestionCard";
-import { Answer } from "./components/card/AnserCard";
 
 const Router = () => {
 

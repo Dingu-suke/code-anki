@@ -23,7 +23,7 @@ module.exports = {
         'custom': '1100px'
       },
       fontFamily: {
-        'courier': ['Courier New', 'monospace'],
+        'fontcourier': ['Courier New', 'monospace'],
       },
       fontWeight: {
         'thin': '100',

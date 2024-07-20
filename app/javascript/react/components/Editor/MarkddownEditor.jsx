@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef, useCallback, useEffect, useMemo, useRef } from "react";
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 import { createGlobalStyle } from 'styled-components';
@@ -96,33 +96,111 @@ const GlobalStyle = createGlobalStyle`
   .custom-mde .EasyMDEContainer {
     border: none !important;
   }
-
-  
 `;
+export const QuestionEditor = React.forwardRef((props, ref) => {
+  const { defaultValue, onBlur } = props;
+  const editorRef = useRef(null);
 
-const MarkdownEditor = (props) => {
-  const onChange = (value) => {
-    console.log(value);
-  };
-
-  const options = {
+  const options = useMemo(() => ({
     autofocus: false,
     spellChecker: false,
     minHeight: '200px',
-    maxHeight: '280px',
-    placeholder: 'Type your here... ( You can use markdown. )',
+    maxHeight: '320px',
+    placeholder: 'Type here... ( You can use markdown. )',
     status: false,
-  };
+    renderingConfig: {
+      singleLineBreaks: false,
+      codeSyntaxHighlighting: true,
+    },
+    toolbar: ["bold", "italic", "heading", "|", "quote", "unordered-list", "ordered-list", "|", "link", "image", "|", "code", "preview", "side-by-side", "|", "guide" ],
+  }), []);
+
+  const handleEditorDidMount = useCallback((editor) => {
+    editorRef.current = editor;
+  }, []);  
+    
+  useEffect(() => {
+    if (ref) {
+      ref.current = {
+        getValue: () => editorRef.current ? editorRef.current.value() : '',
+        setValue: (value) => {
+          if (editorRef.current) {
+            editorRef.current.value(value);
+          }
+        }
+      };
+    }
+  }, [ref]);
+
+  const handleBlur = useCallback(() => {
+    if (onBlur && editorRef.current) {
+      onBlur(editorRef.current.value());
+    }
+  }, [onBlur])
 
   return (
     <div className="custom-mde">
       <GlobalStyle />
       <SimpleMDE
-        onChange={onChange}
+        value={defaultValue}
+        onBlur={handleBlur}
+        getMdeInstance={handleEditorDidMount}
         options={options}
       />
     </div>
   );
-}
+})
 
-export default MarkdownEditor;
+export const RemarksEditor = React.forwardRef((props, ref) => {
+  const { defaultValue, onBlur } = props;
+  const editorRef = useRef(null);
+
+  const options = useMemo(() => ({
+    autofocus: false,
+    spellChecker: false,
+    minHeight: '130px',
+    maxHeight: '168px',
+    placeholder: 'Type here... ( You can use markdown. )',
+    status: false,
+    renderingConfig: {
+      singleLineBreaks: false,
+      codeSyntaxHighlighting: true,
+    },
+    toolbar: ["bold", "italic", "heading", "|", "quote", "unordered-list", "ordered-list", "|", "link", "image", "|", "code", "preview", "side-by-side", "|", "guide" ],
+  }));
+
+  const handleEditorDidMount = useCallback((editor) => {
+    editorRef.current = editor;
+  }, []);  
+    
+  useEffect(() => {
+    if (ref) {
+      ref.current = {
+        getValue: () => editorRef.current ? editorRef.current.value() : '',
+        setValue: (value) => {
+          if (editorRef.current) {
+            editorRef.current.value(value);
+          }
+        }
+      };
+    }
+  }, [ref]);
+
+  const handleBlur = useCallback(() => {
+    if (onBlur && editorRef.current) {
+      onBlur(editorRef.current.value());
+    }
+  }, [onBlur])
+
+  return (
+    <div className="custom-mde">
+      <GlobalStyle />
+      <SimpleMDE
+        value={defaultValue}
+        onBlur={handleBlur}
+        getMdeInstance={handleEditorDidMount}
+        options={options}
+      />
+    </div>
+  );
+})

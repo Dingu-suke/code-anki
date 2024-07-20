@@ -2,15 +2,13 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import MonacoModal from "./components/Editor/MonacoModal";
-import MonacoEditor from "./components/Editor/MonacoEditor";
-import TextBox from "./components/TextBox";
-import QuestionCard from "./components/card/QuiestionCard";
-import { Answer } from "./components/card/AnserCard";
-import CardForm from "./components/Form/CardForm";
-import RunCodeEditor from './components/RunCodeEditorDaisyUI/CodeEditor';
 import MarkdownView from "./components/EditorView/MarkdownView";
-import MarkdownEditor from "./components/Editor/MarkddownEditor";
+import CardForm from "./components/form/CardForm";
+import RunCodeEditor from './components/RunCodeEditorDaisyUI/CodeEditor';
+import TextBox from "./components/TextBox";
 import Test from "./test/test";
+import { Answer } from "./components/card/AnswerCard";
+import QuestionCard from "./components/card/QuiestionCard";
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -43,13 +41,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   runCodeEditorRoot && createRoot(runCodeEditorRoot).render(<RunCodeEditor />);
   markdownViewRoot  && createRoot(markdownViewRoot) .render(<MarkdownView />);
-  markdownEditorRoot  && createRoot(markdownEditorRoot) .render(<MarkdownEditor />)
-
-
 
   testRoot && createRoot(testRoot).render(<Test />);
-
-
-
-
 })
