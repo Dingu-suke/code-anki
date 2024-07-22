@@ -6,6 +6,7 @@ class CreateCards < ActiveRecord::Migration[7.1]
       t.references :user, foreign_key: true
       t.text :remarks
       t.text :answer, null: false
+      t.string :language, null: false
 
       t.timestamps
     end

@@ -6,8 +6,21 @@ import { CODE_SNIPPETS } from '../RunCodeEditorDaisyUI/constants';
 import { Answer, Remarks } from '../card/AnswerCard';
 import QuestionCard from '../card/QuiestionCard';
 
+
+const setupCSRFToken = () => {
+  const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+  if (csrfToken) {
+    axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
+  } else {
+    console.error('CSRF token not found');
+  }
+};
+
 const CardForm = () => {
   // -----
+  const questionEditorRef = useRef(null);
+  const remarksEditorRef = useRef(null);
+
   const { register, handleSubmit, control, watch, setValue, formState: { errors } } = useForm({
     defaultValues: {
       title: '',
@@ -18,6 +31,7 @@ const CardForm = () => {
     }
   });
 
+  
   useEffect(() => {
     register('body');
     register('answer');
@@ -26,8 +40,9 @@ const CardForm = () => {
     register('title')
   }, [register]);
 
-  const questionEditorRef = useRef(null);
-  const remarksEditorRef = useRef(null);
+  useEffect(() => {
+    setupCSRFToken();
+  }, []);
 
   const handleQuestionBlur = useCallback((value) => {
     setValue('body', value);    
@@ -37,26 +52,29 @@ const CardForm = () => {
     setValue('remarks', value);
   }, [setValue]);
 
-  // const onSubmit = async (data) => {
-  //   // try {
-  //   //   const response = await axios.post('/cards', { card: data });
-  //   //   console.log(response.data);
-  //   // } catch (error) {
-  //   //   console.error(error);
-  //   // }
-  //   console.log(data)
-  // };
+  const onSubmit = useCallback(async (data) => {
+    try {
+      // Ensure language is included in the data
+      const formData = {
+        ...data,
+        language: watch('language') // Explicitly include the language
+      };
+      const res = await axios.post('/cards', { card: formData });
+      console.log('カードが作成されました', res.data);
+    } catch(error) {
+      console.error('エラーが発生しました', error.response?.data);
+    }
+  }, [watch]);
 
 
-  const onSubmit = useCallback((data) => {
+  // const onSubmit = useCallback(async (data) => {
     // フォーム送信時に最新の値を取得
-    const updatedData = {
-      ...data,
-      body: questionEditorRef.current?.getValue() || ''
-    };
-    console.log(data)
-    // console.log(availableLanguages()); 
-  }, []);
+    // const updatedData = {
+    //   ...data,
+    //   body: questionEditorRef.current?.getValue() || ''
+    // };
+    
+  // });
 
   return (
     <div className="card shadow-xl min-w-0 m-[30px] bg-gray-800">

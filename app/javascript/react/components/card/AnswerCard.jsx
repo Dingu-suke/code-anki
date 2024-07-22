@@ -10,7 +10,7 @@ import { RemarksEditor } from '../Editor/MarkddownEditor';
 
 
 
-export const Answer = ({ value, onChange, language, onLanguageChange }) => {  
+export const Answer = ({ value, onChange, language, onLanguageChange }) => {
 
   const onSelect = (newLanguage) => {
     onLanguageChange(newLanguage);
