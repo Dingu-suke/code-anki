@@ -7,13 +7,13 @@ const MonacoEditor = ({ value, onChange, language }) => {
   
   return (
     <Editor
-      height="25vh"
+      height="33vh"
       theme="vs-dark"
       language={language || "javascript"}
       defaultValue={value}
       onChange={(onChangeValue) => onChange(onChangeValue)}
       options={{
-        fontSize: 17
+        fontSize: 16
       }
     }
     />

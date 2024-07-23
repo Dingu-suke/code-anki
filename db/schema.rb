@@ -17,9 +17,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_02_184655) do
   create_table "cards", force: :cascade do |t|
     t.text "body", null: false
     t.string "title", null: false
-    t.bigint "user_id", null: false
+    t.bigint "user_id"
     t.text "remarks"
     t.text "answer", null: false
+    t.string "language", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_cards_on_user_id"
@@ -46,7 +47,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_02_184655) do
   end
 
   create_table "decks", force: :cascade do |t|
-    t.bigint "user_id", null: false
+    t.bigint "user_id"
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

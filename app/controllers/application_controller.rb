@@ -4,16 +4,16 @@ class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
   def logged_in?
-    !!session[:user_id]
+    !!current_user
   end
 
   def authenticate
-    unless logged_in?
-      redirect_to root_path
-    end
+    return if logged_in?
+    redirect_to root_path, alert: "ログインしてください"
   end
 
   def current_user
+    return unless session[:user_id]
     @current_user ||= User.find_by(id: session[:user_id])
   end
 

@@ -5,6 +5,11 @@ export const LANGUAGE_VERSIONS = {
   java: "15.0.2",
   csharp: "6.12.0",
   php: "8.2.3",
+  go: "1.16.2",
+  swift: "5.3.3",
+  ruby: "3.0.1",
+  rust: "1.68.2",
+  kotolin: "1.8.20", 
 }
 
 export const CODE_SNIPPETS = {

@@ -12,6 +12,8 @@ class CardsController < ApplicationController
   def index
     # @drafts = Card.includes(:user)
     # @borads = @q.result(distinct: true).includes(:user).order(created_at: :desc).page(params[:page])
+    @cards = Card.all
+    render json: @items
   end
 
   def show
@@ -24,7 +26,7 @@ class CardsController < ApplicationController
     @card = current_user.cards.build(cards_params)
     if @card.save
       # redirect_to your_cards_path, success: "保存成功"
-      render json: @card
+      render json: @card, status: :created
     else
       flash.now[:danger] = "保存失敗"
       # render :new, status: :unprocessable_entity
@@ -70,7 +72,7 @@ class CardsController < ApplicationController
   end
 
   def cards_params
-    params.require(:card).permit(:title, :body, :answer, :remarks)
+    params.require(:card).permit(:title, :body, :answer, :remarks, :language)
   end
   
 end
