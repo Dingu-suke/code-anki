@@ -3,12 +3,17 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import MonacoModal from "./components/Editor/MonacoModal";
 import MarkdownView from "./components/EditorView/MarkdownView";
-import CardForm from "./components/form/CardForm";
+
 import RunCodeEditor from './components/RunCodeEditorDaisyUI/CodeEditor';
 import TextBox from "./components/TextBox";
 import Test from "./test/test";
 import { Answer } from "./components/card/AnswerCard";
 import QuestionCard from "./components/card/QuiestionCard";
+import { CardList } from "./components/card/CardIndex";
+import CardForm from './components/Form/CardForm';
+import ParentComponent from "./components/PaarentComponent";
+import App from "./components/Window/App";
+
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -25,7 +30,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const runCodeEditorRoot = document.getElementById("runCodeEditor");
   const markdownViewRoot  = document.getElementById("markdownView");
   const markdownEditorRoot= document.getElementById("markdownEditor");
-  const testRoot= document.getElementById("test");
+  const cardIndexRoot      = document.getElementById("cardIndex");
+  const DraggableModalRoot= document.getElementById("draggableModal");
+  const AppRoot           = document.getElementById("window");
 
   // -------------------------------------------------------------------------
 
@@ -41,6 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   runCodeEditorRoot && createRoot(runCodeEditorRoot).render(<RunCodeEditor />);
   markdownViewRoot  && createRoot(markdownViewRoot) .render(<MarkdownView />);
-
-  testRoot && createRoot(testRoot).render(<Test />);
+  cardIndexRoot     && createRoot(cardIndexRoot)    .render(<CardList />)
+  DraggableModalRoot&& createRoot(DraggableModalRoot).render(<ParentComponent />)
+  AppRoot && createRoot(AppRoot).render(<App />)
 })

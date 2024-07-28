@@ -51,6 +51,10 @@ class CardsController < ApplicationController
   
   def your_cards 
     @your_cards = Card.where(user_id: current_user.id).includes(:user).order("created_at DESC")
+    respond_to do |format|
+      format.html # your_cards.html.erb を描画
+      format.json { render json: @your_cards }
+    end
   end
   
   def destroy_your_card

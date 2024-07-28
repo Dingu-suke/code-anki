@@ -1,3 +1,6 @@
+<%
+=begin
+%>
 <% if @your_cards.any? %>
   <% @your_cards.each do |card| %>
     <div class="card bg-base-100 shadow-xl mb-8">
@@ -47,3 +50,13 @@
 <% else %>
   <p>カードはまだありません</p>
 <% end %>
+<%
+=end
+%>
+
+---------------------------------------
+<div id="cardIndex"></div>
+<div id="window"></div>
+<%# <div class="text-white">aaaa</div>
+<div id="draggableModal"></div> %>
+---------------------------------------
