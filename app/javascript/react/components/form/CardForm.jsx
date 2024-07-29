@@ -21,7 +21,7 @@ const CardForm = ({useInWindow}) => {
   const questionEditorRef = useRef(null);
   const remarksEditorRef = useRef(null);
   console.log(useInWindow)
-  
+
   
   const { register, handleSubmit, control, watch, setValue, formState: { errors } } = useForm({
     defaultValues: {
@@ -77,7 +77,29 @@ const CardForm = ({useInWindow}) => {
       
       // });
   const buttonText = useInWindow ? "カードを更新する" : "カードを保存する";
+  const buttonTextLocation = () => {
+    if (!useInWindow) {
+      return (
+        <button
+        type="submit"
+        className="btn text-sky-400 bg-cyan-950 hover:text-sky-300 hover:bg-blue-950 border border-sky-800 hover:border-cyan-500 font-courier w-full xl:w-auto hidden xl:inline-block">
+          カードを保存する
+      </button>
+      )
+    } else {
+      <button 
+        type="submit" className="btn text-sky-400 bg-cyan-950 hover:text-sky-300 hover:bg-blue-950 border border-sky-800 hover:border-cyan-500 font-courier w-1/2 xl:hidden">{buttonText}</button>
+    }
+  }
   
+  const topButtonClasses = useInWindow
+  ? "hidden" // useInWindowがtrueの場合、上部のボタンを非表示
+  : "btn text-sky-400 bg-cyan-950 hover:text-sky-300 hover:bg-blue-950 border border-sky-800 hover:border-cyan-500 font-courier w-full xl:w-auto hidden xl:inline-block";
+
+  const bottomButtonClasses = useInWindow
+    ? "btn text-sky-400 bg-cyan-950 hover:text-sky-300 hover:bg-blue-950 border border-sky-800 hover:border-cyan-500 font-courier w-full"
+    : "btn text-sky-400 bg-cyan-950 hover:text-sky-300 hover:bg-blue-950 border border-sky-800 hover:border-cyan-500 font-courier w-1/2 xl:hidden";
+
   const containerClasses = useInWindow
     ? "flex flex-col gap-4 h-full"
     : "flex flex-col xl:grid xl:grid-cols-2 xl:grid-rows-[2fr_1fr] gap-4 xl:h-[calc(100vh-200px)]";
@@ -110,7 +132,7 @@ const CardForm = ({useInWindow}) => {
               <div >
               <button
                 type="submit"
-                className="btn text-sky-400 bg-cyan-950 hover:text-sky-300 hover:bg-blue-950 border border-sky-800 hover:border-cyan-500 font-courier w-full xl:w-auto hidden xl:inline-block">
+                className={topButtonClasses}>
                 {buttonText}
               </button>
               </div>
@@ -150,7 +172,7 @@ const CardForm = ({useInWindow}) => {
               </div>
             </div>
             <div className="pt-6 flex justify-center">
-              <button type="submit" className="btn text-sky-400 bg-cyan-950 hover:text-sky-300 hover:bg-blue-950 border border-sky-800 hover:border-cyan-500 font-courier w-1/2 xl:hidden">{buttonText}</button>
+              <button type="submit" className={bottomButtonClasses}>{buttonText}</button>
             </div>
         </form>
       </div>
