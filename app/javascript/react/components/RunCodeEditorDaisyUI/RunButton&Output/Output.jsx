@@ -21,8 +21,8 @@ const Output = (props) => {
                     isError 
                     ? "font-courier text-red-500 bg-zinc-900 focus:outline-none border border-pink-800"
                     : output
-                      ? "font-courier bg-zinc-900 text-violet-300 focus:outline-none focus:border-2 focus:border-fuchsia-800 border border-fuchsia-900"
-                      : "font-courier text-green-400 focus:outline-none  border border-green-800"}`}
+                    ? "font-courier bg-zinc-900 text-violet-300 focus:outline-none focus:border-2 focus:border-fuchsia-800 border border-fuchsia-900"
+                    : "font-courier text-green-400 focus:outline-none  border border-green-800"}`}
         >
         </textarea>
     </div>

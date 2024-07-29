@@ -3,6 +3,8 @@ import { useCards } from '../../hooks/useCards';
 import useModal from '../../hooks/useModal';
 import Modal from '../Modal';
 import Window from '../Window/Window';
+import CardForm from '../Form/CardForm';
+import ResponsiveWindow from '../Window/ResponsiveWindow';
 
 export const CardList = () => {
   const { cards, setCards, isLoading, setIsLoading } = useCards();
@@ -11,8 +13,17 @@ export const CardList = () => {
   const { modalRef, openModal, closeModal } = useModal()
 
   const [isWindowOpen, setIsWindowOpen] = useState(false);
-  const openWindow = () => setIsWindowOpen(true);
-  const closeWindow = () => setIsWindowOpen(false);
+  const [selectedCard, setSelectedCard] = useState(null);
+
+  const openWindow = (card) => {
+    setIsWindowOpen(true)
+    setSelectedCard(card)
+  };
+  
+  const closeWindow = () => {  
+    setIsWindowOpen(false);
+    setSelectedCard(null)
+  }
   
   useEffect(() => {
     if (cards) {
@@ -45,31 +56,35 @@ export const CardList = () => {
       <h1 className="text-2xl font-bold mb-4 text-orange-400 font-courier">あなたのカード</h1>
       <input
         type="text"
-        placeholder="Search cards..."
+        placeholder=" カ ードを検索"
         value={searchTerm}
         onChange={handleSearch}
-        className="w-full p-2 mb-4 border rounded bg-gray-700 focus:outline-none focus:border-2 focus:border-blue-800 border-blue-900 text-cyan-300"
+        className="w-full p-2 mb-4 border rounded bg-gray-700 focus:outline-none focus:border-2 focus:border-blue-800 border-blue-900 text-cyan-100"
       />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" /*onClick={openModal}*/ onClick={openWindow}>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" >
 
         {filteredCards.map((card) => (
-          <div key={card.id} className="border border-cyan-600 hover:border-cyan-300 p-4 rounded shadow bg-indigo-950 hover:bg-indigo-900">
-            <h2 className="text-xl font-semibold text-cyan-400 ">{card.title}</h2>
+          <div
+          key={card.id}
+          className="border border-cyan-600 hover:border-cyan-300 p-4 rounded shadow bg-indigo-950 hover:bg-indigo-900"
+          onClick={() => openWindow(card)}
+          >
+            <h2 className="text-xl font-semibold text-cyan-400">{card.title}</h2>
             {/* <h2 className="text-xl font-semibold text-cyan-400 ">{card.title}</h2> */}
           </div>
         ))}
       </div>
       {isWindowOpen && (
-        <Window
+        <ResponsiveWindow
           title="Example Window"
-          initialPosition={{ x: 300, y: 60 }}
-          initialSize={{ width: 500, height: 800 }}
+          initialPosition={{ x: 600, y: 90 }}
+          initialSize={{ width: 700, height: 800 }}
           onClose={closeWindow}
         >
-          <h2 className="text-xl font-bold mb-2">ウィンドウの内容</h2>
-          <p>これはドラッグ可能でサイズ変更可能なウィンドウコンポーネントです。</p>
+          <h2 className="text-xl font-bold mb-2">{selectedCard.title}</h2>
           <p className="mt-2">×ボタンをクリックして閉じることができます。</p>
-        </Window>
+          <CardForm useInWindow={true}/>
+        </ResponsiveWindow>
       )}
     </div>
 

@@ -48,13 +48,14 @@ const Window = ({ children, title, initialPosition = { x: 20, y: 20 }, initialSi
         width: `${size.width}px`,
         height: `${size.height}px`,
       }}
+  
     >
       <div
         className="bg-gray-100 px-4 py-2 cursor-move flex justify-between items-center"
         onMouseDown={() => setIsDragging(true)}
       >
         <h3 className="text-sm font-semibold">{title}</h3>
-        <button className="text-red-500 hover:text-red-700 text-lg" onClick={onClose}>×</button>
+        <button className="text-red-500 hover:text-red-700 text-lg" onClick={onClose}>❌</button>
       </div>
       <div className="p-4 overflow-auto" style={{ height: 'calc(100% - 40px)' }}>
         {children}
@@ -63,9 +64,6 @@ const Window = ({ children, title, initialPosition = { x: 20, y: 20 }, initialSi
         className="absolute bottom-0 right-0 w-4 h-4 cursor-se-resize"
         onMouseDown={() => setIsResizing(true)}
       />
-      <form method="dialog" className="modal-backdrop">
-        <button className='cursor-default'>close</button>
-      </form>
     </div>
   );
 };

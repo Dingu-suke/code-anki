@@ -16,11 +16,13 @@ const setupCSRFToken = () => {
   }
 };
 
-const CardForm = () => {
+const CardForm = ({useInWindow}) => {
   // -----
   const questionEditorRef = useRef(null);
   const remarksEditorRef = useRef(null);
-
+  console.log(useInWindow)
+  
+  
   const { register, handleSubmit, control, watch, setValue, formState: { errors } } = useForm({
     defaultValues: {
       title: '',
@@ -30,7 +32,6 @@ const CardForm = () => {
       language: `javascript`
     }
   });
-
   
   useEffect(() => {
     register('body');
@@ -39,19 +40,19 @@ const CardForm = () => {
     register('language');
     register('title')
   }, [register]);
-
+  
   useEffect(() => {
     setupCSRFToken();
   }, []);
-
+  
   const handleQuestionBlur = useCallback((value) => {
     setValue('body', value);    
   }, [setValue]);
-
+  
   const handleRemarksBlur = useCallback((value) => {
     setValue('remarks', value);
   }, [setValue]);
-
+  
   const onSubmit = useCallback(async (data) => {
     try {
       // Ensure language is included in the data
@@ -65,17 +66,34 @@ const CardForm = () => {
       console.error('エラーが発生しました', error.response?.data);
     }
   }, [watch]);
-
-
+  
+  
   // const onSubmit = useCallback(async (data) => {
     // フォーム送信時に最新の値を取得
     // const updatedData = {
-    //   ...data,
-    //   body: questionEditorRef.current?.getValue() || ''
-    // };
-    
-  // });
+      //   ...data,
+      //   body: questionEditorRef.current?.getValue() || ''
+      // };
+      
+      // });
+  const buttonText = useInWindow ? "カードを更新する" : "カードを保存する";
+  
+  const containerClasses = useInWindow
+    ? "flex flex-col gap-4 h-full"
+    : "flex flex-col xl:grid xl:grid-cols-2 xl:grid-rows-[2fr_1fr] gap-4 xl:h-[calc(100vh-200px)]";
 
+  const questionClasses = useInWindow
+    ? "flex-grow"
+    : "row-start-1 row-end-2 col-start-1 col-end-2";
+
+  const answerClasses = useInWindow
+    ? "flex-grow"
+    : "row-start-1 row-end-3 col-start-2 col-end-3";
+
+  const remarksClasses = useInWindow
+    ? "flex-grow"
+    : "row-start-2 row-end-3 col-start-1 col-end-2";
+      
   return (
     <div className="card shadow-xl min-w-0 m-[30px] bg-gray-800">
       <div className="card-body">
@@ -89,22 +107,24 @@ const CardForm = () => {
                 {...register("title")}
                 className='bg-gray-700 text-green-100 text-2xl font-courier px-6 py-2 w-full sm:w-1/2 focus:outline-none focus:border-2 focus:border-blue-800 border border-blue-900 mb-4 sm:mb-0'
               />
+              <div >
               <button
                 type="submit"
                 className="btn text-sky-400 bg-cyan-950 hover:text-sky-300 hover:bg-blue-950 border border-sky-800 hover:border-cyan-500 font-courier w-full xl:w-auto hidden xl:inline-block">
-                カードを保存する
+                {buttonText}
               </button>
+              </div>
             </div>
               {/* <div className="flex flex-col xl:grid xl:grid-cols-2 xl:grid-rows-2 gap-4"> */}
-              <div className="flex flex-col xl:grid xl:grid-cols-2 xl:grid-rows-[2fr_1fr] gap-4 xl:h-[calc(100vh-200px)]">
-                <div className='row-start-1 row-end-2 col-start-1 col-end-2'>
+              <div className={containerClasses}>
+                <div className={questionClasses}>
                   <QuestionCard
                     editorRef={questionEditorRef}
                     defaultValue=""
                     onBlur={handleQuestionBlur}
                   />
                 </div>
-                <div className='row-start-1 row-end-3 col-start-2 col-end-3'>
+                <div className={answerClasses}>
                   <Controller
                     name='answer'
                     control={control}
@@ -114,23 +134,23 @@ const CardForm = () => {
                         onChange={field.onChange}
                         language={watch('language')}
                         onLanguageChange={(lang) => {
-                                                      setValue('language', lang)
-                                                    }}
+                          setValue('language', lang)
+                        }}
                       />
-                    )} />
-                </div>
-                <div className='row-start-2 row-end-3 col-start-1 col-end-2'>
-                  <Remarks
-                  editorRef={remarksEditorRef}
-                  defalultValue=""
-                  onBlur={handleRemarksBlur}
+                    )}
                   />
                 </div>
-                  
+                <div className={remarksClasses}>
+                  <Remarks
+                    editorRef={remarksEditorRef}
+                    defaultValue=""
+                    onBlur={handleRemarksBlur}
+                  />
+                </div>
               </div>
             </div>
             <div className="pt-6 flex justify-center">
-              <button type="submit" className="btn text-sky-400 bg-cyan-950 hover:text-sky-300 hover:bg-blue-950 border border-sky-800 hover:border-cyan-500 font-courier w-1/2 xl:hidden">カードを保存する</button>
+              <button type="submit" className="btn text-sky-400 bg-cyan-950 hover:text-sky-300 hover:bg-blue-950 border border-sky-800 hover:border-cyan-500 font-courier w-1/2 xl:hidden">{buttonText}</button>
             </div>
         </form>
       </div>
