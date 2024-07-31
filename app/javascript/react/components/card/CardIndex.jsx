@@ -5,6 +5,8 @@ import Modal from '../Modal';
 import Window from '../Window/Window';
 import CardForm from '../Form/CardForm';
 import ResponsiveWindow from '../Window/ResponsiveWindow';
+import CardEditForm from '../Form/CardEditForm';
+import { useStyle } from './useStyle';
 
 export const CardList = () => {
   const { cards, setCards, isLoading, setIsLoading } = useCards();
@@ -14,6 +16,7 @@ export const CardList = () => {
 
   const [isWindowOpen, setIsWindowOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
+  const [eachCardValue, setEachCardValue] = useState('')
 
   const openWindow = (card) => {
     setIsWindowOpen(true)
@@ -61,7 +64,7 @@ export const CardList = () => {
         onChange={handleSearch}
         className="w-full p-2 mb-4 border rounded bg-gray-700 focus:outline-none focus:border-2 focus:border-blue-800 border-blue-900 text-cyan-100"
       />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" >
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4" >
 
         {filteredCards.map((card) => (
           <div
@@ -81,9 +84,17 @@ export const CardList = () => {
           initialSize={{ width: 700, height: 800 }}
           onClose={closeWindow}
         >
-          <h2 className="text-xl font-bold mb-2">{selectedCard.title}</h2>
+          <h2 className="text-xl font-bold mb-2">タイトル: {selectedCard.title}</h2>
+          <h2 className="text-xl font-bold mb-2">問題文: {selectedCard.body}</h2>
+          <h2 className="text-xl font-bold mb-2">解答コード: {selectedCard.answer}</h2>
+          <h2 className="text-xl font-bold mb-2">備考: {selectedCard.remarks}</h2>
+          <h2 className="text-xl font-bold mb-2">言語: {selectedCard.language}</h2>
           <p className="mt-2">×ボタンをクリックして閉じることができます。</p>
-          <CardForm useInWindow={true}/>
+          <CardEditForm 
+            useInWindow={true}
+            selectedCard={selectedCard}
+
+          />
         </ResponsiveWindow>
       )}
     </div>

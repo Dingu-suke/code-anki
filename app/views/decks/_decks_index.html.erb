@@ -1,34 +1,36 @@
 <%# deck/yourdecks.html.erb %>
 
-<% if decks.present? %>
-    <div class="overflow-x-auto">
-      <table class="table">
-        <!-- head -->
-        <thead>
-          <tr>
-            <th></th>
-            <th> デッキ名 </th>
-            <th> タグ </th>
-            <th> 作成日時 (JST) </th>
-          </tr>
-        </thead>
-        <% decks.each_with_index do |deck, index| %>
-        <tbody> 
-          <!-- row 2 -->
-          <tr class="hover">
-            <th><%= index + 1 %></th>
-            <td><%= link_to deck.name, deck_cards_path(deck) %></td>
-            <td>
-              <% deck.tags.uniq.each do |tag| %>
-                <%= tag.name %>
-              <% end %>
-            </td>
-            <td><%= deck.created_at.in_time_zone("Tokyo").strftime('%Y-%m-%d') + "  |  " + deck.created_at.in_time_zone("Tokyo").strftime('%H:%M') %></td>
-          </tr>
-        <% end %>
-        </tbody>
-      </table>
-    </div>    
-<% else %>
-  <h2>デッキが見つかりません</h2>
-<% end %>
+<div class="bg-cyan-300">
+  <% if decks.present? %>
+      <div class="overflow-x-auto">
+        <table class="table">
+          <!-- head -->
+          <thead>
+            <tr>
+              <th></th>
+              <th> デッキ名 </th>
+              <th> タグ </th>
+              <th> 作成日時 (JST) </th>
+            </tr>
+          </thead>
+          <% decks.each_with_index do |deck, index| %>
+          <tbody> 
+            <!-- row 2 -->
+            <tr class="hover">
+              <th><%= index + 1 %></th>
+              <td><%= link_to deck.name, deck_cards_path(deck) %></td>
+              <td>
+                <% deck.tags.uniq.each do |tag| %>
+                  <%= tag.name %>
+                <% end %>
+              </td>
+              <td><%= deck.created_at.in_time_zone("Tokyo").strftime('%Y-%m-%d') + "  |  " + deck.created_at.in_time_zone("Tokyo").strftime('%H:%M') %></td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>    
+  <% else %>
+    <h2 class="text-white">デッキが見つかりません</h2>
+  <% end %>
+</div>

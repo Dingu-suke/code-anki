@@ -13,6 +13,7 @@ import { CardList } from "./components/card/CardIndex";
 import CardForm from './components/Form/CardForm';
 import ParentComponent from "./components/PaarentComponent";
 import App from "./components/Window/App";
+import DeckFormContainer from "./components/deck/DeckIndex";
 
 
 
@@ -30,9 +31,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const runCodeEditorRoot = document.getElementById("runCodeEditor");
   const markdownViewRoot  = document.getElementById("markdownView");
   const markdownEditorRoot= document.getElementById("markdownEditor");
-  const cardIndexRoot      = document.getElementById("cardIndex");
+  const cardIndexRoot     = document.getElementById("cardIndex");
   const DraggableModalRoot= document.getElementById("draggableModal");
   const AppRoot           = document.getElementById("window");
+  const DeckFormRoot      = document.getElementById("deck");
 
   // -------------------------------------------------------------------------
 
@@ -50,5 +52,6 @@ document.addEventListener("DOMContentLoaded", () => {
   markdownViewRoot  && createRoot(markdownViewRoot) .render(<MarkdownView />);
   cardIndexRoot     && createRoot(cardIndexRoot)    .render(<CardList />)
   DraggableModalRoot&& createRoot(DraggableModalRoot).render(<ParentComponent />)
+  DeckFormRoot      && createRoot(DeckFormRoot)     .render(<DeckFormContainer />)
   AppRoot && createRoot(AppRoot).render(<App />)
 })
