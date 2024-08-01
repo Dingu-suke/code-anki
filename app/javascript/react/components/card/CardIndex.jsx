@@ -77,17 +77,17 @@ export const CardList = () => {
         {filteredCards.map((card) => (
           <div
           key={card.id}
-          className="border border-cyan-600 hover:border-cyan-300 p-4 rounded shadow bg-indigo-950 hover:bg-indigo-900"
+          className={`border hover:border-cyan-300 p-4 rounded shadow hover:bg-indigo-900 
+          ${card === selectedCard ? 'bg-indigo-900 border-green-500' : 'bg-indigo-950 border-cyan-600' }`}
           onClick={() => openWindow(card)}
           >
-            <h2 className="text-xl font-semibold text-cyan-400">{card.title}</h2>
-            {/* <h2 className="text-xl font-semibold text-cyan-400 ">{card.title}</h2> */}
+            <h2 className='text-xl font-semibold text-cyan-300'>{card.title}</h2>
           </div>
         ))}
       </div>
       {isWindowOpen && (
         <ResponsiveWindow
-          title="Example Window"
+          title={`${selectedCard.title}`}
           initialPosition={{ x: 600, y: 90 }}
           initialSize={{ width: 700, height: 800 }}
           onClose={closeWindow}

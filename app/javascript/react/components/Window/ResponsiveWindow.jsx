@@ -116,35 +116,56 @@ const ResponsiveWindow = ({ children, title, initialPosition, initialSize, onClo
   ];
 
   return (
-    <div
-      ref={windowRef}
-      className="fixed bg-black border border-gray-300 shadow-lg rounded-lg overflow-hidden"
-      style={{
-        left: `${position.x}px`,
-        top: `${position.y}px`,
-        width: `${size.width}px`,
-        height: `${size.height}px`,
-        zIndex: 1000,
-      }}
-    >
+    <>
+      <style>
+        {`
+          .custom-scrollbar::-webkit-scrollbar {
+            width: 10px;
+          }
+          .custom-scrollbar::-webkit-scrollbar-track {
+            background: #000000;
+          }
+          .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 5px;
+          }
+          .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #555;
+          }
+        `}
+      </style>
       <div
-        className="bg-gray-100 px- py-2 flex justify-between items-center cursor-move"
-        onMouseDown={handleMouseDown}
+        ref={windowRef}
+        className="fixed bg-black border border-spacing-44 border-green-300 shadow-lg rounded-lg overflow-hidden"
+        style={{
+          left: `${position.x}px`,
+          top: `${position.y}px`,
+          width: `${size.width}px`,
+          height: `${size.height}px`,
+          zIndex: 1000,
+          scrollbarColor: '#888 #000000',
+        }}
       >
-        <h3 className="text-sm font-semibold">{title}</h3>
-        <button className="text-gray-500 hover:text-red-700" onClick={onClose}>×</button>
-      </div>
-      <div className="p-4 overflow-auto" style={{ height: 'calc(100% - 40px)' }}>
-        {children}
-      </div>
-      {resizeHandles.map(({ direction, style }) => (
         <div
-          key={direction}
-          className={`absolute ${style}`}
-          onMouseDown={handleResizeStart(direction)}
-        />
-      ))}
-    </div>
+          className="bg-slate-700 px-6 py-2 flex justify-between items-center cursor-move text-blue-200"
+          onMouseDown={handleMouseDown}
+        >
+          <h3 className="text-lg font-semibold">{title}</h3>
+          {/* <p className='text-sm justify-start'>マークダウンエディタの全画面編集モードはecsキーで解除できます。</p> */}
+          <button className="text-red-500 text-xl" onClick={onClose}>×</button>
+        </div>
+        <div className="p-4 overflow-auto" style={{ height: 'calc(100% - 40px)' }}>
+          {children}
+        </div>
+        {resizeHandles.map(({ direction, style }) => (
+          <div
+            key={direction}
+            className={`absolute ${style}`}
+            onMouseDown={handleResizeStart(direction)}
+          />
+        ))}
+      </div>
+    </>
   );
 };
 
