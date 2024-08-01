@@ -52,6 +52,17 @@ const CardForm = ({useInWindow, selectedCard}) => {
   useEffect(() => {
     setupCSRFToken();
   }, []);
+
+  useEffect ((selectedCard) => {
+    if (selectedCard) {
+      if (questionEditorRef.current) {
+        questionEditorRef.current.value(selectedCard.body);
+      }
+      if (remarksEditorRef.current) {
+        remarksEditorRef.current.value(selectedCard.remarks)
+      }
+    }
+  }, [selectedCard])
   
   const handleQuestionBlur = useCallback((value) => {
     setValue('body', value);    
@@ -158,7 +169,7 @@ const CardForm = ({useInWindow, selectedCard}) => {
                 <div className={questionClasses}>
                   <QuestionCard
                     editorRef={questionEditorRef}
-                    defaultValue=""
+                    defaultValue={selectedCard.body}
                     onBlur={handleQuestionBlur}
                   />
                 </div>
@@ -181,7 +192,7 @@ const CardForm = ({useInWindow, selectedCard}) => {
                 <div className={remarksClasses}>
                   <Remarks
                     editorRef={remarksEditorRef}
-                    defaultValue=""
+                    defaultValue={selectedCard.remarks}
                     onBlur={handleRemarksBlur}
                   />
                 </div>

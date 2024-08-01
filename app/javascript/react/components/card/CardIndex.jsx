@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useCards } from '../../hooks/useCards';
 import useModal from '../../hooks/useModal';
-import Modal from '../Modal';
+import Modal from '../Editor/Modal/Modal';
 import Window from '../Window/Window';
 import CardForm from '../Form/CardForm';
 import ResponsiveWindow from '../Window/ResponsiveWindow';
@@ -50,6 +50,10 @@ export const CardList = () => {
     return <div>Loading...</div>
   }
 
+  
+
+
+
   return (
     <div>
       <Modal modalRef={modalRef}>
@@ -64,7 +68,7 @@ export const CardList = () => {
         onChange={handleSearch}
         className="w-full p-2 mb-4 border rounded bg-gray-700 focus:outline-none focus:border-2 focus:border-blue-800 border-blue-900 text-cyan-100"
       />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4" >
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4" >
 
         {filteredCards.map((card) => (
           <div
