@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 
-const ResponsiveWindow = ({ children, title, initialPosition, initialSize, onClose }) => {
+const ResponsiveWindow = ({ children, title, initialPosition, initialSize, onClose, onSuccess}) => {
   const [size, setSize] = useState(initialSize);
   const [position, setPosition] = useState(initialPosition);
   const [isDragging, setIsDragging] = useState(false);

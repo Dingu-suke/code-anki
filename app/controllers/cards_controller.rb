@@ -37,10 +37,12 @@ class CardsController < ApplicationController
   def update
     @card = current_user.cards.find(params[:id])
     if @card.update(cards_params)
-      redirect_to your_cards_path, success: "保存成功"
+      # redirect_to your_cards_path, success: "保存成功"
+      render json: { success: true, card: @card }, status: :ok
     else
       flash.now[:danger] = "保存失敗"
-      render :edit, status: :unprocessable_entity
+      # render :edit, status: :unprocessable_entity
+      render json: { success: false, errors: @card.errors }, status: :unprocessable_entity
     end
   end
   

@@ -12,11 +12,11 @@ export const CardList = () => {
   const { cards, setCards, isLoading, setIsLoading } = useCards();
   const [filteredCards, setFilteredCards] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const { modalRef, openModal, closeModal } = useModal()
+  // const { modalRef, openModal, closeModal } = useModal()
 
   const [isWindowOpen, setIsWindowOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
-  const [eachCardValue, setEachCardValue] = useState('')
+  // const [eachCardValue, setEachCardValue] = useState('')
 
   const openWindow = (card) => {
     setIsWindowOpen(true)
@@ -27,6 +27,13 @@ export const CardList = () => {
     setIsWindowOpen(false);
     setSelectedCard(null)
   }
+
+  const handleCardUpdate = (updatedCard) => {
+    setCards(prevCards => 
+      prevCards.map(card => card.id === updatedCard.id ? updatedCard : card)
+    );
+    setIsModalOpen(false);
+  };
   
   useEffect(() => {
     if (cards) {
@@ -50,15 +57,11 @@ export const CardList = () => {
     return <div>Loading...</div>
   }
 
-  
-
-
-
   return (
     <div>
-      <Modal modalRef={modalRef}>
+      {/* <Modal modalRef={modalRef}> */}
 
-      </Modal>
+      {/* </Modal> */}
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4 text-orange-400 font-courier">あなたのカード</h1>
       <input
@@ -87,6 +90,7 @@ export const CardList = () => {
           initialPosition={{ x: 600, y: 90 }}
           initialSize={{ width: 700, height: 800 }}
           onClose={closeWindow}
+          // onSuccess={handleCardUpdate}
         >
           <h2 className="text-xl font-bold mb-2">タイトル: {selectedCard.title}</h2>
           <h2 className="text-xl font-bold mb-2">問題文: {selectedCard.body}</h2>

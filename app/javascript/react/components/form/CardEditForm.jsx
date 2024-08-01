@@ -81,18 +81,18 @@ const CardForm = ({useInWindow, selectedCard}) => {
       };
       let res;
       if (selectedCard) {
-        let res = await axios.fetch(`/cards/${selectedCard.id}`, { card: formData });
+        let res = await axios.patch(`/cards/${selectedCard.id}`, { card: formData });
         console.log('カードが更新されました', res.data);
       } else {
         res = await axios.post('/cards', { card: formData });
         console.log('カードが作成されました', res.data);
       }
-      if (onSuccess) onSuccess(res.data);
+      // if (onSuccess) onSuccess(res.data);
     } catch(error) {
       console.error('エラーが発生しました', error.response?.data);
-      if (onError) onError(error);
+      throw new Error(res.data.errors);
     }
-  }, [selectedCard, watch]);
+  }, [selectedCard, watch, /*onSuccess*/]);
 
   
   // const onSubmit = useCallback(async (data) => {
