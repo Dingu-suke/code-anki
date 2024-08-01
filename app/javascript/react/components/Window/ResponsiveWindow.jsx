@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 
-const ResponsiveWindow = ({ children, title, initialPosition, initialSize, onClose, onSuccess}) => {
+const ResponsiveWindow = ({ children, title, initialPosition, initialSize, onClose}) => {
   const [size, setSize] = useState(initialSize);
   const [position, setPosition] = useState(initialPosition);
   const [isDragging, setIsDragging] = useState(false);
@@ -118,7 +118,7 @@ const ResponsiveWindow = ({ children, title, initialPosition, initialSize, onClo
   return (
     <div
       ref={windowRef}
-      className="fixed bg-white border border-gray-300 shadow-lg rounded-lg overflow-hidden"
+      className="fixed bg-black border border-gray-300 shadow-lg rounded-lg overflow-hidden"
       style={{
         left: `${position.x}px`,
         top: `${position.y}px`,
@@ -128,7 +128,7 @@ const ResponsiveWindow = ({ children, title, initialPosition, initialSize, onClo
       }}
     >
       <div
-        className="bg-gray-100 px-4 py-2 flex justify-between items-center cursor-move"
+        className="bg-gray-100 px- py-2 flex justify-between items-center cursor-move"
         onMouseDown={handleMouseDown}
       >
         <h3 className="text-sm font-semibold">{title}</h3>

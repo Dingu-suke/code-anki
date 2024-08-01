@@ -6,7 +6,6 @@ import Window from '../Window/Window';
 import CardForm from '../Form/CardForm';
 import ResponsiveWindow from '../Window/ResponsiveWindow';
 import CardEditForm from '../Form/CardEditForm';
-import { useStyle } from './useStyle';
 
 export const CardList = () => {
   const { cards, setCards, isLoading, setIsLoading } = useCards();
@@ -27,13 +26,6 @@ export const CardList = () => {
     setIsWindowOpen(false);
     setSelectedCard(null)
   }
-
-  const handleCardUpdate = (updatedCard) => {
-    setCards(prevCards => 
-      prevCards.map(card => card.id === updatedCard.id ? updatedCard : card)
-    );
-    setIsModalOpen(false);
-  };
   
   useEffect(() => {
     if (cards) {
@@ -49,6 +41,15 @@ export const CardList = () => {
       .sort((a, b) => a.title.localeCompare(b.title));
       setFilteredCards(filtered);  
     }}, [cards, searchTerm]);
+
+  // カード更新時にカード一覧を再レンダリングさせる
+  const handleCardUpdate = (updatedCard) => {
+    setSelectedCard(updatedCard);
+    setCards(prevCards => 
+      prevCards.map(card => card.id === updatedCard.id ? updatedCard : card)
+    );
+  };
+  
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -90,18 +91,11 @@ export const CardList = () => {
           initialPosition={{ x: 600, y: 90 }}
           initialSize={{ width: 700, height: 800 }}
           onClose={closeWindow}
-          // onSuccess={handleCardUpdate}
         >
-          <h2 className="text-xl font-bold mb-2">タイトル: {selectedCard.title}</h2>
-          <h2 className="text-xl font-bold mb-2">問題文: {selectedCard.body}</h2>
-          <h2 className="text-xl font-bold mb-2">解答コード: {selectedCard.answer}</h2>
-          <h2 className="text-xl font-bold mb-2">備考: {selectedCard.remarks}</h2>
-          <h2 className="text-xl font-bold mb-2">言語: {selectedCard.language}</h2>
-          <p className="mt-2">×ボタンをクリックして閉じることができます。</p>
           <CardEditForm 
             useInWindow={true}
             selectedCard={selectedCard}
-
+            onUpdateSuccess={handleCardUpdate}
           />
         </ResponsiveWindow>
       )}

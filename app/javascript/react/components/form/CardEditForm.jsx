@@ -16,7 +16,7 @@ const setupCSRFToken = () => {
   }
 };
 
-const CardForm = ({useInWindow, selectedCard}) => {
+const CardForm = ({useInWindow, selectedCard, onUpdateSuccess}) => {
   // -----
   const questionEditorRef = useRef(null);
   const remarksEditorRef = useRef(null);  
@@ -79,20 +79,19 @@ const CardForm = ({useInWindow, selectedCard}) => {
         ...data,
         language: watch('language') // Explicitly include the language
       };
-      let res;
+    let res;
       if (selectedCard) {
         let res = await axios.patch(`/cards/${selectedCard.id}`, { card: formData });
         console.log('カードが更新されました', res.data);
+        onUpdateSuccess(res.data.card)
       } else {
         res = await axios.post('/cards', { card: formData });
         console.log('カードが作成されました', res.data);
       }
-      // if (onSuccess) onSuccess(res.data);
     } catch(error) {
       console.error('エラーが発生しました', error.response?.data);
-      throw new Error(res.data.errors);
     }
-  }, [selectedCard, watch, /*onSuccess*/]);
+  }, [selectedCard, watch, onUpdateSuccess]);
 
   
   // const onSubmit = useCallback(async (data) => {
