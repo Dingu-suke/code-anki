@@ -1,3 +1,5 @@
+<%
+=begin%>
 <p style="color: green"><%= notice %></p>
 
 <%= render @deck %>
@@ -77,10 +79,13 @@
   <br/>
   <br/>
 </div>
+<%
+=end%>
 
-<script>
+<%# <script>
   document.querySelector('.collapse-title').addEventListener('click', function() {
     const checkbox = this.previousElementSibling;
     checkbox.checked = !checkbox.checked;
   });
-</script>
+</script> %>
+
