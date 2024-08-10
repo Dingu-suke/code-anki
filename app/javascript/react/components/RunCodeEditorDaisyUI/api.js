@@ -54,21 +54,3 @@ const executeOtherLanguageCode = async (language, sourceCode) => {
 
   return response.data;
 };
-
-
-
-// export const availableLanguages = async () => {
-//   const apiUrl = 'https://emkc.org/api/v2/piston/runtimes';
-
-//   try {
-//     const response = await fetch(apiUrl);
-//     if (!response.ok) {
-//       throw new Error(`HTTP error! status: ${response.status}`);
-//     }
-//     const data = await response.json();
-//     return data;
-//   } catch (error) {
-//     console.error('There was a problem fetching the runtime data:', error);
-//     throw error;
-//   }
-// };

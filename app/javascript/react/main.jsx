@@ -14,6 +14,7 @@ import CardForm from './components/Form/CardForm';
 import ParentComponent from "./components/PaarentComponent";
 import App from "./components/Window/App";
 import DeckFormContainer from "./components/deck/DeckIndex";
+import { Drill } from './components/Drill/Drill';
 
 
 
@@ -35,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const DraggableModalRoot= document.getElementById("draggableModal");
   const AppRoot           = document.getElementById("window");
   const DeckFormRoot      = document.getElementById("deck");
+  const DeckShowRoot      = document.getElementById("deckShow");
 
   // -------------------------------------------------------------------------
 
@@ -53,5 +55,6 @@ document.addEventListener("DOMContentLoaded", () => {
   cardIndexRoot     && createRoot(cardIndexRoot)    .render(<CardList />)
   DraggableModalRoot&& createRoot(DraggableModalRoot).render(<ParentComponent />)
   DeckFormRoot      && createRoot(DeckFormRoot)     .render(<DeckFormContainer />)
+  DeckShowRoot      && createRoot(DeckShowRoot)     .render(<Drill />)
   AppRoot && createRoot(AppRoot).render(<App />)
 })

@@ -1,30 +1,71 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 const Output = (props) => {
-  const { editorRef, language, output, setOutput, isError, setIsError } = props;
-  
+  const { output, isError, message, distinguishText, outputType, activeOutput, height, outputHeight, setOutputHeight } = props;
+
+  const titleText = distinguishText || (message ? "Output" : "Code Output");
+
   useEffect(() => {
-    setOutput(null)
-    setIsError(false)
-  }, [language])
+    if (isError) {
+      setOutputHeight? setOutputHeight("300px"): ""
+    } else {
+      setOutputHeight? setOutputHeight("130px"): ""
+    }
+  }, [isError, output, setOutputHeight])
+
+  const getBorderColor = () => {
+    if (isError) return "border-red-900";
+    if (output) {
+      return activeOutput === 'answer' ? "border-purple-700" : "border-indigo-700";
+    }
+    return "border-green-700";
+  };
+
+  const getTextColor = () => {
+    if (isError) return "text-red-200";
+    if (output) {
+      return activeOutput === 'answer' ? "text-violet-200" : "text-cyan-200";
+    }
+    return "text-green-200";
+  };
 
   return (
-    <div>
-        <textarea 
-                  value={
-                    output ? output.map(line => "   " + line).join('\n') :
-                    "   Run ▷ to see the output here and check the code."
-                  }
-                  readOnly
-                  style={{width: '100%', height: '200px'}}
-                  className={`font-courier bg-zinc-900 focus:outline-none focus:border-2 ${
-                    isError 
-                    ? "font-courier text-red-500 bg-zinc-900 focus:outline-none border border-pink-800"
-                    : output
-                    ? "font-courier bg-zinc-900 text-violet-300 focus:outline-none focus:border-2 focus:border-fuchsia-800 border border-fuchsia-900"
-                    : "font-courier text-green-400 focus:outline-none  border border-green-800"}`}
-        >
-        </textarea>
+    <div className={`border rounded-md overflow-hidden bg-black ${getBorderColor()} flex flex-col`} style={{ height }}>
+      <div className={`
+        font-mono text-sm px-2 py-1
+        bg-slate-900 ${getTextColor()}
+        focus:outline-none 
+      `}>
+        {titleText}
+      </div>
+
+      <textarea 
+        value={
+          output 
+            ? output.join('\n')
+            : message 
+              ? message 
+              : "Run ▷ to see the output here and check the code."
+        }
+        readOnly
+        className={`
+          font-mono text-sm p-2 
+          bg-black
+          ${isError 
+            ? "text-red-400"
+            : output 
+              ? activeOutput === 'answer'
+                ? "text-purple-400"
+                : "text-cyan-400"
+            : "text-green-400"
+          }
+          focus:outline-none
+          border-t ${getBorderColor()}
+          flex-grow
+          resize-none
+          w-full
+        `}
+      />
     </div>
   );
 };

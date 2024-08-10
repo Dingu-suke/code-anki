@@ -67,15 +67,6 @@ const CardForm = ({useInWindow}) => {
     }
   }, [watch]);
   
-  
-  // const onSubmit = useCallback(async (data) => {
-    // フォーム送信時に最新の値を取得
-    // const updatedData = {
-      //   ...data,
-      //   body: questionEditorRef.current?.getValue() || ''
-      // };
-      
-      // });
   const buttonText = useInWindow ? "カードを更新する" : "カードを保存する";
   const buttonTextLocation = () => {
     if (!useInWindow) {
