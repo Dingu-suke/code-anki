@@ -51,20 +51,29 @@ class DecksController < ApplicationController
   # DELETE /decks/1 or /decks/1.json
   def destroy
     @deck.destroy!
-
-    # respond_to do |format|
-      # format.html { redirect_to decks_url, notice: "Deck was successfully destroyed." }
-      # format.json { head :no_content }
-    # end
     redirect_to your_decks_path, success: "デッキを削除しました", status: :see_other
   end
 
   def your_decks
     @your_decks = Deck.where(user_id: current_user.id).includes(:user).order("created_at DESC")
+    @your_cards = Card.where(user_id: current_user.id).includes(:user).order("created_at DESC")
+    respond_to do |format|
+      format.html
+      format.json {
+        render json: @your_decks.as_json(
+        include: { cards: { only: [:id, :title, :body]} }
+        )
+      }
+    end
   end
 
   def deck_cards
     @deck = Deck.find(params[:id])
+    @cards = @deck.cards
+    respond_to do |format|
+    format.html
+    format.json { render json: { deck: @deck, cards: @cards } }
+    end
   end
 
   def destroy_your_deck

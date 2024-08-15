@@ -89,4 +89,9 @@
   });
 </script> %>
 
-<div id="deckShow"></div>
+<%
+=begin%>
+<div id="deckShow" data-deck-id="<%= @deck.id %>" ></div>
+<%
+=end%>
+<div id="deckCards" data-deck-id="<%= @deck.id %>"></div>

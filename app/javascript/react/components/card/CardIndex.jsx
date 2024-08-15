@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useCards } from '../../hooks/useCards';
-import useModal from '../../hooks/useModal';
-import Modal from '../Editor/Modal/Modal';
-import Window from '../Window/Window';
-import CardForm from '../Form/CardForm';
 import ResponsiveWindow from '../Window/ResponsiveWindow';
 import CardEditForm from '../Form/CardEditForm';
 
@@ -31,7 +27,7 @@ export const CardList = () => {
     if (cards) {
       const searchTerms = searchTerm.toLowerCase().split(' ');
       const filtered = cards
-      .filter(card => 
+        .filter(card =>
           searchTerms.every(term => 
             card.title .toLowerCase().includes(term) || 
             card.body  .toLowerCase().includes(term) ||
@@ -49,7 +45,6 @@ export const CardList = () => {
       prevCards.map(card => card.id === updatedCard.id ? updatedCard : card)
     );
   };
-  
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -60,14 +55,11 @@ export const CardList = () => {
 
   return (
     <div>
-      {/* <Modal modalRef={modalRef}> */}
-
-      {/* </Modal> */}
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4 text-orange-400 font-courier">あなたのカード</h1>
       <input
         type="text"
-        placeholder=" カ ードを検索"
+        placeholder="カードを検索"
         value={searchTerm}
         onChange={handleSearch}
         className="w-full p-2 mb-4 border rounded bg-gray-700 focus:outline-none focus:border-2 focus:border-blue-800 border-blue-900 text-cyan-100"
@@ -92,7 +84,7 @@ export const CardList = () => {
           initialSize={{ width: 700, height: 800 }}
           onClose={closeWindow}
         >
-          <CardEditForm 
+          <CardEditForm
             useInWindow={true}
             selectedCard={selectedCard}
             onUpdateSuccess={handleCardUpdate}
@@ -100,7 +92,6 @@ export const CardList = () => {
         </ResponsiveWindow>
       )}
     </div>
-
-    </div>
+  </div>
   )
 }

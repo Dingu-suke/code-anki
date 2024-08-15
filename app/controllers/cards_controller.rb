@@ -13,7 +13,7 @@ class CardsController < ApplicationController
     # @drafts = Card.includes(:user)
     # @borads = @q.result(distinct: true).includes(:user).order(created_at: :desc).page(params[:page])
     @cards = Card.all
-    render json: @items
+    render json: @cards
   end
 
   def show
