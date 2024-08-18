@@ -69,7 +69,7 @@ export const CardList = () => {
         {filteredCards.map((card) => (
           <div
           key={card.id}
-          className={`border hover:border-cyan-300 p-4 rounded shadow hover:bg-indigo-900 
+          className={`border hover:border-cyan-300 p-4 rounded shadow hover:bg-indigo-900
           ${card === selectedCard ? 'bg-indigo-900 border-green-500' : 'bg-indigo-950 border-cyan-600' }`}
           onClick={() => openWindow(card)}
           >

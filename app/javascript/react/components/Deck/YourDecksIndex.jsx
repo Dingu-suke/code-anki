@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useYourDecks } from '../../hooks/useYourDeckCards';
 import ResponsiveWindow from '../Window/ResponsiveWindow';
+import { CheckCard } from '../card/CheckCard';
 
 const StackedDeckCard = ({ deck, onClick, isSelected, cards }) => {
   const BackGroundColor = isSelected ? 'bg-slate-950 border-orange-400' : 'bg-slate-900 group-hover:bg-blue-950 group-hover:border-blue-500';
@@ -25,6 +26,8 @@ export const YourDeckList = () => {
   const [filteredDecks, setFilteredDecks] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isWindowOpen, setIsWindowOpen] = useState(false);
+  const [isCardWindowOpen, setCardIsWindowOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState(null)
   const [selectedDeck, setSelectedDeck] = useState(null);
 
   useEffect(() => {
@@ -55,7 +58,13 @@ export const YourDeckList = () => {
     setSelectedDeck(deck)
   };
   
-  const closeWindow = () => {  
+  const opneCardwindow = (card) => {
+    console.log("yayaya")
+    setCardIsWindowOpen(true)
+    setSelectedCard(card)
+  }
+
+  const closeWindow = () => {
     setIsWindowOpen(false);
     setSelectedDeck(null)
   }
@@ -64,9 +73,8 @@ export const YourDeckList = () => {
     setSearchTerm(e.target.value);
   }
   if (isLoading) {
-    return <div>Loading...</div>
+    return <div className="text-white">Loading...</div>
   }
-
 
   return (
     <div className="container mx-auto p-4">
@@ -81,7 +89,7 @@ export const YourDeckList = () => {
       <div className="grid grid-cols-2 gap-8 justify-start" style={{ gridTemplateColumns: 'repeat(2, 280px)' }}>
         {filteredDecks.length > 0 ? (
           filteredDecks.map((deck) => (
-            <StackedDeckCard key={deck.id} deck={deck} cards={deck.cards} onClick={toggleDeckSelection} isSelected={selectedDeck && selectedDeck.id === deck.id} />
+            <StackedDeckCard key={deck.id} deck={deck} cards={deck.cards} onClick={openWindow} isSelected={selectedDeck && selectedDeck.id === deck.id} />
           ))
         ) : (
           <div>デッキがありません</div>
@@ -94,20 +102,29 @@ export const YourDeckList = () => {
           initialSize={{ width: 700, height: 800 }}
           onClose={closeWindow}
         >
-          {selectedDeck && (
-        <div className="mt-8">
-          <h2 className="text-xl font-bold mb-4 text-cyan-300">選択されたデッキ: {selectedDeck.name}</h2>
-          <h3 className="text-lg font-semibold mb-2 text-cyan-200">カード一覧:</h3>
-          <ul className="list-disc list-inside">
-            {selectedDeck.cards.map(card => (
-              <li key={card.id} className="text-cyan-100">{card.title}</li>
-            ))}
-          </ul>
-        </div>
-      )}
+        <div className="col-span-4">
+            <div className="border border-slate-600 bg-stone-950 text-cyan-50 rounded overflow-hidden">
+              <div className="p-4 h-[calc(35vh-2rem)] overflow-auto">
+                {selectedDeck && (
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+                    {selectedDeck.cards.map(card => (
+                      <div
+                      key={card.id}
+                      className={`border hover:border-cyan-300 p-4 rounded shadow hover:bg-indigo-900
+                        ${card === selectedDeck.cards ? 'bg-indigo-900 border-green-500' : 'bg-indigo-950 border-cyan-600' }`}
+                        onClick={() => opneCardwindow(card)}
+                        >
+                        <h2 className='text-xl font-semibold text-cyan-300'>{card.title}</h2>
+                      </div>
+                    ))}
+                </div>
+              )}                
+              </div>
+            </div>
+          </div>
+          <CheckCard />
         </ResponsiveWindow>
       )}
     </div>
   );
 };
-

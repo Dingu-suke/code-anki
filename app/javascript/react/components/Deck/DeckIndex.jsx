@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDecks } from '../../hooks/useYourDeckCards';
+import ResponsiveWindow from '../Window/ResponsiveWindow';
 
 const StackedDeckCard = ({ deck, onClick, isSelected, cards }) => {
   const BackGroundColor = isSelected ? 'bg-slate-950 border-orange-400' : 'bg-slate-900 group-hover:bg-blue-950 group-hover:border-blue-500';
@@ -89,8 +90,6 @@ export const DeckList = () => {
       </div>
       {selectedDeck && (
         <div className="mt-8">
-          <h2 className="text-xl font-bold mb-4 text-cyan-300">{selectedDeck.name}</h2>
-          <h3 className="text-lg font-semibold mb-2 text-cyan-200">カード一覧:</h3>
           <ul className="list-disc list-inside">
             {selectedDeck.cards.map(card => (
               <li key={card.id} className="text-cyan-100">{card.title}</li>
@@ -102,7 +101,7 @@ export const DeckList = () => {
         <ResponsiveWindow
           title={`${selectedCard.title}`}
           initialPosition={{ x: 600, y: 90 }}
-          initialSize={{ width: 700, height: 800 }}
+          initialSize={{ width: 700, height:  300 }}
           onClose={closeWindow}
         >
           <CardEditForm
