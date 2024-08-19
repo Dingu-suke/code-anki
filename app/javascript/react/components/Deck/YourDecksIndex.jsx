@@ -3,6 +3,16 @@ import { useYourDecks } from '../../hooks/useYourDeckCards';
 import ResponsiveWindow from '../Window/ResponsiveWindow';
 import { CheckCard } from '../card/CheckCard';
 
+  const initialCard = 
+    {
+      id: 1, 
+      title: '選択したカードのタイトル',
+      body: '選択したカードの問題文',
+      answer: `function greet(name) {\n\tconsole.log("Hello, " + name + "!");\n}\n\ngreet("Javascript");\n // 選択したカードのコード`, 
+      language: 'javascript', 
+      remarks:'選択したカードの備考'
+    };
+
 const StackedDeckCard = ({ deck, onClick, isSelected, cards }) => {
   const BackGroundColor = isSelected ? 'bg-slate-950 border-orange-400' : 'bg-slate-900 group-hover:bg-blue-950 group-hover:border-blue-500';
   const hoverBorderColor = isSelected ? '' : 'bg-indigo-950';
@@ -27,7 +37,7 @@ export const YourDeckList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isWindowOpen, setIsWindowOpen] = useState(false);
   const [isCardWindowOpen, setCardIsWindowOpen] = useState(false);
-  const [selectedCard, setSelectedCard] = useState(null)
+  const [selectedCard, setSelectedCard] = useState(initialCard)
   const [selectedDeck, setSelectedDeck] = useState([]);
 
   useEffect(() => {
@@ -43,6 +53,12 @@ export const YourDeckList = () => {
       setFilteredDecks(filtered);  
     }}, [decks, searchTerm]);
 
+    useEffect(() => {
+      setSelectedCard(initialCard)
+    }, [selectedDeck])
+
+
+
     const toggleDeckSelection = (deck) => {
       if (selectedDeck && selectedDeck.id === deck.id) {
         setSelectedDeck(null);
@@ -57,15 +73,8 @@ export const YourDeckList = () => {
     setIsWindowOpen(true)
     setSelectedDeck(deck)
   };
-  // 休憩中
   
   const opneCardwindow = (card) => {  
-    setSelectedCard(card)
-    // console.log(selectedCard)
-    // console.log(`言語 ${selectedCard.language}`);
-    // console.log(`タイトル ${selectedCard.title}`);
-    // why display undefined 
-
     setCardIsWindowOpen(true)
     setSelectedCard(card)  
   }
@@ -79,7 +88,7 @@ export const YourDeckList = () => {
     setSearchTerm(e.target.value);
   }
   if (isLoading) {
-    return <div className="text-white">Loading...</div>
+    return <div className="text-white loading loading-ring loading-lg">Loading...</div>
   }
 
   return (

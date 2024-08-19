@@ -6,29 +6,12 @@ import { LanguageLabel } from '../RunCodeEditorDaisyUI/LanguageController';
 export const SentenceAndAnswer = ({ 
   className = "", 
   card, 
-  // runUserCode,
-  // runAnswerCode,
-  // userIsLoading,
-  // answerIsLoading,
-  // userEditorRef,
-  // answerEditorRef,
-  // setCurrentCardId
 }) => {
   const editorEditorRef = useRef(null);
   const [activeTab, setActiveTab] = useState('question')
 
-  // const updateDiffEditor = useCallback(() => {
-  //   if (editorEditorRef.current && userEditorRef.current) {
-  //     const originalEditor = editorEditorRef.current.getOriginalEditor();
-  //     // originalEditor.setValue(userEditorRef.current.getValue() || "");
-  //   }
-  // }, [userEditorRef]);
-
   const handleTabChange = (tabName) => {
     setActiveTab(tabName);
-    // if (tabName === 'editor') {
-    //   updateDiffEditor();
-    // }
   };
 
   const tabClass = "px-4 border-t border-x rounded-t-sm font-bold focus:outline-none relative";
@@ -51,14 +34,13 @@ export const SentenceAndAnswer = ({
   const AnswerCode = (      
     <div className="border border-green-900 bg-slate-950 rounded-md overflow-hidden">
       <div className="bg-slate-800 px-4 py-2 font-semibold">
-        <div className="flex">
-        <div className="text-cyan-50">
-          {card.title}
-        </div>
-        <div className="pr-4">
-          <LanguageLabel language={card.language} />
-        </div>
-
+        <div className="grid grid-cols-2">
+          <div className="text-cyan-50">
+            {card.title}
+          </div>
+          <div className="justify-self-end">
+            <LanguageLabel language={card.language} />
+          </div>  
         </div>
       </div>
       <Editor
