@@ -61,7 +61,7 @@ class DecksController < ApplicationController
       format.html
       format.json {
         render json: @your_decks.as_json(
-        include: { cards: { only: [:id, :title, :body]} }
+        include: { cards: { only: [:id, :title, :body, :language, :remarks]} }
         )
       }
     end

@@ -28,7 +28,7 @@ export const YourDeckList = () => {
   const [isWindowOpen, setIsWindowOpen] = useState(false);
   const [isCardWindowOpen, setCardIsWindowOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null)
-  const [selectedDeck, setSelectedDeck] = useState(null);
+  const [selectedDeck, setSelectedDeck] = useState([]);
 
   useEffect(() => {
     if (decks) {
@@ -57,11 +57,17 @@ export const YourDeckList = () => {
     setIsWindowOpen(true)
     setSelectedDeck(deck)
   };
+  // 休憩中
   
-  const opneCardwindow = (card) => {
-    console.log("yayaya")
-    setCardIsWindowOpen(true)
+  const opneCardwindow = (card) => {  
     setSelectedCard(card)
+    // console.log(selectedCard)
+    // console.log(`言語 ${selectedCard.language}`);
+    // console.log(`タイトル ${selectedCard.title}`);
+    // why display undefined 
+
+    setCardIsWindowOpen(true)
+    setSelectedCard(card)  
   }
 
   const closeWindow = () => {
@@ -111,10 +117,10 @@ export const YourDeckList = () => {
                       <div
                       key={card.id}
                       className={`border hover:border-cyan-300 p-4 rounded shadow hover:bg-indigo-900
-                        ${card === selectedDeck.cards ? 'bg-indigo-900 border-green-500' : 'bg-indigo-950 border-cyan-600' }`}
+                        ${card === selectedCard ? 'bg-indigo-900 border-green-500' : 'bg-indigo-950 border-cyan-600' }`}
                         onClick={() => opneCardwindow(card)}
                         >
-                        <h2 className='text-xl font-semibold text-cyan-300'>{card.title}</h2>
+                        <h2 className={`text-xl font-semibold text-cyan-300`}>{card.title}</h2>
                       </div>
                     ))}
                 </div>
@@ -122,7 +128,7 @@ export const YourDeckList = () => {
               </div>
             </div>
           </div>
-          <CheckCard />
+          <CheckCard selectedCard={selectedCard}/>
         </ResponsiveWindow>
       )}
     </div>
