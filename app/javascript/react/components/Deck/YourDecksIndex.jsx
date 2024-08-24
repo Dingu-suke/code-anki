@@ -8,8 +8,8 @@ import { CheckCard } from '../card/CheckCard';
       id: 1, 
       title: '選択したカードのタイトル',
       body: '選択したカードの問題文',
-      answer: `function greet(name) {\n\tconsole.log("Hello, " + name + "!");\n}\n\ngreet("Javascript");\n // 選択したカードのコード`, 
-      language: 'javascript', 
+      answer: `function greet(name) {\n\tconsole.log("Hello, " + name + "!");\n}\n\ngreet("Javascript");\n // 選択したカードのコード`,
+      language: 'javascript',
       remarks:'選択したカードの備考'
     };
 
@@ -30,6 +30,20 @@ const StackedDeckCard = ({ deck, onClick, isSelected, cards }) => {
     </div>
   );
 };
+
+const NewDeck = () => {
+  <div 
+      className="relative w-64 h-40 cursor-pointer group"
+      onClick={() => onClick(deck)}
+    >
+    <div className={`m-4 absolute inset-0 border-2 border-blue-700  ${BackGroundColor} ${hoverBorderColor} rounded-lg shadow-md transform translate-x-2 translate-y-2`}></div>
+      <div className={`m-4 absolute inset-0 border-2 border-blue-700 ${BackGroundColor} ${hoverBorderColor} rounded-lg shadow-md transform translate-x-1 translate-y-1`}></div>
+      <div className={`m-4 relative border-2 border-blue-700 ${BackGroundColor} ${hoverBorderColor} rounded-lg shadow-md p-4 transition-transform duration-300 group-hover:-translate-x-1 group-hover:-translate-y-1`}>
+        <h2 className="m-5 text-xl font-semibold text-cyan-300 truncate">{deck.name}</h2>
+        <p className="text-cyan-100 mt-2 kbd bg-slate-600 ">{cards.length || 0}</p>
+      </div>
+    </div>
+}
 
 export const YourDeckList = () => {
   const { decks, setDecks, isLoading, setIsLoading } = useYourDecks();
@@ -69,6 +83,7 @@ export const YourDeckList = () => {
       }
     };
 
+  // ウィンドウ操作
   const openWindow = (deck) => {
     setIsWindowOpen(true)
     setSelectedDeck(deck)
@@ -83,13 +98,17 @@ export const YourDeckList = () => {
     setIsWindowOpen(false);
     setSelectedDeck(null)
   }
+  
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   }
   if (isLoading) {
-    return <div className="text-white loading loading-ring loading-lg">Loading...</div>
-  }
+    return (
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div className="text-white loading loading-ring loading-lg"></div>
+    </div>
+  )}
 
   return (
     <div className="container mx-auto p-4">
@@ -117,7 +136,7 @@ export const YourDeckList = () => {
           initialSize={{ width: 700, height: 800 }}
           onClose={closeWindow}
         >
-        <div className="col-span-4">
+          <div className="col-span-4">
             <div className="border border-slate-600 bg-stone-950 text-cyan-50 rounded overflow-hidden">
               <div className="p-4 h-[calc(35vh-2rem)] overflow-auto">
                 {selectedDeck && (
@@ -133,7 +152,7 @@ export const YourDeckList = () => {
                       </div>
                     ))}
                 </div>
-              )}                
+              )}
               </div>
             </div>
           </div>

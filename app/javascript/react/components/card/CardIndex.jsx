@@ -55,17 +55,22 @@ export const CardList = () => {
 
   return (
     <div>
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4 text-orange-400 font-courier">あなたのカード</h1>
-      <input
-        type="text"
-        placeholder="カードを検索"
-        value={searchTerm}
-        onChange={handleSearch}
-        className="w-full p-2 mb-4 border rounded bg-gray-700 focus:outline-none focus:border-2 focus:border-blue-800 border-blue-900 text-cyan-100"
-      />
+      <div className="container mx-auto p-4">
+        div
+        <h1 className="text-2xl font-bold mb-4 text-orange-400 font-courier">あなたのカード</h1>
+        <input
+          type="text"
+          placeholder="カードを検索"
+          value={searchTerm}
+          onChange={handleSearch}
+          className="w-full p-2 mb-4 border rounded bg-gray-700 focus:outline-none focus:border-2 focus:border-blue-800 border-blue-900 text-cyan-100"
+        />
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4" >
 
+        <div className={`border border-dashed hover:border-solid border-pink-400 hover:border-pink-400 text-pink-400 p-4 rounded shadow  bg-slate-950`}>
+          <h2 className='text-xl font-semibold '>+ new card</h2>
+        </div>
+        
         {filteredCards.map((card) => (
           <div
           key={card.id}

@@ -3,10 +3,7 @@ import Markdown from 'react-markdown';
 import { Editor } from '@monaco-editor/react';
 import { LanguageLabel } from '../RunCodeEditorDaisyUI/LanguageController';
 
-export const SentenceAndAnswer = ({ 
-  className = "", 
-  card, 
-}) => {
+export const SentenceAndAnswer = ({ card }) => {
   const editorEditorRef = useRef(null);
   const [activeTab, setActiveTab] = useState('question')
 

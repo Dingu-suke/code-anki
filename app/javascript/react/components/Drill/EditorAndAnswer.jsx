@@ -59,7 +59,7 @@ export const EditorAndAnswer = ({
           <RunButton runCode={runUserCode} isLoading={userIsLoading} />
         </div>
         <Editor
-          height="27vh"
+          height="15vh"
           theme="vs-dark"
           language={card.language}
           defaultValue=""
@@ -75,7 +75,7 @@ export const EditorAndAnswer = ({
           <RunButton runCode={runAnswerCode} isLoading={answerIsLoading} />
         </div>
         <Editor
-          height="27vh"
+          height="15vh"
           theme="vs-dark"
           language={card.language}
           defaultValue={card.answer}
@@ -95,7 +95,7 @@ export const EditorAndAnswer = ({
         <LanguageLabel language={card.language} />
       </div>
       <DiffEditor
-        height="27vh"
+        height="15vh"
         theme="vs-dark"
         language={card.language}
         original=""

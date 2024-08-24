@@ -15,6 +15,7 @@ import ParentComponent from "./components/PaarentComponent";
 import App from "./components/Window/App";
 import { Drill } from './components/Drill/Drill';
 import { YourDeckList } from "./components/Deck/YourDecksIndex";
+import { DeckForm } from "./components/Deck/DeckForm";
 // import DeckFormContainer from '../../../docker compose up/app/javascript/react/components/deck/DeckIndex';
 
 
@@ -40,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const DeckIndex         = document.getElementById("deckIndex");
   const YourDeckIndex     = document.getElementById("yourDeckIndex");
   const DeckCardsRoot     = document.getElementById("deckCards");
+  const DeckFormRoot      = document.getElementById("deckForm");
   // -------------------------------------------------------------------------
 
   monacoModalRoot   && createRoot(monacoModalRoot)  .render(<MonacoModal />);
@@ -58,6 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
   DraggableModalRoot&& createRoot(DraggableModalRoot).render(<ParentComponent />)
   YourDeckIndex     && createRoot(YourDeckIndex)    .render(<YourDeckList />)
   DeckShowRoot      && createRoot(DeckShowRoot)     .render(<Drill />)
+  DeckFormRoot      && createRoot(DeckFormRoot)     .render(<DeckForm />)
   
   AppRoot && createRoot(AppRoot).render(<App />)
 })

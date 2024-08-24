@@ -3,6 +3,7 @@ import Markdown from "react-markdown"
 import { EditorAndAnswer } from "./EditorAndAnswer"
 import Output from "../RunCodeEditorDaisyUI/RunButton&Output/Output"
 import '../../markdown.css'
+import { useRunCode } from "../../hooks/useRunCode"
 
 const initialCards = [
   {id: 1, title: 'カード1',
@@ -54,7 +55,7 @@ export const Drill = () => {
   };
 
   return (
-    <div className="min-h-screen p-4 flex flex-col bg-gray-950">
+    <div className=" bg-gray-950">
       {cards.map((card) => (
         <div
           key={card.id}
@@ -65,12 +66,12 @@ export const Drill = () => {
               <div className="bg-slate-800 px-4 py-2 font-semibold">
                 {card.title}
               </div>
-              <div className="p-4 h-[calc(45vh-2rem)] overflow-auto">
+              <div className="p-4 h-[calc(30vh-2rem)] overflow-auto">
                 <Markdown>{card.body}</Markdown>
               </div>
             </div>
           </div>
-          <div className="col-span-2 flex flex-col h-[calc(49.6vh-2rem)]">
+          <div className="col-span-2 flex flex-col h-[calc(34vh-2rem)]">
             <div className="border border-slate-600 hover:border-cyan-600 hover:text-cyan-50 text-blue-950 mb-2 rounded shadow flex-grow overflow-auto">
               <div className="bg-slate-800 text-cyan-100 px-4 py-2 font-semibold">
                 備考･メモ
