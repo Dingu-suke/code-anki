@@ -17,6 +17,7 @@ export const DeckForm = () => {
   const [isWindowOpen, setIsWindowOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [checkedCards, setCheckedCards] = useState([]);
+  const [previewCard, setPreviewCard] = useState(false);
   // const [eachCardValue, setEachCardValue] = useState('')
 
   const openWindow = (card) => {
@@ -51,7 +52,7 @@ export const DeckForm = () => {
     })
   };
   useEffect(() => {
-    console.log(checkedCards)
+    // console.log(checkedCards)
   }, [checkedCards])
   
   useEffect(() => {
@@ -105,7 +106,7 @@ export const DeckForm = () => {
 
   const  CardIndex = (
     <div className="container mx-auto">
-        <h1 className="text-2xl font-bold mb-2 text-orange-400 font-courier">{/* あなたのカード */}</h1>
+      <h1 className="text-2xl font-bold mb-2 text-orange-400 font-courier">{/* あなたのカード */}</h1>
         <input
           type="text"
           placeholder="カードを検索"
@@ -118,19 +119,19 @@ export const DeckForm = () => {
             <div className="p-4 h-[calc(60vh-2rem)] overflow-auto">
 
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4" >
-                <div className={`border border-dashed hover:border-solid border-pink-400 hover:border-pink-400 text-pink-400 p-4 rounded shadow bg-slate-950`}>
+                <div className="border border-dashed hover:border-solid border-pink-400 hover:border-pink-400 text-pink-400 p-4 rounded shadow  bg-slate-950 flex items-center">
                   <h2 className='text-xl font-semibold'>+ new card</h2>
                 </div>
                 {filteredCards.map((card) => (
                   <div
                   key={card.id}
-                  className={`border hover:border-cyan-300 p-4 rounded shadow hover:bg-indigo-900
+                  className={`border hover:border-cyan-300 p-4 rounded shadow hover:bg-indigo-900 
                   ${card === selectedCard ? 'bg-indigo-900 border-green-500' : 'bg-indigo-950 border-cyan-600' }`}
                   onClick={(event) => handleCardClick(event, card)}
                   >
-                    <h2 className='text-xl font-semibold text-cyan-300'>
+                    <h2 className='text-xl font-semibold '>
                       <div className="grid grid-cols-2">
-                        <div className="text-cyan-50">
+                        <div className="text-cyan-100 flex items-center">
                           {card.title}
                         <div>
                       </div>
@@ -138,7 +139,7 @@ export const DeckForm = () => {
                       <div className="justify-self-end checkbox-container" onClick={appnedChecedCards(card)}>
                       <input 
                         type="checkbox"
-                        className="checkbox checkbox-lg checkbox-secondary hover:bg-pink-900 m-1"
+                        className="checkbox checkbox-lg checkbox-secondary hover:bg-pink-900 m-1 flex items-center"
                         // checked={sedCards.some((c) => c.id === card.id)}
                         onClick={() => handleCheckboxClick(card)}
                         checked={card.isSelected} // カードの選択状態を反映
@@ -172,7 +173,7 @@ export const DeckForm = () => {
 
   return (
     <div>
-      <CheckedCards checkedCards={checkedCards} selectedCard={selectedCard } />
+      <CheckedCards previewCards={checkedCards} previewCard={previewCard} setPreviewCard={setPreviewCard} />
       <div className="w-full px-4 pb-4">
         <div role="tablist" className={`flex border-b ${borderCalss}`}>
           <button
@@ -207,10 +208,16 @@ export const DeckForm = () => {
             id="preview-panel"
             className={`p-6 ${activeTab === 'preview' ? '' : 'hidden'} text-white`}
           >
-            <Drill />
+            <Drill  previewCard={previewCard}/>
           </div>
         </div>
       </div>
+    <br /><br />
+    <br /><br />
+    <br /><br />
+    <br /><br />
+    <br /><br />
+    <br /><br />
     </div>
   )
 }

@@ -1,9 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import React from 'react';
 
-export const CheckedCards = ({ checkedCards, selectedCard  }) => {
+export const CheckedCards = ({ previewCards, previewCard, setPreviewCard }) => {
   
   const scrollContainerRef = useRef(null);
+  
+
   const handleScroll = () => {
     if (scrollContainerRef.current) {
       const { scrollLeft } = scrollContainerRef.current;
@@ -19,7 +21,11 @@ export const CheckedCards = ({ checkedCards, selectedCard  }) => {
       const maxScrollLeft = scrollContainerRef.current.scrollWidth - scrollContainerRef.current.clientWidth;
       scrollContainerRef.current.scrollLeft = maxScrollLeft;
     }
-  }, [checkedCards]);
+  }, [previewCards]);
+
+  const seePreview = (card) => {
+    setPreviewCard(card)
+  }
 
   return (
     <div className="p-4">
@@ -28,7 +34,7 @@ export const CheckedCards = ({ checkedCards, selectedCard  }) => {
           <div className="flex flex-col overflow-x-auto">
               <div className="bg-stone-950 text-cyan-50 rounded overflow-hidden">
                 <div className="p-2 m-1">
-                  {checkedCards && checkedCards.length > 0 && (
+                  {previewCards && previewCards.length > 0 && (
                     <div 
                       className="space-x-4 overflow-x-auto pb-4 flex justify-start items-start"
                       ref={scrollContainerRef}
@@ -36,7 +42,7 @@ export const CheckedCards = ({ checkedCards, selectedCard  }) => {
                     >
                       <div className='flex flex-col'>
                         <ul className="steps steps-horizontal w-max min-w-full">
-                          {checkedCards.map((card, index) => (
+                          {previewCards.map((card, index) => (
                             // Flexコンテナを作成、flex-directionをcolumnにして子要素を縦並びにする
                             <li
                             key={index}
@@ -48,11 +54,12 @@ export const CheckedCards = ({ checkedCards, selectedCard  }) => {
                               <span></span>
                               <div
                                 key={card.id}
-                                className={`flex-shrink-0 w-48 border hover:border-cyan-300 p-4 m-2 rounded shadow hover:bg-indigo-900
-                                ${card === selectedCard ? 'bg-indigo-900 border-green-500' : 'bg-indigo-950 border-cyan-600'}`}
-                                onClick={() => opneCardWindow(card)}
+                                className={`flex-shrink-0 w-48 border  p-4 m-2 rounded shadow hover:bg-slate-950
+                                ${card === previewCard ? 'bg-slate-950 border-green-400 text-green-400 hover:text-green-400' : 'bg-slate-950 border-cyan-900 text-cyan-400 hover:text-green-400 hover:border-green-700'}
+                                `}
+                                onClick={() => seePreview(card)}
                               >
-                                <h2 className="text-xl text-center font-semibold text-cyan-300 truncate">
+                                <h2 className="text-xl text-center font-semibold  truncate">
                                   {card.title}
                                 </h2>
                               </div>
@@ -62,7 +69,7 @@ export const CheckedCards = ({ checkedCards, selectedCard  }) => {
                       </div>
                     </div>
                   )}
-                  { checkedCards.length > 0 || (
+                  { previewCards.length > 0 || (
                     <>
                     </>
                   )}
