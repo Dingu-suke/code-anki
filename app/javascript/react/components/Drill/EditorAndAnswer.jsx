@@ -78,6 +78,7 @@ export const EditorAndAnswer = ({
           height="15vh"
           theme="vs-dark"
           language={card.language}
+          value={card.answer}
           defaultValue={card.answer}
           options={{
             fontSize: 14,

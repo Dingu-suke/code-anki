@@ -1,12 +1,22 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useCards } from '../../hooks/useCards';
 import ResponsiveWindow from '../Window/ResponsiveWindow';
 import { CheckCard } from '../card/CheckCard';
 import { CheckedCards } from './ChekedCards';
 import { Drill } from '../Drill/Drill';
+import { PreviewCard } from '../Drill/PreviewCard';
+import { useCardNavigation } from '../../hooks/useCardNavigation';
 // import { useCards } from '../../hooks/useCards';
 // import ResponsiveWindow from '../Window/ResponsiveWindow';
 // import CardEditForm from '../Form/CardEditForm';
+
+// const initialCard = {
+//   id: 20, title: 'タイトル',
+//   body: '',
+//   answer: ``, 
+//   language: 'javascript', 
+//   remarks:'' 
+// }
 
 export const DeckForm = () => {
   const { cards, setCards, isLoading, setIsLoading } = useCards();
@@ -16,9 +26,30 @@ export const DeckForm = () => {
 
   const [isWindowOpen, setIsWindowOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
-  const [checkedCards, setCheckedCards] = useState([]);
-  const [previewCard, setPreviewCard] = useState(false);
+
+  // const [checkedCards, setCheckedCards] = useState([]);
+  // const [previewCard, setPreviewCard] = useState(initialCard);
   // const [eachCardValue, setEachCardValue] = useState('')
+
+  // const findCardIndex = useCallback(() => {
+  //   return checkedCards.findIndex(card => card.id === previewCard.id);
+  // }, [checkedCards, previewCard]);
+
+  // const moveToNextCard = useCallback(() => {
+  //   const currentIndex = findCardIndex();
+  //   if (currentIndex < checkedCards.length - 1) {
+  //     setPreviewCard(checkedCards[currentIndex + 1]);
+  //   }
+  // }, [checkedCards, findCardIndex]);
+
+  // const moveToPreviousCard = useCallback(() => {
+  //   const currentIndex = findCardIndex();
+  //   if (currentIndex > 0) {
+  //     setPreviewCard(checkedCards[currentIndex - 1]);
+  //   }
+  // }, [checkedCards, findCardIndex]);
+
+  const { checkedCards, setCheckedCards, previewCard, setPreviewCard, moveToNextCard, moveToPreviousCard } = useCardNavigation();
 
   const openWindow = (card) => {
     setIsWindowOpen(true)
@@ -51,9 +82,6 @@ export const DeckForm = () => {
       }
     })
   };
-  useEffect(() => {
-    // console.log(checkedCards)
-  }, [checkedCards])
   
   useEffect(() => {
     if (cards) {
@@ -79,8 +107,7 @@ export const DeckForm = () => {
   //   );
   // };
 
-  const appnedChecedCards = (card) => {
-    
+  const appnedCheckedCards = (card) => {
   }
   
   const handleSearch = (e) => {
@@ -99,16 +126,25 @@ export const DeckForm = () => {
     setActiveTab(tabName);
   };
 
+  const seePreview = (card) => {
+    setPreviewCard(card)
+    // console.log(card)
+    console.log(previewCard.id)
+    console.log(checkedCards)
+  }
   // const [activeTab, setActiveTab] = useState('cardIndex')
   if (isLoading) {
     return <div>Loading...</div>
   }
+
 
   const  CardIndex = (
     <div className="container mx-auto">
       <h1 className="text-2xl font-bold mb-2 text-orange-400 font-courier">{/* あなたのカード */}</h1>
         <input
           type="text"
+          id="searchCards"
+          name="searchCards"
           placeholder="カードを検索"
           value={searchTerm}
           onChange={handleSearch}
@@ -136,14 +172,14 @@ export const DeckForm = () => {
                         <div>
                       </div>
                       </div>
-                      <div className="justify-self-end checkbox-container" onClick={appnedChecedCards(card)}>
-                      <input 
-                        type="checkbox"
-                        className="checkbox checkbox-lg checkbox-secondary hover:bg-pink-900 m-1 flex items-center"
-                        // checked={sedCards.some((c) => c.id === card.id)}
-                        onClick={() => handleCheckboxClick(card)}
-                        checked={card.isSelected} // カードの選択状態を反映
-                        />
+                      <div className="justify-self-end checkbox-container" onClick={appnedCheckedCards(card)}>
+                        <input 
+                          type="checkbox"
+                          className="checkbox checkbox-lg checkbox-secondary hover:bg-pink-900 m-1 flex items-center"
+                          // checked={sedCards.some((c) => c.id === card.id)}
+                          onClick={() => handleCheckboxClick(card)}
+                          checked={card.isSelected} // カードの選択状態を反映
+                          />
                       </div>
                     </div>
                     </h2>
@@ -170,10 +206,11 @@ export const DeckForm = () => {
         </div>
       </div>    
   );
+  
 
   return (
     <div>
-      <CheckedCards previewCards={checkedCards} previewCard={previewCard} setPreviewCard={setPreviewCard} />
+      <CheckedCards previewCards={checkedCards} previewCard={previewCard} setPreviewCard={setPreviewCard} seePreview={seePreview} />
       <div className="w-full px-4 pb-4">
         <div role="tablist" className={`flex border-b ${borderCalss}`}>
           <button
@@ -208,16 +245,14 @@ export const DeckForm = () => {
             id="preview-panel"
             className={`p-6 ${activeTab === 'preview' ? '' : 'hidden'} text-white`}
           >
-            <Drill  previewCard={previewCard}/>
+            {/* <Drill  previewCard={previewCard}/> */}
+            <PreviewCard previewCardList={checkedCards} card={previewCard} seePreview={seePreview} moveToNextCard={moveToNextCard} moveToPreviousCard={moveToPreviousCard} />
           </div>
         </div>
       </div>
-    <br /><br />
-    <br /><br />
-    <br /><br />
-    <br /><br />
-    <br /><br />
-    <br /><br />
+    <br /><br /><br /><br />
+    <br /><br /><br /><br />
+    <br /><br /><br /><br />
     </div>
   )
 }

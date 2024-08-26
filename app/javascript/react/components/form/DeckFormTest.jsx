@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useCards } from '../../hooks/useCards';
 
-const DeckForm = ({ currentUser, onSubmit }) => {
+const DeckFormTest = ({ currentUser, onSubmit }) => {
   const [name, setName] = useState('');
   const [selectedCardIds, setSelectedCardIds] = useState([]);
   const [tagNames, setTagNames] = useState('');

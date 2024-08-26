@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import React from 'react';
 
-export const CheckedCards = ({ previewCards, previewCard, setPreviewCard }) => {
+export const CheckedCards = ({ previewCards, previewCard, setPreviewCard, seePreview }) => {
   
   const scrollContainerRef = useRef(null);
   
-
   const handleScroll = () => {
     if (scrollContainerRef.current) {
       const { scrollLeft } = scrollContainerRef.current;
@@ -22,10 +21,6 @@ export const CheckedCards = ({ previewCards, previewCard, setPreviewCard }) => {
       scrollContainerRef.current.scrollLeft = maxScrollLeft;
     }
   }, [previewCards]);
-
-  const seePreview = (card) => {
-    setPreviewCard(card)
-  }
 
   return (
     <div className="p-4">
