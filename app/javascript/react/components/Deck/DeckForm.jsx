@@ -184,7 +184,7 @@ export const DeckForm = () => {
           <div
             role="tabpanel"
             id="preview-panel"
-            className={`p-6 ${activeTab === 'preview' ? '' : 'hidden'} text-white`}
+            className={`px-6 pt-6 ${activeTab === 'preview' ? '' : 'hidden'} text-white`}
           >
             {/* <Drill  previewCard={previewCard}/> */}
             <PreviewCard previewCardList={checkedCards} card={previewCard} moveToNextCard={moveToNextCard} moveToPreviousCard={moveToPreviousCard} />

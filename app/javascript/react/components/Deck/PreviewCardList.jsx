@@ -88,15 +88,15 @@ export const PreviewCardList = ({checkedCards, setCheckedCards, previewCard, set
                                 <Draggable key={card.id} draggableId={card.id.toString()} index={index}>
                                   {(provided) => (
                                     <li
-                                      ref={provided.innerRef}
-                                      {...provided.draggableProps}
-                                      {...provided.dragHandleProps}
-                                      className={`step flex flex-col ${(index+1) % 5 === 0 ? "step-primary" : "step-primary"}`}
-                                      style={{
-                                        backgroundColor: (index+1) % 5 === 0 ? "#631166" : "#0f3c63",
-                                        ...provided.draggableProps.style
-                                      }}
-                                    >
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                    className={`step flex flex-col ${(index+1) % 5 === 0 ? "step-primary" : "step-primary"}`}
+                                    style={{
+                                      ...provided.draggableProps.style,
+                                      backgroundColor: (index+1) % 5 === 0 ? "#631166" : "#0f3c63"
+                                    }}
+                                  >
                                       <span></span>
                                       <div
                                         className={`flex-shrink-0 w-48 border p-4 m-2 rounded shadow hover:bg-slate-950

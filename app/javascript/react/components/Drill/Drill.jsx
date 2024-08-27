@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import Markdown from "react-markdown"
-import { EditorAndAnswer } from "./EditorAndAnswer"
-import Output from "../RunCodeEditorDaisyUI/RunButton&Output/Output"
-import '../../markdown.css'
 import { useRunCode } from "../../hooks/useRunCode"
+import '../../markdown.css'
+import Output from "../RunCodeEditorDaisyUI/RunButton&Output/Output"
+import { EditorAndAnswer } from "./EditorAndAnswer"
 
 const initialCards = [
   {id: 1, title: 'カード1',
     body: '# だまれ小僧。**お前にさんが救えるか**',
-    answer: `function greet(name) {\n\tconsole.log("Hello, " + name + "!");\n}\n\ngreet("Javascript");\n`, 
+    answer: `function greet(name) {\n\t//console.log("Hello, " + name + "!");\n}\n\ngreet("Javascript");\n`, 
     language: 'javascript', 
     remarks:'JSしか勝たん' 
   },

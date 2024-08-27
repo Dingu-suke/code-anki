@@ -70,13 +70,6 @@ export const PreviewCard = ({ previewCardList, card, setPreviewCard, moveToNextC
     setActiveOutput('answer');
   };
 
-  const prev = () => {
-    console.log("prev")
-  }
-  const next = () => {
-    console.log("next")
-  }
-
   return (
     <div className=" bg-gray-950">
       <div className="bg-slate-800 font-semibold text-lg grid grid-cols-3 gap-4 rounded-full">
@@ -100,7 +93,7 @@ export const PreviewCard = ({ previewCardList, card, setPreviewCard, moveToNextC
       </div>
       <br />
       <div
-          className="grid grid-cols-6 gap-4 mb-8"
+          className="grid grid-cols-6 gap-4 mb-4"
         >
           <div className="col-span-4">
             <div className="border border-slate-600 bg-stone-950 text-cyan-50 rounded overflow-hidden">
