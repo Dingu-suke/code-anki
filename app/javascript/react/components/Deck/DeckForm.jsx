@@ -151,7 +151,7 @@ export const DeckForm = () => {
 
   return (
     <div>
-      <PreviewCardList checkedCards={checkedCards} previewCard={previewCard} setPreviewCard={setPreviewCard} />
+      <PreviewCardList checkedCards={checkedCards} setCheckedCards={setCheckedCards} previewCard={previewCard} setPreviewCard={setPreviewCard} />
       <div className="w-full px-4 pb-4">
         <div role="tablist" className={`flex border-b ${borderCalss}`}>
           <button

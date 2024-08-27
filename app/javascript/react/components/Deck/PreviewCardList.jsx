@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import React from 'react';
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
-export const PreviewCardList = ({checkedCards, previewCard, setPreviewCard }) => {
+export const PreviewCardList = ({checkedCards, setCheckedCards, previewCard, setPreviewCard }) => {
   
   const scrollContainerRef = useRef(null)
   const prevCheckedCardsLengthRef = useRef(checkedCards.length);
@@ -50,56 +51,80 @@ export const PreviewCardList = ({checkedCards, previewCard, setPreviewCard }) =>
     }
   }, [previewCard]);
 
+  const onDragEnd = useCallback((result) => {
+    if (!result.destination) {
+      return;
+    }
+
+    const newItems = Array.from(checkedCards);
+    const [reorderedItem] = newItems.splice(result.source.index, 1);
+    newItems.splice(result.destination.index, 0, reorderedItem);
+
+    setCheckedCards(newItems);
+  }, [checkedCards]);
+
   return (
-    <div className="p-4">
-      <div className="border border-slate-600 bg-stone-950 text-cyan-50 rounded overflow-hidden">
-        <div className="h-[calc(18vh-2rem)]">
-          <div className="flex flex-col overflow-x-auto">
-              <div className="bg-stone-950 text-cyan-50 rounded overflow-hidden">
-                <div className="p-1 m-1">
-                  {checkedCards && checkedCards.length > 0 && (
-                    <div 
-                      className="space-x-4 overflow-x-auto flex justify-start items-start"
-                      ref={scrollContainerRef}
-                    >
-                      <div className='flex flex-col'>
-                        <ul className="steps steps-horizontal w-max min-w-full">
-                          {checkedCards.map((card, index) => (
-                            // Flexコンテナを作成、flex-directionをcolumnにして子要素を縦並びにする
-                            <li
-                            key={index}
-                            className={`step flex flex-col ${(index+1) % 5 === 0 ? "step-primary" : "step-primary"}`}
-                            style={{
-                              backgroundColor: (index+1) % 5 === 0 ? "#631166" : "#0f3c63", // インラインスタイルで背景色を変更
-                            }}
-                          >
-                              <span></span>
-                              <div
-                                key={card.id}
-                                className={`flex-shrink-0 w-48 border  p-4 m-2 rounded shadow hover:bg-slate-950
-                                ${card === previewCard ? 'bg-slate-950 border-green-400 text-green-400 hover:text-green-400' : 'bg-slate-950 border-cyan-900 text-cyan-400 hover:text-green-400 hover:border-green-700'}
-                                `}
-                                onClick={() => setPreviewCard(card)}
-                              >
-                                <h2 className="text-xl text-center font-semibold  truncate">
-                                  {card.title}
-                                </h2>
-                              </div>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <div className="p-4">
+        <div className="border border-slate-600 bg-stone-950 text-cyan-50 rounded overflow-hidden">
+          <div className="h-[calc(18vh-2rem)]">
+            <div className="flex flex-col overflow-x-auto">
+              <Droppable droppableId="checkedCards" direction="horizontal">
+                {(provided) => (
+                  <div
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    className="bg-stone-950 text-cyan-50 rounded overflow-hidden"
+                  >
+                    <div className="p-1 m-1">
+                      {checkedCards && checkedCards.length > 0 && (
+                        <div 
+                          className="space-x-4 overflow-x-auto flex justify-start items-start"
+                          ref={scrollContainerRef}
+                        >
+                          <div className='flex flex-col'>
+                          <ul className="steps steps-horizontal w-max min-w-full">
+                              {checkedCards.map((card, index) => (
+                                <Draggable key={card.id} draggableId={card.id.toString()} index={index}>
+                                  {(provided) => (
+                                    <li
+                                      ref={provided.innerRef}
+                                      {...provided.draggableProps}
+                                      {...provided.dragHandleProps}
+                                      className={`step flex flex-col ${(index+1) % 5 === 0 ? "step-primary" : "step-primary"}`}
+                                      style={{
+                                        backgroundColor: (index+1) % 5 === 0 ? "#631166" : "#0f3c63",
+                                        ...provided.draggableProps.style
+                                      }}
+                                    >
+                                      <span></span>
+                                      <div
+                                        className={`flex-shrink-0 w-48 border p-4 m-2 rounded shadow hover:bg-slate-950
+                                          ${card === previewCard ? 'bg-slate-950 border-green-400 text-green-400 hover:text-green-400' : 'bg-slate-950 border-cyan-900 text-cyan-400 hover:text-green-400 hover:border-green-700'}
+                                        `}
+                                        onClick={() => setPreviewCard(card)}
+                                      >
+                                        <h2 className="text-xl text-center font-semibold truncate">
+                                          {card.title}
+                                        </h2>
+                                      </div>
+                                    </li>
+                                  )}
+                                </Draggable>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      )}
+                      {provided.placeholder}
                     </div>
-                  )}
-                  { checkedCards.length > 0 || (
-                    <>
-                    </>
-                  )}
-                </div>
-              </div>
+                  </div>
+                )}
+              </Droppable>
             </div>
           </div>
         </div>
       </div>
-  )
-}
+    </DragDropContext>
+  );
+};
