@@ -16,22 +16,30 @@ const setupCSRFToken = () => {
   }
 };
 
-const CardForm = ({useInWindow}) => {
+const CardForm = ({useInWindow, selectedCard, onUpdateSuccess}) => {
   // -----
   const questionEditorRef = useRef(null);
-  const remarksEditorRef = useRef(null);
-  console.log(useInWindow)
-
+  const remarksEditorRef = useRef(null);  
   
   const { register, handleSubmit, control, watch, setValue, formState: { errors } } = useForm({
     defaultValues: {
-      title: '',
-      body: '',
-      answer: CODE_SNIPPETS['javascript'],
-      remarks: '',
-      language: `javascript`
+      title: selectedCard.title,
+      body: selectedCard.body,
+      answer: selectedCard.answer,
+      remarks: selectedCard.remarks,
+      language: selectedCard.language
     }
   });
+
+  useEffect(() => {
+    if (selectedCard) {
+      setValue('title', selectedCard.title);
+      setValue('body', selectedCard.body);
+      setValue('answer', selectedCard.answer);
+      setValue('remarks', selectedCard.remarks);
+      setValue('language', selectedCard.language);
+    }
+  }, [selectedCard, setValue]);
   
   useEffect(() => {
     register('body');
@@ -44,6 +52,17 @@ const CardForm = ({useInWindow}) => {
   useEffect(() => {
     setupCSRFToken();
   }, []);
+
+  useEffect ((selectedCard) => {
+    if (selectedCard) {
+      if (questionEditorRef.current) {
+        questionEditorRef.current.value(selectedCard.body);
+      }
+      if (remarksEditorRef.current) {
+        remarksEditorRef.current.value(selectedCard.remarks)
+      }
+    }
+  }, [selectedCard])
   
   const handleQuestionBlur = useCallback((value) => {
     setValue('body', value);    
@@ -60,13 +79,29 @@ const CardForm = ({useInWindow}) => {
         ...data,
         language: watch('language') // Explicitly include the language
       };
-      const res = await axios.post('/cards', { card: formData });
-      console.log('カードが作成されました', res.data);
+    let res;
+      if (selectedCard) {
+        let res = await axios.patch(`/cards/${selectedCard.id}`, { card: formData });
+        console.log('カードが更新されました', res.data);
+        onUpdateSuccess(res.data.card)
+      } else {
+        res = await axios.post('/cards', { card: formData });
+        console.log('カードが作成されました', res.data);
+      }
     } catch(error) {
       console.error('エラーが発生しました', error.response?.data);
     }
-  }, [watch]);
+  }, [selectedCard, watch, onUpdateSuccess]);
+
   
+  // const onSubmit = useCallback(async (data) => {
+    // フォーム送信時に最新の値を取得
+    // const updatedData = {
+      //   ...data,
+      //   body: questionEditorRef.current?.getValue() || ''
+      // };
+      
+      // });
   const buttonText = useInWindow ? "カードを更新する" : "カードを保存する";
   const buttonTextLocation = () => {
     if (!useInWindow) {
@@ -84,8 +119,8 @@ const CardForm = ({useInWindow}) => {
   }
   
   const topButtonClasses = useInWindow
-  ? "hidden" // useInWindowがtrueの場合、上部のボタンを非表示
-  : "btn text-sky-400 bg-cyan-950 hover:text-sky-300 hover:bg-blue-950 border border-sky-800 hover:border-cyan-500 font-courier w-full xl:w-auto hidden xl:inline-block";
+    ? "hidden" // useInWindowがtrueの場合、上部のボタンを非表示
+    : "btn text-sky-400 bg-cyan-950 hover:text-sky-300 hover:bg-blue-950 border border-sky-800 hover:border-cyan-500 font-courier w-full xl:w-auto hidden xl:inline-block";
 
   const bottomButtonClasses = useInWindow
     ? "btn text-sky-400 bg-cyan-950 hover:text-sky-300 hover:bg-blue-950 border border-sky-800 hover:border-cyan-500 font-courier w-full"
@@ -133,7 +168,7 @@ const CardForm = ({useInWindow}) => {
                 <div className={questionClasses}>
                   <QuestionCard
                     editorRef={questionEditorRef}
-                    defaultValue=""
+                    defaultValue={selectedCard.body}
                     onBlur={handleQuestionBlur}
                   />
                 </div>
@@ -156,7 +191,7 @@ const CardForm = ({useInWindow}) => {
                 <div className={remarksClasses}>
                   <Remarks
                     editorRef={remarksEditorRef}
-                    defaultValue=""
+                    defaultValue={selectedCard.remarks}
                     onBlur={handleRemarksBlur}
                   />
                 </div>

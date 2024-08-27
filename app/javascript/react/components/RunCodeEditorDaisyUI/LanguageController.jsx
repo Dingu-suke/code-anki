@@ -3,7 +3,18 @@ import { LANGUAGE_VERSIONS } from "./constants";
 
 const languages = Object.entries(LANGUAGE_VERSIONS);
 
-const LanguageSelector = ({ language, onSelect }) => {
+export const LanguageLabel = ({ language }) => {
+  
+  return (
+    <div className="mr-2">
+      <div>
+        <button tabIndex={0} role="button" className="btn w-28 min-h-0 h-7 mx-3 border-purple-700 text-slate-200 bg-slate-800 font-courier hover:bg-slate-800 hover:border-purple-700 cursor-auto">{language}</button>
+      </div>
+    </div>
+  );
+};
+
+export const LanguageSelector = ({ language, onSelect }) => {
   
   const [isOpen, setIsOpen] = useState(false);
   const         buttonRef   = useRef  (null);
@@ -80,5 +91,3 @@ const LanguageSelector = ({ language, onSelect }) => {
     </div>
   );
 };
-
-export default LanguageSelector;

@@ -13,7 +13,7 @@ class CardsController < ApplicationController
     # @drafts = Card.includes(:user)
     # @borads = @q.result(distinct: true).includes(:user).order(created_at: :desc).page(params[:page])
     @cards = Card.all
-    render json: @items
+    render json: @cards
   end
 
   def show
@@ -37,10 +37,12 @@ class CardsController < ApplicationController
   def update
     @card = current_user.cards.find(params[:id])
     if @card.update(cards_params)
-      redirect_to your_cards_path, success: "保存成功"
+      # redirect_to your_cards_path, success: "保存成功"
+      render json: { success: true, card: @card }, status: :ok
     else
       flash.now[:danger] = "保存失敗"
-      render :edit, status: :unprocessable_entity
+      # render :edit, status: :unprocessable_entity
+      render json: { success: false, errors: @card.errors }, status: :unprocessable_entity
     end
   end
   
@@ -51,6 +53,10 @@ class CardsController < ApplicationController
   
   def your_cards 
     @your_cards = Card.where(user_id: current_user.id).includes(:user).order("created_at DESC")
+    respond_to do |format|
+      format.html # your_cards.html.erb を描画
+      format.json { render json: @your_cards }
+    end
   end
   
   def destroy_your_card
