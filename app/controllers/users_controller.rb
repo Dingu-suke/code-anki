@@ -1,10 +1,10 @@
 class UsersController < ApplicationController
+  before_action :authenticate
   def new
-    @card = Card.new()
   end
   
   def index
-    # @card = Card.new()
+    @users = User.all.order(created_at: :desc)
   end
   
   def create
@@ -21,4 +21,7 @@ class UsersController < ApplicationController
   
   def destroy
   end
+  private
+    def set_user
+    end
 end

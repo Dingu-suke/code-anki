@@ -1,2 +1,52 @@
-<h1>Cards#show</h1>
-<p>Find me in app/views/drafts/show.html.erb</p>
+<%
+=begin%>
+<div id="card_index"></div>
+<br/>
+<div class="card w-full bg-base-100 shadow-xl ">
+  <div class="@card-body">
+  <br/>
+    <h2 class="card-title"><%= link_to @card.title, your_cards_path %></h2>
+    <br/>
+    <div>
+        <div class="flex gap-4">
+          <div calss="flex">
+            <div>
+              【問題】
+              <%= markdown_to_html(@card.body) %>
+            </div>
+            <div>
+              【解答】
+              <% if @card.answer.present? %>
+                <%= markdown_to_html(@card.answer) %>
+              <% else %>
+                <h2>解答がありません</h2>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4">
+          <div>
+          <br/>
+            【備考】
+            <% if @card.remarks.present? %>
+              <p><%= @card.remarks %></p>
+            <% else %>
+              <p>備考なし</p>
+            <% end %>
+          </div>
+        </div>
+    <div class="card-actions justify-end">
+      <div class="form-control">
+        <label class="label cursor-pointer">
+          <span class="label-text"></span>
+          <input type="checkbox" class="checkbox checkbox-primary" />
+        <%# </label> %>
+      </div>
+    </div>
+  </div>
+  <br/>
+  <%= link_to "編集", edit_card_path(@card), class:"btn btn-accent" %> | 
+  <%= link_to "カードを削除する", destroy_your_card_path(@card), class:"btn btn-secondary", data: { turbo_method: :delete } %>
+</div> 
+
+=end%>

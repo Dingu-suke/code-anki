@@ -7,20 +7,24 @@
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application.tailwind", "data-turbo-track": "reload" %>
+    <%# <%= stylesheet_link_tag "easymde/dist/easymde.min", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+    <meta name="turbo-visit-control" content="reload">
   </head>
 
   <body class="flex flex-col min-h-screen">
-    <div  class="navbar bg-base-10 bg-blue-200">
+    <header  class="navbar bg-base-10 bg-blue-200">
       <%= render 'shared/header' %>
+    </header>
+    <div>
+      <%= render 'shared/menubar' %>
     </div>
-    <div class="flex-grow bg-blue-100">
-      <p class="notice"><% notice %></p>
-      <p class="alert"><% alert %></p>
+    <div class="flex-grow bg-slate-950">
       <%= yield %>
 
     </div>
-    <%= render 'shared/footer' %>
+    <%# <%= render 'shared/footer' %>
   </body>
 
 </html>

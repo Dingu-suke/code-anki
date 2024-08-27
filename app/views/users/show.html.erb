@@ -1,0 +1,22 @@
+<h1>show</h1>
+<% if @user == nil %>
+  <div>@user is nil</div> 
+<% else %>
+  <div>@user is present</div> 
+<% end %>
+
+
+
+<% @reflection_memos.each do |r_memo|%>
+  <div class="flex">
+    <h1>リフレクションメモ : </h1>
+    <%= r_memo.content %>
+  </div>
+  <% r_memo.memos.each do |each_memo|%>
+    <div class="flex">
+      <h1>メモ : </h1>
+        <%= each_memo.content %>
+      <br/>
+    </div>
+  <% end %>
+<% end %>

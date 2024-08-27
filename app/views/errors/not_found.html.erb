@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>404 Not Found</title>
+</head>
+<body>
+  <h1>404 Not Found</h1>
+  <p>データが見つかりませんでした。</p>
+  <% if request.referer %>
+    <p><a href="<%= request.referer %>">元のページに戻る</a></p>
+  <% else %>
+    <p><a href="<%= root_path %>">ホームページに戻る</a></p>
+  <% end %>
+</body>
+</html

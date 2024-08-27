@@ -1,0 +1,97 @@
+<%
+=begin%>
+<p style="color: green"><%= notice %></p>
+
+<%= render @deck %>
+<div class="flex">
+  <% if logged_in? && current_user.id == @deck.user_id %>
+    <%= link_to "編集", edit_deck_path(@deck), class:"btn btn-accent" %> | 
+    <%= link_to "デッキを削除する", destroy_your_deck_path(@deck), class:"btn btn-secondary ", data: { turbo_method: :delete } %>
+    <div class="right">
+      <%= link_to 'Twitter 共有', "https://twitter.com/share?url=#{request.url}", title: 'Twitter', target: '_blank', class:"btn btn primary" %>
+    </div> 
+<% end %>
+</div>
+<br/>
+<br/>
+<div>
+
+</div>
+<div >
+  <div class="px-8 py-4">
+    <% if @deck.cards.any? %>
+      <% @deck.cards.each_with_index do |card, index| %>
+        <div class="card w-full bg-base-100 shadow-xl px-8 py-4">
+        <div class="card-body  px-8 py-4 ">
+          <div class="flex justify-between item-center">
+            <h2 class="card-title"><%= card.title %></h2>
+            <div class="card-actions justify-end">
+              <div class="form-control">
+                <label class="label cursor-pointer">
+
+                  <div class="flex justify-center">
+                    <input type="checkbox" class="checkbox checkbox-primary" />
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>  
+          <div class="flex gap-4">
+            <div calss="flex">
+              <div class="w-1/2">
+                【問題】
+                <%= markdown_to_html(card.body) %>
+              </div>
+              <div class="w-2/3">
+                【解答】
+                <% if card.answer.present? %>
+                  <div class="collapse collapse-arrow bg-base-200">
+                    <input type="checkbox" /> <!-- 変更: radioからcheckboxへ -->
+                    <div class="collapse-title text-xl font-medium">
+                      <p>クリック</p>
+                    </div>
+                    <div class="collapse-content overflow-x-auto">
+                      <%= markdown_to_html(card.answer) %>
+                    </div>
+                    <% if card.remarks.present? %>
+                      <p>備考</p>
+                      <%= card.remarks %>
+                    <% end %>
+                  </div>
+                <% else %>
+                  <h2>解答がありません</h2>
+                <% end %>
+              </div>
+            </div>
+            <div id="monacoEditor"></div>
+            <br/>
+          </div>
+        <br/>
+        <br/>
+      <% end %>
+    <% else %>
+      <p>ありません</p>
+    <% end %>
+    <br/>
+  </div>
+  <div>
+  </div>
+  <br/>
+  <br/>
+</div>
+<%
+=end%>
+
+<%# <script>
+  document.querySelector('.collapse-title').addEventListener('click', function() {
+    const checkbox = this.previousElementSibling;
+    checkbox.checked = !checkbox.checked;
+  });
+</script> %>
+
+<%
+=begin%>
+<div id="deckShow" data-deck-id="<%= @deck.id %>" ></div>
+<%
+=end%>
+<div id="deckCards" data-deck-id="<%= @deck.id %>"></div>

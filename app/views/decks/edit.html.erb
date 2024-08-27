@@ -1,0 +1,23 @@
+<h1>デッキを編集</h1>
+<br/>
+
+<%= form_with model: @deck, local: true do |f| %>
+  <!-- 既存のフィールド -->
+  <div>
+    <%= f.label :name, "タイトル", class:"form-label " %>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+  <br/>
+  <p>[カードを選択したください]</p>
+  <%= f.collection_check_boxes :card_ids, Card.all, :id, :title do |b| %>
+  <%= b.label { b.check_box + b.text } %>
+  <% end %>
+  <br/>
+  <br/>
+  <div>
+    <%= f.label :tag_names, "タグ (コンマで区切る)", class:"form-label" %>
+    <%= f.text_field :tag_names, class: "form-control" %>
+  </div>
+  <br/>
+  <%= f.submit "デッキを更新する", class:"btn btn-outline btn-info" %>
+<% end %>

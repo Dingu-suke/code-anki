@@ -1,13 +1,14 @@
 <header class="navbar bg-base-10 bg-blue-100">
-  <% if user_signed_in? %>
-    <%= link_to "下書き一覧", cards_path, class:"btn btn-ghost"%>
-    <%= link_to "下書き作成", new_card_path, class:"btn btn-ghost"%>
-    <%= link_to "ログアウト", destroy_user_session_path, class:"btn btn-ghost", data: { turbo_method: :delete } %>
+  <% if logged_in? %>
+    <%= link_to "共有デッキ", decks_path, class:"btn btn-ghost"%>
+    <%= link_to "マイページ", your_decks_path, class:"btn btn-ghost"%>
+    <%= link_to "プロフィール","", class:"btn btn-ghost"%>
+    <%= button_to "ログアウト", logout_path, method: :delete, data: { turbo: false }, class:"btn btn-ghost"%>
     <a class="btn btn-ghost text-l">的な</a>
     <p>#ログイン中</p>
   <% else %>  
-    <%= link_to "ログイン", new_user_session_path, class:"btn btn-ghost text-l"%>
-    <%= link_to "新規登録", new_user_registration_path, class:"btn btn-ghost text-l"%>
+    <%= link_to "共有のデッキ", decks_path, class:"btn btn-ghost"%>
+    <%= button_to "GitHubでログイン", "/auth/github", method: :post, data: { turbo: false }, class:"btn"%>
     <%= link_to "トップ", root_path, class:"btn btn-ghost text-l"%>
     <a class="btn btn-ghost text-l">的な</a>
   <% end %>
