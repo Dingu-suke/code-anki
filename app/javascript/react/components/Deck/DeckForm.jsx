@@ -161,7 +161,7 @@ export const DeckForm = () => {
             aria-selected={activeTab === 'cardIndex'}
             aria-controls="cardIndex-panel"
             >
-            カード一覧
+            カード選択
           </button>
           <button
             role="tab"

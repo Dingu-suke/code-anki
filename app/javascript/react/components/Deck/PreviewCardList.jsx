@@ -53,13 +53,13 @@ export const PreviewCardList = ({checkedCards, previewCard, setPreviewCard }) =>
   return (
     <div className="p-4">
       <div className="border border-slate-600 bg-stone-950 text-cyan-50 rounded overflow-hidden">
-        <div className="h-[calc(21vh-2rem)] overflow-auto">
+        <div className="h-[calc(18vh-2rem)]">
           <div className="flex flex-col overflow-x-auto">
               <div className="bg-stone-950 text-cyan-50 rounded overflow-hidden">
-                <div className="p-2 m-1">
+                <div className="p-1 m-1">
                   {checkedCards && checkedCards.length > 0 && (
                     <div 
-                      className="space-x-4 overflow-x-auto pb-4 flex justify-start items-start"
+                      className="space-x-4 overflow-x-auto flex justify-start items-start"
                       ref={scrollContainerRef}
                     >
                       <div className='flex flex-col'>
