@@ -6,17 +6,7 @@ import { CheckedCards } from './ChekedCards';
 import { Drill } from '../Drill/Drill';
 import { PreviewCard } from '../Drill/PreviewCard';
 import { useCardNavigation } from '../../hooks/useCardNavigation';
-// import { useCards } from '../../hooks/useCards';
-// import ResponsiveWindow from '../Window/ResponsiveWindow';
-// import CardEditForm from '../Form/CardEditForm';
-
-// const initialCard = {
-//   id: 20, title: 'タイトル',
-//   body: '',
-//   answer: ``, 
-//   language: 'javascript', 
-//   remarks:'' 
-// }
+import { PreviewCardList } from './PreviewCardList';
 
 export const DeckForm = () => {
   const { cards, setCards, isLoading, setIsLoading } = useCards();
@@ -27,34 +17,7 @@ export const DeckForm = () => {
   const [isWindowOpen, setIsWindowOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
 
-  // const [checkedCards, setCheckedCards] = useState([]);
-  // const [previewCard, setPreviewCard] = useState(initialCard);
-  // const [eachCardValue, setEachCardValue] = useState('')
-
-  // const findCardIndex = useCallback(() => {
-  //   return checkedCards.findIndex(card => card.id === previewCard.id);
-  // }, [checkedCards, previewCard]);
-
-  // const moveToNextCard = useCallback(() => {
-  //   const currentIndex = findCardIndex();
-  //   if (currentIndex < checkedCards.length - 1) {
-  //     setPreviewCard(checkedCards[currentIndex + 1]);
-  //   }
-  // }, [checkedCards, findCardIndex]);
-
-  // const moveToPreviousCard = useCallback(() => {
-  //   const currentIndex = findCardIndex();
-  //   if (currentIndex > 0) {
-  //     setPreviewCard(checkedCards[currentIndex - 1]);
-  //   }
-  // }, [checkedCards, findCardIndex]);
-
-  const { checkedCards, setCheckedCards, previewCard, setPreviewCard, moveToNextCard, moveToPreviousCard } = useCardNavigation();
-
-  const openWindow = (card) => {
-    setIsWindowOpen(true)
-    setSelectedCard(card)
-  };
+  const { checkedCards, setCheckedCards, previewCard, setPreviewCard, moveToNextCard, moveToPreviousCard /*, scrollContainerRef*/ } = useCardNavigation();
   
   const closeWindow = () => {  
     setIsWindowOpen(false);
@@ -98,22 +61,6 @@ export const DeckForm = () => {
       setFilteredCards(filtered);  
     }}, [cards, searchTerm]);
 
-  // カード更新時にカード一覧を再レンダリングさせる
-  
-  // const handleCardUpdate = (updatedCard) => {
-  //   setSelectedCard(updatedCard);
-  //   setCards(prevCards => 
-  //     prevCards.map(card => card.id === updatedCard.id ? updatedCard : card)
-  //   );
-  // };
-
-  const appnedCheckedCards = (card) => {
-  }
-  
-  const handleSearch = (e) => {
-  
-    setSearchTerm(e.target.value);
-  }
   
   const borderCalss = "border-teal-700 text-emerald-400 text-bold"
   const tabClass = "px-4 border-t border-x rounded-t-sm font-bold focus:outline-none relative";
@@ -125,13 +72,7 @@ export const DeckForm = () => {
   const handleTabChange = (tabName) => {
     setActiveTab(tabName);
   };
-
-  const seePreview = (card) => {
-    setPreviewCard(card)
-    // console.log(card)
-    console.log(previewCard.id)
-    console.log(checkedCards)
-  }
+  
   // const [activeTab, setActiveTab] = useState('cardIndex')
   if (isLoading) {
     return <div>Loading...</div>
@@ -147,7 +88,7 @@ export const DeckForm = () => {
           name="searchCards"
           placeholder="カードを検索"
           value={searchTerm}
-          onChange={handleSearch}
+          onChange={(e) => { setSearchTerm(e.target.value)}}
           className="w-full p-2 mb-4 border rounded bg-gray-700 focus:outline-none focus:border-2 focus:border-blue-800 border-blue-900 text-cyan-100"
         />
         <div className="col-span-4">
@@ -172,7 +113,7 @@ export const DeckForm = () => {
                         <div>
                       </div>
                       </div>
-                      <div className="justify-self-end checkbox-container" onClick={appnedCheckedCards(card)}>
+                      <div className="justify-self-end checkbox-container" >
                         <input 
                           type="checkbox"
                           className="checkbox checkbox-lg checkbox-secondary hover:bg-pink-900 m-1 flex items-center"
@@ -210,7 +151,7 @@ export const DeckForm = () => {
 
   return (
     <div>
-      <CheckedCards previewCards={checkedCards} previewCard={previewCard} setPreviewCard={setPreviewCard} seePreview={seePreview} />
+      <PreviewCardList checkedCards={checkedCards} previewCard={previewCard} setPreviewCard={setPreviewCard} />
       <div className="w-full px-4 pb-4">
         <div role="tablist" className={`flex border-b ${borderCalss}`}>
           <button
@@ -246,7 +187,7 @@ export const DeckForm = () => {
             className={`p-6 ${activeTab === 'preview' ? '' : 'hidden'} text-white`}
           >
             {/* <Drill  previewCard={previewCard}/> */}
-            <PreviewCard previewCardList={checkedCards} card={previewCard} seePreview={seePreview} moveToNextCard={moveToNextCard} moveToPreviousCard={moveToPreviousCard} />
+            <PreviewCard previewCardList={checkedCards} card={previewCard} moveToNextCard={moveToNextCard} moveToPreviousCard={moveToPreviousCard} />
           </div>
         </div>
       </div>

@@ -1,26 +1,54 @@
 import { useEffect, useRef, useState } from "react";
 import React from 'react';
 
-export const CheckedCards = ({ previewCards, previewCard, setPreviewCard }) => {
+export const PreviewCardList = ({checkedCards, previewCard, setPreviewCard }) => {
   
-  const scrollContainerRef = useRef(null);
-  
-  const handleScroll = () => {
-    if (scrollContainerRef.current) {
-      const { scrollLeft } = scrollContainerRef.current;
-      const stepsContainer = document.querySelector('.steps-container');
-      if (stepsContainer) {
-        stepsContainer.scrollLeft = scrollLeft;
-      }
-    }
-  };
+  const scrollContainerRef = useRef(null)
+  const prevCheckedCardsLengthRef = useRef(checkedCards.length);
   
   useEffect(() => {
-    if (scrollContainerRef.current) {
+    const currentLength = checkedCards.length;
+    const prevLength = prevCheckedCardsLengthRef.current;
+
+    if (currentLength > prevLength && scrollContainerRef.current) {
       const maxScrollLeft = scrollContainerRef.current.scrollWidth - scrollContainerRef.current.clientWidth;
-      scrollContainerRef.current.scrollLeft = maxScrollLeft;
+      scrollContainerRef.current.scrollTo({
+        left: maxScrollLeft,
+        behavior: 'smooth'
+      });
     }
-  }, [previewCards]);
+
+    // 現在の長さを保存して、次回の比較に使用
+    prevCheckedCardsLengthRef.current = currentLength;
+  }, [checkedCards]);
+
+  useEffect(() => {
+    if (checkedCards.length > 0 && scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      const isScrollable = container.scrollWidth > container.clientWidth;
+      // コンテンツの幅がコンテナの幅よりも大きい場合、スクロールが可能と判断
+      
+      if (isScrollable) {
+        const index = checkedCards.findIndex(card => card.id === previewCard.id);
+        const cardsLength = checkedCards.length;
+        
+        // スクロールの割合を計算（0 から 1 の間）
+        const scrollFraction = index / (cardsLength - 1);
+        
+        // スクロール可能な最大幅を計算
+        const maxScrollLeft = container.scrollWidth - container.clientWidth;
+        
+        // 目標のスクロール位置を計算
+        const targetScrollLeft = scrollFraction * maxScrollLeft;
+
+        // スムーズにスクロール
+        container.scrollTo({
+          left: targetScrollLeft,
+          behavior: 'smooth'
+        });
+      }
+    }
+  }, [previewCard]);
 
   return (
     <div className="p-4">
@@ -29,15 +57,14 @@ export const CheckedCards = ({ previewCards, previewCard, setPreviewCard }) => {
           <div className="flex flex-col overflow-x-auto">
               <div className="bg-stone-950 text-cyan-50 rounded overflow-hidden">
                 <div className="p-2 m-1">
-                  {previewCards && previewCards.length > 0 && (
+                  {checkedCards && checkedCards.length > 0 && (
                     <div 
                       className="space-x-4 overflow-x-auto pb-4 flex justify-start items-start"
                       ref={scrollContainerRef}
-                      onScroll={handleScroll}
                     >
                       <div className='flex flex-col'>
                         <ul className="steps steps-horizontal w-max min-w-full">
-                          {previewCards.map((card, index) => (
+                          {checkedCards.map((card, index) => (
                             // Flexコンテナを作成、flex-directionをcolumnにして子要素を縦並びにする
                             <li
                             key={index}
@@ -64,7 +91,7 @@ export const CheckedCards = ({ previewCards, previewCard, setPreviewCard }) => {
                       </div>
                     </div>
                   )}
-                  { previewCards.length > 0 || (
+                  { checkedCards.length > 0 || (
                     <>
                     </>
                   )}

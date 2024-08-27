@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 
 
 export const useCardNavigation = () => {
@@ -40,6 +40,7 @@ export const useCardNavigation = () => {
     previewCard,
     setPreviewCard,
     moveToNextCard,
-    moveToPreviousCard
+    moveToPreviousCard,
+    // scrollContainerRef
   };
 };
