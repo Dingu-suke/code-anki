@@ -56,7 +56,6 @@ export const CardList = () => {
   return (
     <div>
       <div className="container mx-auto p-4">
-        div
         <h1 className="text-2xl font-bold mb-4 text-orange-400 font-courier">あなたのカード</h1>
         <input
           type="text"

@@ -50,7 +50,6 @@ export const EditorAndAnswer = ({
   const activeTabClass = "bg-slate-950 text-orange-500 border-yellow-800 border-b-0 after:absolute after:bottom-[-1px] after:left-0 after:right-0 after:h-[1px] after:bg-slate-950";
   const inactiveTabClass = "bg-slate-900 text-yellow-900 border-transparent hover:text-amber-700";
 
-
   const editorContent = (
     <div className={`grid grid-cols-2 gap-4 ${className}`}>
       <div className="border border-cyan-900 bg-slate-950 p-4 rounded-sm">
@@ -90,7 +89,7 @@ export const EditorAndAnswer = ({
     </div>
   );
 
-  const diffEditorContent = (      
+  const diffEditorContent = (
     <div className="border border-green-900 bg-slate-950 p-4 rounded-md">
       <div className="pb-2">
         <LanguageLabel language={card.language} />

@@ -15,7 +15,7 @@ import ParentComponent from "./components/PaarentComponent";
 import App from "./components/Window/App";
 import { Drill } from './components/Drill/Drill';
 import { YourDeckList } from "./components/Deck/YourDecksIndex";
-import { DeckForm } from "./components/Deck/DeckForm";
+import { DeckInfo } from "./components/Deck/DeckInfo";
 // import DeckFormContainer from '../../../docker compose up/app/javascript/react/components/deck/DeckIndex';
 
 
@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
   DraggableModalRoot&& createRoot(DraggableModalRoot).render(<ParentComponent />)
   YourDeckIndex     && createRoot(YourDeckIndex)    .render(<YourDeckList />)
   DeckShowRoot      && createRoot(DeckShowRoot)     .render(<Drill />)
-  DeckFormRoot      && createRoot(DeckFormRoot)     .render(<DeckForm />)
+  DeckFormRoot      && createRoot(DeckFormRoot)     .render(<DeckInfo />)
   
   AppRoot && createRoot(AppRoot).render(<App />)
 })

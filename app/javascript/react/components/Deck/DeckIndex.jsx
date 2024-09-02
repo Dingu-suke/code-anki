@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDecks } from '../../hooks/useYourDeckCards';
+import { useYourDecks } from '../../hooks/useYourDecks';
 import ResponsiveWindow from '../Window/ResponsiveWindow';
 
 const StackedDeckCard = ({ deck, onClick, isSelected, cards }) => {
@@ -20,8 +20,8 @@ const StackedDeckCard = ({ deck, onClick, isSelected, cards }) => {
   );
 };
 
-export const DeckList = () => {
-  const { decks, setDecks, isLoading, setIsLoading } = useDecks();
+export const DeckList = ({ selectedCard }) => {
+  const { decks, setDecks, isLoading, setIsLoading } = useYourDecks();
   const [filteredDecks, setFilteredDecks] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isWindowOpen, setIsWindowOpen] = useState(false);
@@ -71,7 +71,7 @@ export const DeckList = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4 text-green-400 font-courier">あなたのデッキ</h1>
+      <h1 className="text-2xl font-bold mb-4 text-green-400 font-courier"></h1>
       <input
         type="text"
         placeholder=" デッキを検索"
