@@ -3,51 +3,23 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { LANGUAGE_LABELS } from '../RunCodeEditorDaisyUI/constants';
 import { setupCSRFToken } from './setupCSRFToken';
-// import { useYourDeckList } from '../../hooks/useYourDeckList';
+import { useYourDeckList } from '../../hooks/useYourDeckList';
 
 const errors = {
   deck : "デッキ名は必須です"
 }
 
-export const DeckNew = ({ }) => {
+export const DeckNew = ({ addDeck }) => {
   const { register, handleSubmit, formState: {errors} } = useForm({mode: "onChange"})  
-  // const { fetchDecks } = useYourDeckList(); 
 
   useEffect(() => {
     setupCSRFToken();
   }, []);
 
-  const onSubmit = async (data) => {
-    console.log('送信データ:', data);
-    try {
-      const response = await axios.post('/decks',
-        { deck: data }, 
-        { headers: {
-          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
-        }
-      });
-      console.log('デッキ作成成功', response.data)
-      console.log("reRenderYourDecks()")
-
-    }  catch (error) {
-      if (error.response) {
-         // サーバーからのレスポンスがある場合
-        console.error('デッキ作成失敗エラー', error.response.data);
-      } else if (error.request) {
-         // リクエストは行われたがレスポンスがない場合
-        console.error('ネットワークエラー', error.request)
-      } else {
-        // リクエストの設定時にエラーが発生した場合
-        console.log('Error', error.message);
-      }
-      // ああ
-    }
-  }
-
   return(
     <>
       <div>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(addDeck)}>
           <div className="grid grid-cols-6 p-3">
             <label htmlFor="name" className="col-start-1 col-span-1 flex items-center justify-items-center text-cyan-200">デッキ名</label>
             <input

@@ -1,20 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DeckNew } from '../Form/DeckFormTest';
 import ResponsiveWindow from '../Window/ResponsiveWindow';
 import { DeckTable } from './DeckTable';
 import { useYourDeckList } from '../../hooks/useYourDeckList';
+import { GiConsoleController } from 'react-icons/gi';
 
-export const YourDeckList = () => {
+export const YourDecksIndex = () => {
   const {
     filteredDecks,
     selectedDeck,
     isLoading,
     error,
     searchTerm,
+    fetchDecks,
     addDeck,
     selectDeck,
     setSearchTermAndFilter,
   } = useYourDeckList();
+
+
+
+  console.log("YourDeckList, filteredDecks", filteredDecks.length)
 
   const [isDeckNewWindowOpen, setDeckNewIsWindowOpen] = useState(false);
 
@@ -72,6 +78,7 @@ export const YourDeckList = () => {
               filteredDecks={filteredDecks}
               onClick={selectDeck}
               selectedDeck={selectedDeck}
+              fetchDecks={fetchDecks}
             />
           ) : (
             <div className="text-center py-4">デッキがありません</div>
@@ -86,7 +93,7 @@ export const YourDeckList = () => {
           initialSize={{ width: 700, height: 400 }}
           onClose={closeNewDeckWindow}
         >
-          <DeckNew onSubmit={handleAddDeck}/>
+          <DeckNew onSubmit={handleAddDeck} filteredDecks={filteredDecks} addDeck={addDeck}/>
         </ResponsiveWindow>
       )}
     </div>

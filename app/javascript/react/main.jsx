@@ -14,7 +14,7 @@ import CardForm from './components/Form/CardForm';
 import ParentComponent from "./components/PaarentComponent";
 import App from "./components/Window/App";
 import { Drill } from './components/Drill/Drill';
-import { YourDeckList } from "./components/Deck/YourDecksIndex";
+import { YourDecksIndex } from "./components/Deck/YourDecksIndex";
 import { DeckInfo } from "./components/Deck/DeckInfo";
 // import DeckFormContainer from '../../../docker compose up/app/javascript/react/components/deck/DeckIndex';
 
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
   markdownViewRoot  && createRoot(markdownViewRoot) .render(<MarkdownView />);
   cardIndexRoot     && createRoot(cardIndexRoot)    .render(<CardList />)
   DraggableModalRoot&& createRoot(DraggableModalRoot).render(<ParentComponent />)
-  YourDeckIndex     && createRoot(YourDeckIndex)    .render(<YourDeckList />)
+  YourDeckIndex     && createRoot(YourDeckIndex)    .render(<YourDecksIndex />)
   DeckShowRoot      && createRoot(DeckShowRoot)     .render(<Drill />)
   DeckFormRoot      && createRoot(DeckFormRoot)     .render(<DeckInfo />)
   

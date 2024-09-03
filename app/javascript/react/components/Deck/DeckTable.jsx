@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useYourDeckList } from '../../hooks/useYourDeckList';
 
-export const DeckTable = ({ filteredDecks, onClick, selectedDeck }) => {
-  const { fetchDecks } = useYourDeckList();
+export const DeckTable = ({ filteredDecks, onClick, selectedDeck, fetchDecks }) => {
+  const [localDecks, setLocalDecks] = useState(filteredDecks)
+
+  // useEffect(() => {
+  //   setLocalDecks(filteredDecks);
+  //   console.log(filteredDecks.length)
+  //   console.log(localDecks.length)
+  // }, [filteredDecks])
+
   return (
     <div className="overflow-x-auto shadow-lg rounded-lg">
       <button className="btn btn-primary" onClick={fetchDecks}>Decklist 再レンダリング ボタン</button>
+        {localDecks.length}
       <table className="w-full text-sm text-left text-gray-300">
         <thead className="text-xs uppercase bg-gray-700 text-gray-300">
           <tr>
@@ -19,8 +27,8 @@ export const DeckTable = ({ filteredDecks, onClick, selectedDeck }) => {
         </thead>
         <tbody>
           {filteredDecks.map((deck) => (
-            <tr 
-              key={deck.id} 
+            <tr
+              key={deck.id}
               className={`border-b bg-gray-800 border-gray-700  ${
                 selectedDeck && selectedDeck.id === deck.id ? 'bg-indigo-900 hover:bg-blue-900' : 'hover:bg-cyan-900'
               }`}

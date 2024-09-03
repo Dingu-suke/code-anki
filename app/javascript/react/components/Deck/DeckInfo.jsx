@@ -6,7 +6,7 @@ import { PreviewCard } from '../Drill/PreviewCard';
 import { CheckCard } from '../card/CheckCard';
 import { PreviewCardList } from './PreviewCardList';
 import { SelectCardIndex } from './SelectCardIndex';
-import { YourDeckList } from './YourDecksIndex';
+import { YourDecksIndex } from './YourDecksIndex';
 
 
 export const DeckInfo = () => {
@@ -63,9 +63,6 @@ export const DeckInfo = () => {
       setFilteredCards(filtered);  
     }}, [cards, searchTerm]);
 
-  useEffect(() => {
-    console.log(selectedDeck);
-  }, [selectedDeck])
 
   const borderCalss = "border-teal-700 text-emerald-400 text-bold"
   const tabClass = "px-4 border-t border-x rounded-t-sm font-bold focus:outline-none relative";
@@ -171,7 +168,7 @@ export const DeckInfo = () => {
             id="deckIndex-panel"
             className={`${activeTab === 'deckIndex' ? '' : 'hidden'} text-white`}
           >
-          <YourDeckList filteredCards={filteredCards} selectedDeck={selectedDeck} setSelectedDeck={setSelectedDeck} selectDeckState={selectDeckState} />
+          <YourDecksIndex filteredCards={filteredCards} selectedDeck={selectedDeck} setSelectedDeck={setSelectedDeck} selectDeckState={selectDeckState} />
           </div>
           <div
             role="tabpanel"

@@ -18,14 +18,16 @@ export const useYourDeckList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [error, setError] = useState(null);  
 
-
   const fetchDecks = useCallback(async () => {
-    console.log("再レンダリング");
     setIsLoading(true);
-    setError(null); 
+    setError(null);
     try {
       const { data } = await api.get('/your_decks');
-      setDecks(data);
+      setFilteredDecks(data);
+      console.log("data", data) // ここでは常にデータが表示される
+      // setDecks(data);
+      setFilteredDecks(data)
+      console.log(filteredDecks, "aaaa"); // ここは常に空配列が出力される
     } catch (error) {
       setError('デッキの取得に失敗しました: ' + error.message);
       console.error('Error fetching decks:', error);
@@ -49,6 +51,36 @@ export const useYourDeckList = () => {
       .sort((a, b) => a.name.localeCompare(b.name));
     setFilteredDecks(filtered);
   }, [decks, searchTerm]);
+
+  // ---- newDeck から移植 ---
+  const addDeck = async (data) => {
+    console.log('送信データ:', data);
+    try {
+      const response = await axios.post('/decks',
+        { deck: data },
+        { headers: {
+          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+        }
+      });
+      console.log('デッキ作成成功', response.data)
+      console.log("reRenderYourDecks()")
+      fetchDecks();
+
+    }  catch (error) {
+      if (error.response) {
+         // サーバーからのレスポンスがある場合
+        console.error('デッキ作成失敗エラー', error.response.data);
+      } else if (error.request) {
+         // リクエストは行われたがレスポンスがない場合
+        console.error('ネットワークエラー', error.request)
+      } else {
+        // リクエストの設定時にエラーが発生した場合
+        console.log('Error', error.message);
+      }
+      // ああ
+    }
+  }
+  // ---- newDeck から移植 --- //
 
   const updateDeck = useCallback(async (updatedDeck) => {
     setError(null);
@@ -90,6 +122,7 @@ export const useYourDeckList = () => {
     isLoading,
     error,
     searchTerm,
+    addDeck,
     fetchDecks,
     updateDeck,
     deleteDeck,
