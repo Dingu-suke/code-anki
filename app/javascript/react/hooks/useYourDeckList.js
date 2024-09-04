@@ -25,7 +25,7 @@ export const useYourDeckList = () => {
       const { data } = await api.get('/your_decks');
       setFilteredDecks(data);
       console.log("data", data) // ここでは常にデータが表示される
-      // setDecks(data);
+      setDecks(data);
       setFilteredDecks(data)
       console.log(filteredDecks, "aaaa"); // ここは常に空配列が出力される
     } catch (error) {
