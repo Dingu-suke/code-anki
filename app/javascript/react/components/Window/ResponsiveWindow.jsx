@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { MdCircle } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 
-const ResponsiveWindow = ({ children, title, initialPosition, initialSize, onClose}) => {
+const ResponsiveWindow = ({ children, title, initialPosition, initialSize, onClose, onPositionChange, onSizeChange }) => {
   const [size, setSize] = useState(initialSize);
   const [position, setPosition] = useState(initialPosition);
   const [isDragging, setIsDragging] = useState(false);
@@ -30,6 +30,18 @@ const ResponsiveWindow = ({ children, title, initialPosition, initialSize, onClo
       windowRef.current.style.setProperty('--window-height', `${Math.min(size.height, maxHeight)}px`);
     }
   }, [size.width, size.height]);
+
+  useEffect(() => {
+    if (onPositionChange) {
+      onPositionChange(position);
+    }
+  }, [position, onPositionChange]);
+
+  useEffect(() => {
+    if (onSizeChange) {
+      onSizeChange(size);
+    }
+  }, [size, onSizeChange]);
 
   useEffect(() => {
     window.addEventListener('resize', updateSizeAndPosition);
@@ -105,6 +117,7 @@ const ResponsiveWindow = ({ children, title, initialPosition, initialSize, onClo
     setIsResizing(true);
     setResizeDirection(direction);
   };
+
 
   const resizeHandles = [
     { direction: 'n', style: 'top-0 left-0 right-0 h-1 cursor-n-resize' },

@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { DeckNew } from '../Form/DeckFormTest';
-import ResponsiveWindow from '../Window/ResponsiveWindow';
 import { DeckTable } from './DeckTable';
 import { useYourDeckList } from '../../hooks/useYourDeckList';
 import { GiConsoleController } from 'react-icons/gi';
+import { NewResponsiveWindow } from '../Window/NewResponsiveWindow';
+import ResponsiveWindow from '../Window/ResponsiveWindow';
+
 
 export const YourDecksIndex = () => {
   const {
@@ -16,33 +18,31 @@ export const YourDecksIndex = () => {
     addDeck,
     selectDeck,
     setSearchTermAndFilter,
-  } = useYourDeckList();
+  } = useYourDeckList();  
 
-
-
-  console.log("YourDeckList, filteredDecks", filteredDecks.length)
-
-  const [isDeckNewWindowOpen, setDeckNewIsWindowOpen] = useState(false);
+  const [isDeckNewWindowOpen, setIsDeckNewWindowOpen] = useState(false);
 
   const handleSearch = (e) => {
     setSearchTermAndFilter(e.target.value);
   };
 
   const openNewDeckWindow = () => {
-    setDeckNewIsWindowOpen(true);
+    setIsDeckNewWindowOpen(true);
   };
 
   const closeNewDeckWindow = () => {
-    setDeckNewIsWindowOpen(false);
+    setIsDeckNewWindowOpen(false);
   };
 
   const handleAddDeck = async (newDeck) => {
     const addedDeck = await addDeck(newDeck);
     if (addedDeck) {
       fetchDecks();
-      closeNewDeckWindow();
+      // ウィンドウを閉じずに、フォームをリセットする処理をここに追加
+      // ここでDeckNewコンポーネントの状態をリセットするための関数を呼び出す
     }
   };
+
 
   if (isLoading) {
     return (
@@ -86,7 +86,7 @@ export const YourDecksIndex = () => {
         </div>
       </div>
 
-      {isDeckNewWindowOpen && (
+      {/* {isDeckNewWindowOpen && (
         <ResponsiveWindow
           title="空のデッキを作成"
           initialPosition={{ x: 900, y: 500 }}
@@ -95,7 +95,16 @@ export const YourDecksIndex = () => {
         >
           <DeckNew onSubmit={handleAddDeck} filteredDecks={filteredDecks} addDeck={addDeck}/>
         </ResponsiveWindow>
-      )}
+      )} */}
+      <NewResponsiveWindow
+        isOpen={isDeckNewWindowOpen}
+        title="空のデッキを作成"
+        initialPosition={{ x: 900, y: 500 }}
+        initialSize={{ width: 700, height: 400 }}
+        onClose={closeNewDeckWindow}
+      >
+        <DeckNew onSubmit={handleAddDeck} filteredDecks={filteredDecks} addDeck={addDeck}/>
+      </NewResponsiveWindow>
     </div>
   );
 };
