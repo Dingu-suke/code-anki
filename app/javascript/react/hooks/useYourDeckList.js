@@ -23,18 +23,15 @@ export const useYourDeckList = () => {
     setError(null);
     try {
       const { data } = await api.get('/your_decks');
-      setFilteredDecks(data);
-      console.log("data", data) // ここでは常にデータが表示される
       setDecks(data);
-      setFilteredDecks(data)
-      console.log(filteredDecks, "aaaa"); // ここは常に空配列が出力される
+      setFilteredDecks(data);
     } catch (error) {
       setError('デッキの取得に失敗しました: ' + error.message);
       console.error('Error fetching decks:', error);
     } finally {
       setIsLoading(false);
     }
-  }, [api]);
+  }, []);
 
   useEffect(() => {
     fetchDecks()
@@ -53,7 +50,7 @@ export const useYourDeckList = () => {
   }, [decks, searchTerm]);
 
   // ---- newDeck から移植 ---
-  const addDeck = async (data) => {
+  const addDeck = useCallback(async (data) => {
     console.log('送信データ:', data);
     try {
       const response = await axios.post('/decks',
@@ -64,22 +61,29 @@ export const useYourDeckList = () => {
       });
       console.log('デッキ作成成功', response.data)
       console.log("reRenderYourDecks()")
-      fetchDecks();
+
+      console.log(response.data)
+
+      const newDeck = response.data; // APIレスポンスがそのままデッキオブジェクト
+    
+      // 新しいデッキを既存のデッキリストに追加
+      setDecks(prevDecks => [...prevDecks, newDeck]);
+
+       // フィルタリングデッキリストに追加
+      setFilteredDecks(prevFiltered => [...prevFiltered, newDeck]);
+
+      return newDeck;
 
     }  catch (error) {
-      if (error.response) {
-         // サーバーからのレスポンスがある場合
-        console.error('デッキ作成失敗エラー', error.response.data);
-      } else if (error.request) {
-         // リクエストは行われたがレスポンスがない場合
-        console.error('ネットワークエラー', error.request)
-      } else {
-        // リクエストの設定時にエラーが発生した場合
-        console.log('Error', error.message);
-      }
-      // ああ
+      console.error('デッキ作成失敗', error);
+      setError('デッキの作成に失敗しました: ' + error.message);
+      return null; // エラー時にはnullを返す
     }
-  }
+  }, [])
+
+  const setSearchTermAndFilter = useCallback((term) => {
+    setSearchTerm(term);
+  }, []);
   // ---- newDeck から移植 --- //
 
   const updateDeck = useCallback(async (updatedDeck) => {
@@ -111,10 +115,6 @@ export const useYourDeckList = () => {
     setSelectedDeck(prevDeck => prevDeck?.id === deck?.id ? null : deck);
   }, []);
 
-  const setSearchTermAndFilter = useCallback((term) => {
-    setSearchTerm(term);
-  }, []);
-
   return {
     decks,
     filteredDecks,
@@ -124,9 +124,7 @@ export const useYourDeckList = () => {
     searchTerm,
     addDeck,
     fetchDecks,
-    updateDeck,
-    deleteDeck,
-    selectDeck,
+    setSelectedDeck,
     setSearchTermAndFilter
   };
 };

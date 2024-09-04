@@ -9,17 +9,25 @@ const errors = {
   deck : "デッキ名は必須です"
 }
 
-export const DeckNew = ({ addDeck }) => {
+export const DeckNew = ({ addDeck, onSuccess }) => {
   const { register, handleSubmit, formState: {errors} } = useForm({mode: "onChange"})  
 
   useEffect(() => {
     setupCSRFToken();
   }, []);
 
+  const onSubmit = async (data) => {
+    const newDeck = await addDeck(data);
+    if (newDeck) {
+      // reset(); // フォームをリセット
+      if (onSuccess) onSuccess(newDeck); // 成功時のコールバック
+    }
+  };
+
   return(
     <>
       <div>
-        <form onSubmit={handleSubmit(addDeck)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid grid-cols-6 p-3">
             <label htmlFor="name" className="col-start-1 col-span-1 flex items-center justify-items-center text-cyan-200">デッキ名</label>
             <input

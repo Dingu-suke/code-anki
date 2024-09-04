@@ -18,7 +18,7 @@ export const YourDecksIndex = () => {
     addDeck,
     selectDeck,
     setSearchTermAndFilter,
-  } = useYourDeckList();  
+  } = useYourDeckList();
 
   const [isDeckNewWindowOpen, setIsDeckNewWindowOpen] = useState(false);
 
@@ -34,14 +34,20 @@ export const YourDecksIndex = () => {
     setIsDeckNewWindowOpen(false);
   };
 
-  const handleAddDeck = async (newDeck) => {
-    const addedDeck = await addDeck(newDeck);
-    if (addedDeck) {
-      fetchDecks();
-      // ウィンドウを閉じずに、フォームをリセットする処理をここに追加
-      // ここでDeckNewコンポーネントの状態をリセットするための関数を呼び出す
-    }
-  };
+  // const handleAddDeck = async (newDeck) => {
+  //   const addedDeck = await addDeck(newDeck);
+  //   if (addedDeck) {
+  //     fetchDecks();
+  //     // ウィンドウを閉じずに、フォームをリセットする処理をここに追加
+  //     // ここでDeckNewコンポーネントの状態をリセットするための関数を呼び出す
+  //   }
+  // };
+
+  const handleAddDeckSuccess = useCallback((newDeck) => {
+    // 必要に応じて追加の処理を行う
+    // 例: 新しいデッキを選択状態にする、など
+    console.log('新しいデッキが追加されました:', newDeck);
+  }, []);
 
 
   if (isLoading) {
@@ -103,7 +109,7 @@ export const YourDecksIndex = () => {
         initialSize={{ width: 700, height: 400 }}
         onClose={closeNewDeckWindow}
       >
-        <DeckNew onSubmit={handleAddDeck} filteredDecks={filteredDecks} addDeck={addDeck}/>
+        <DeckNew addDeck={addDeck} onSuccess={handleAddDeckSuccess}/>
       </NewResponsiveWindow>
     </div>
   );
