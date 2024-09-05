@@ -14,12 +14,12 @@ export const useYourDeckList = () => {
   const [decks, setDecks] = useState([]);
   const [filteredDecks, setFilteredDecks] = useState([]);
   const [selectedDeck, setSelectedDeck] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isDeckLoading, setIsDeckLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [error, setError] = useState(null);  
 
   const fetchDecks = useCallback(async () => {
-    setIsLoading(true);
+    setIsDeckLoading(true);
     setError(null);
     try {
       const { data } = await api.get('/your_decks');
@@ -29,7 +29,7 @@ export const useYourDeckList = () => {
       setError('デッキの取得に失敗しました: ' + error.message);
       console.error('Error fetching decks:', error);
     } finally {
-      setIsLoading(false);
+      setIsDeckLoading(false);
     }
   }, []);
 
@@ -116,15 +116,15 @@ export const useYourDeckList = () => {
   }, []);
 
   return {
-    decks,
-    filteredDecks,
-    selectedDeck,
-    isLoading,
-    error,
-    searchTerm,
+    decks, setDecks,
+    filteredDecks, setFilteredDecks,
+    selectedDeck, setSelectedDeck,
+    isDeckLoading, setIsDeckLoading,
+    searchTerm, setSearchTerm,
+    error, setError
+    ,
     addDeck,
     fetchDecks,
-    setSelectedDeck,
     setSearchTermAndFilter
   };
 };

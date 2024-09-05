@@ -6,19 +6,15 @@ import { GiConsoleController } from 'react-icons/gi';
 import { NewResponsiveWindow } from '../Window/NewResponsiveWindow';
 import ResponsiveWindow from '../Window/ResponsiveWindow';
 
-
-export const YourDecksIndex = () => {
-  const {
-    filteredDecks,
-    selectedDeck,
-    isLoading,
-    error,
-    searchTerm,
-    fetchDecks,
-    addDeck,
-    selectDeck,
-    setSearchTermAndFilter,
-  } = useYourDeckList();
+export const YourDecksIndex = ({ 
+                                  selectedDeck, setSelectedDeck,
+                                  filteredDecks,
+                                  isDeckLoading,
+                                  searchTerm,
+                                  error
+                                  ,
+                                  addDeck,
+                                  setSearchTermAndFilter }) => {
 
   const [isDeckNewWindowOpen, setIsDeckNewWindowOpen] = useState(false);
 
@@ -50,7 +46,7 @@ export const YourDecksIndex = () => {
   }, []);
 
 
-  if (isLoading) {
+  if (isDeckLoading) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
         <div className="text-white loading loading-ring loading-lg"></div>
@@ -82,9 +78,8 @@ export const YourDecksIndex = () => {
           {filteredDecks.length > 0 ? (
             <DeckTable
               filteredDecks={filteredDecks}
-              onClick={selectDeck}
               selectedDeck={selectedDeck}
-              fetchDecks={fetchDecks}
+              setSelectedDeck={setSelectedDeck}
             />
           ) : (
             <div className="text-center py-4">デッキがありません</div>

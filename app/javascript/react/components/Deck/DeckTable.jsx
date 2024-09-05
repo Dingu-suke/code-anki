@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useYourDeckList } from '../../hooks/useYourDeckList';
 
-export const DeckTable = ({ filteredDecks, onClick, selectedDeck, fetchDecks }) => {
+export const DeckTable = ({ filteredDecks, selectedDeck, setSelectedDeck }) => {
 
   return (
     <div className="overflow-x-auto shadow-lg rounded-lg">
@@ -23,7 +22,7 @@ export const DeckTable = ({ filteredDecks, onClick, selectedDeck, fetchDecks }) 
               className={`border-b bg-gray-800 border-gray-700  ${
                 selectedDeck && selectedDeck.id === deck.id ? 'bg-indigo-900 hover:bg-blue-900' : 'hover:bg-cyan-900'
               }`}
-              onClick={() => onClick(deck)}
+              onClick={() => {setSelectedDeck(card)}}
             >
               <th scope="row" className="px-6 py-4 font-medium whitespace-nowrap text-cyan-400">
                 {deck.name}

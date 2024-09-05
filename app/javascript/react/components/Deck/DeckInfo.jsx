@@ -7,19 +7,28 @@ import { CheckCard } from '../card/CheckCard';
 import { PreviewCardList } from './PreviewCardList';
 import { SelectCardIndex } from './SelectCardIndex';
 import { YourDecksIndex } from './YourDecksIndex';
+import { useYourDeckList } from '../../hooks/useYourDeckList';
 
 
 export const DeckInfo = () => {
   const { cards, setCards, isLoading, setIsLoading } = useCards();
-  const [filteredCards, setFilteredCards] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  // const { modalRef, openModal, closeModal } = useModal()
-
+  const [filteredCards, setFilteredCards] = useState([]);  
   const [isWindowOpen, setIsWindowOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
-
   const { checkedCards, setCheckedCards, previewCard, setPreviewCard, moveToNextCard, moveToPreviousCard /*, scrollContainerRef*/ } = useCardNavigation();
-  const [selectedDeck, setSelectedDeck] = useState(null);
+  
+  const {
+    decks, setDecks,
+    filteredDecks, setFilteredDecks,
+    selectedDeck, setSelectedDeck,
+    isDeckLoading, setIsDeckLoading,
+    searchTerm, setSearchTerm,
+    error, setError
+    ,
+    addDeck,
+    fetchDecks,
+    setSearchTermAndFilter
+  } = useYourDeckList()
   
   const closeWindow = () => {  
     setIsWindowOpen(false);
@@ -168,7 +177,16 @@ export const DeckInfo = () => {
             id="deckIndex-panel"
             className={`${activeTab === 'deckIndex' ? '' : 'hidden'} text-white`}
           >
-          <YourDecksIndex filteredCards={filteredCards} selectedDeck={selectedDeck} setSelectedDeck={setSelectedDeck} selectDeckState={selectDeckState} />
+          <YourDecksIndex  
+            selectedDeck={selectedDeck} setSelectedDeck={setSelectedDeck}
+            filteredDecks={filteredDecks}
+            isDeckLoading={isDeckLoading}
+            searchTerm={searchTerm}
+            error={error}
+      
+            addDeck={addDeck}
+            setSearchTermAndFilter={setSearchTermAndFilter}
+          />
           </div>
           <div
             role="tabpanel"
