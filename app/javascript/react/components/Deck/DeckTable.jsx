@@ -1,20 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useYourDeckList } from '../../hooks/useYourDeckList';
 
-export const DeckTable = ({ filteredDecks, onClick, selectedDeck, fetchDecks, handleSearch }) => {
-  const [localDecks, setLocalDecks] = useState(filteredDecks)
-
-  // useEffect(() => {
-  //   setLocalDecks(filteredDecks);
-  //   console.log(filteredDecks.length)
-  //   console.log(localDecks.length)
-  // }, [filteredDecks])
-  console.log(filteredDecks)
+export const DeckTable = ({ filteredDecks, onClick, selectedDeck, fetchDecks }) => {
 
   return (
     <div className="overflow-x-auto shadow-lg rounded-lg">
-      <button className="btn btn-primary" onClick={fetchDecks}>Decklist 再レンダリング ボタン</button>
-        {localDecks.length}
       <table className="w-full text-sm text-left text-gray-300">
         <thead className="text-xs uppercase bg-gray-700 text-gray-300">
           <tr>

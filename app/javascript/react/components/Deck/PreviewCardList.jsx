@@ -104,15 +104,15 @@ export const PreviewCardList = ({checkedCards, setCheckedCards, previewCard, set
                           ref={scrollContainerRef}
                         >
                           <div className='flex flex-col'>
-                            <ul className="steps steps-horizontal w-max min-w-full">
+                            <ul className="steps steps-horizontal flex w-max min-w-full">
                               {checkedCards.map((card, index) => (
                                 <Draggable key={card.id} draggableId={card.id.toString()} index={index}>
                                   {(provided, snapshot) => (
-                                    <li
+                                  <li
                                     ref={provided.innerRef}
                                     {...provided.draggableProps}
-                                    {...provided.dragHandleProps}
-                                    className={`step flex flex-col ${(index+1) % 5 === 0 ? "step-neutral" : "step-neutral"}`}
+                                    key={card.id}
+                                    className={`step flex flex-col items-center flex-shrink-0 ${(index+1) % 5 === 0 ? "step-neutral" : "step-neutral"}`}
                                     style={{
                                       ...provided.draggableProps.style,
                                       backgroundColor: (index+1) % 5 === 0 ? "#631166" : "#0f3c63"
@@ -121,6 +121,7 @@ export const PreviewCardList = ({checkedCards, setCheckedCards, previewCard, set
                                   >
                                       <span className="step-number"></span>
                                       <div
+                                        {...provided.dragHandleProps}
                                         className={`flex-shrink-0 w-48 border p-4 m-2 rounded shadow hover:bg-slate-950
                                           ${card === previewCard ? 'bg-slate-950 border-green-400 text-green-400 hover:text-green-400' : 'bg-slate-950 border-cyan-900 text-cyan-400 hover:text-green-400 hover:border-green-700'}
                                           ${snapshot.isDragging ? 'opacity-50' : ''}

@@ -2,7 +2,8 @@ import React from 'react';
 import ResponsiveWindow from '../Window/ResponsiveWindow';
 
 export const SelectCardIndex = (
-  { selectedCard,
+  { 
+    selectedCard, setSelectedCard,
     searchTerm,
     setSearchTerm,
     filteredCards,
@@ -74,7 +75,7 @@ export const SelectCardIndex = (
                 initialSize={{ width: 600, height: 450 }}
                 onClose={closeWindow}
               >
-                <CheckCard selectedCard={selectedCard}/>
+                <CheckCard selectedCard={selectedCard} />
               </ResponsiveWindow>
             )}
           </div>

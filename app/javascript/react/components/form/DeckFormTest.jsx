@@ -19,7 +19,7 @@ export const DeckNew = ({ addDeck, onSuccess }) => {
   const onSubmit = async (data) => {
     const newDeck = await addDeck(data);
     if (newDeck) {
-      // reset(); // フォームをリセット
+      reset(); // フォームをリセット
       if (onSuccess) onSuccess(newDeck); // 成功時のコールバック
     }
   };

@@ -24,7 +24,7 @@ export const useYourDeckList = () => {
     try {
       const { data } = await api.get('/your_decks');
       setDecks(data);
-      setFilteredDecks(data);
+      // setFilteredDecks(data);
     } catch (error) {
       setError('デッキの取得に失敗しました: ' + error.message);
       console.error('Error fetching decks:', error);
@@ -70,7 +70,7 @@ export const useYourDeckList = () => {
       setDecks(prevDecks => [...prevDecks, newDeck]);
 
        // フィルタリングデッキリストに追加
-      setFilteredDecks(prevFiltered => [...prevFiltered, newDeck]);
+      // setFilteredDecks(prevFiltered => [...prevFiltered, newDeck]);
 
       return newDeck;
 

@@ -67,7 +67,7 @@ export const YourDecksIndex = () => {
           placeholder="デッキを検索"
           value={searchTerm}
           onChange={handleSearch}
-          className="col-span-5 p-2 rounded bg-gray-700 border border-blue-900 focus:border-blue-500 text-cyan-100"
+          className="col-span-5 p-2 rounded bg-gray-700 border focus:outline-none focus:border-2 focus:border-blue-800 border-blue-900 text-cyan-100"
         />
         <button 
           className="col-span-2 p-2 rounded-md bg-slate-900 border border-pink-500 text-pink-500 hover:bg-slate-800"
