@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { MdCircle } from "react-icons/md";
+import { RxCross2 } from "react-icons/rx";
 
-const ResponsiveWindow = ({ children, title, initialPosition, initialSize, onClose}) => {
+const ResponsiveWindow = ({ children, title, initialPosition, initialSize, onClose, onPositionChange, onSizeChange }) => {
   const [size, setSize] = useState(initialSize);
   const [position, setPosition] = useState(initialPosition);
   const [isDragging, setIsDragging] = useState(false);
@@ -28,6 +30,18 @@ const ResponsiveWindow = ({ children, title, initialPosition, initialSize, onClo
       windowRef.current.style.setProperty('--window-height', `${Math.min(size.height, maxHeight)}px`);
     }
   }, [size.width, size.height]);
+
+  useEffect(() => {
+    if (onPositionChange) {
+      onPositionChange(position);
+    }
+  }, [position, onPositionChange]);
+
+  useEffect(() => {
+    if (onSizeChange) {
+      onSizeChange(size);
+    }
+  }, [size, onSizeChange]);
 
   useEffect(() => {
     window.addEventListener('resize', updateSizeAndPosition);
@@ -104,6 +118,7 @@ const ResponsiveWindow = ({ children, title, initialPosition, initialSize, onClo
     setResizeDirection(direction);
   };
 
+
   const resizeHandles = [
     { direction: 'n', style: 'top-0 left-0 right-0 h-1 cursor-n-resize' },
     { direction: 's', style: 'bottom-0 left-0 right-0 h-1 cursor-s-resize' },
@@ -147,12 +162,20 @@ const ResponsiveWindow = ({ children, title, initialPosition, initialSize, onClo
         }}
       >
         <div
-          className="bg-slate-700 px-6 py-2 flex justify-between items-center cursor-move text-blue-200"
+          className="bg-slate-700 px-6 py-2 flex justify-between items-center"
           onMouseDown={handleMouseDown}
         >
-          <h3 className="text-lg font-semibold">{title}</h3>
+          <h3 className="text-lg font-semibold text-blue-200">{title}</h3>
           {/* <p className='text-sm justify-start'>マークダウンエディタの全画面編集モードはecsキーで解除できます。</p> */}
-          <button className="text-red-500 text-xl" onClick={onClose}>×</button>
+          <div
+            className="relative cursor-pointer group"
+            onClick={onClose}
+          >
+            <div className="flex items-center justify-center cursor-default">
+              <MdCircle className="text-red-600 text-2xl" />
+              <RxCross2 className="text-blue-100 absolute opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-default " />
+            </div>
+          </div>
         </div>
         <div className="p-4 overflow-auto" style={{ height: 'calc(100% - 40px)' }}>
           {children}

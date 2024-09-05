@@ -6,7 +6,8 @@ export const PreviewCardList = ({checkedCards, setCheckedCards, previewCard, set
   
   const scrollContainerRef = useRef(null)
   const prevCheckedCardsLengthRef = useRef(checkedCards.length);
-  
+  const [cardOrder, setCardOrder] = useState([]);
+
   useEffect(() => {
     const currentLength = checkedCards.length;
     const prevLength = prevCheckedCardsLengthRef.current;
@@ -51,11 +52,27 @@ export const PreviewCardList = ({checkedCards, setCheckedCards, previewCard, set
     }
   }, [previewCard]);
 
+  // ------------------------------------------------
+
+  const updateCardOrder = useCallback(() => {
+    const newOrder = checkedCards.map((card, index) => ({
+      ...card,
+      order: index + 1
+    }));
+    setCardOrder(newOrder);
+  }, [checkedCards]);
+  
+  useEffect(() => {
+    updateCardOrder();
+  }, [checkedCards, updateCardOrder]);
+
+  // ------------------------------------------------
+  
+  // ドラッグ ドロップ 実行関数
   const onDragEnd = useCallback((result) => {
     if (!result.destination) {
       return;
     }
-
     const newItems = Array.from(checkedCards);
     const [reorderedItem] = newItems.splice(result.source.index, 1);
     newItems.splice(result.destination.index, 0, reorderedItem);
@@ -63,9 +80,13 @@ export const PreviewCardList = ({checkedCards, setCheckedCards, previewCard, set
     setCheckedCards(newItems);
   }, [checkedCards]);
 
+  const getStepColor = (index) => {
+    return (index + 1) % 5 === 0 ? "#631166" : "#0f3c63";
+  };
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className="p-4">
+      <div className="py-4 pl-2 pr-2">
         <div className="border border-slate-600 bg-stone-950 text-cyan-50 rounded overflow-hidden">
           <div className="h-[calc(18vh-2rem)]">
             <div className="flex flex-col overflow-x-auto">
@@ -78,29 +99,32 @@ export const PreviewCardList = ({checkedCards, setCheckedCards, previewCard, set
                   >
                     <div className="p-1 m-1">
                       {checkedCards && checkedCards.length > 0 && (
-                        <div 
+                        <div
                           className="space-x-4 overflow-x-auto flex justify-start items-start"
                           ref={scrollContainerRef}
                         >
                           <div className='flex flex-col'>
-                          <ul className="steps steps-horizontal w-max min-w-full">
+                            <ul className="steps steps-horizontal flex w-max min-w-full">
                               {checkedCards.map((card, index) => (
                                 <Draggable key={card.id} draggableId={card.id.toString()} index={index}>
-                                  {(provided) => (
-                                    <li
+                                  {(provided, snapshot) => (
+                                  <li
                                     ref={provided.innerRef}
                                     {...provided.draggableProps}
-                                    {...provided.dragHandleProps}
-                                    className={`step flex flex-col ${(index+1) % 5 === 0 ? "step-primary" : "step-primary"}`}
+                                    key={card.id}
+                                    className={`step flex flex-col items-center flex-shrink-0 ${(index+1) % 5 === 0 ? "step-neutral" : "step-neutral"}`}
                                     style={{
                                       ...provided.draggableProps.style,
                                       backgroundColor: (index+1) % 5 === 0 ? "#631166" : "#0f3c63"
                                     }}
+                                    data-content={`${index+1}`}
                                   >
-                                      <span></span>
+                                      <span className="step-number"></span>
                                       <div
+                                        {...provided.dragHandleProps}
                                         className={`flex-shrink-0 w-48 border p-4 m-2 rounded shadow hover:bg-slate-950
                                           ${card === previewCard ? 'bg-slate-950 border-green-400 text-green-400 hover:text-green-400' : 'bg-slate-950 border-cyan-900 text-cyan-400 hover:text-green-400 hover:border-green-700'}
+                                          ${snapshot.isDragging ? 'opacity-50' : ''}
                                         `}
                                         onClick={() => setPreviewCard(card)}
                                       >
@@ -128,3 +152,5 @@ export const PreviewCardList = ({checkedCards, setCheckedCards, previewCard, set
     </DragDropContext>
   );
 };
+
+

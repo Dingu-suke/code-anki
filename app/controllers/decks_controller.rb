@@ -29,13 +29,20 @@ class DecksController < ApplicationController
   # POST /decks or /decks.json
   def create
     @deck = current_user.decks.build(deck_params)
-
-    respond_to do |format|
-      if @deck.save
-      else
-      end
+    if @deck.save
+      render json: @deck, status: :created
+    else
+      Rails.logger.debug "デッキ保存エラー: #{params.errors.full_messages}"
+      render json: @deck.errors, status: :unprocessable_entity
     end
   end
+
+  #   respond_to do |format|
+  #     if @deck.save
+  #     else
+  #     end
+  #   end
+  # end
 
   # PATCH/PUT /decks/1 or /decks/1.json
   def update
@@ -92,6 +99,6 @@ class DecksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def deck_params
-      params.require(:deck).permit(:name, :tag_names, card_ids:[])
+      params.require(:deck).permit(:name, :tag_names, :language, :category, :status, card_ids:[])
     end
 end

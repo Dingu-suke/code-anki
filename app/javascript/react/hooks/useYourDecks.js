@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 
 export const useYourDecks = () => {
-  const [decks, setDecks] = useState()
+  const [decks, setDecks] = useState([])
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect (() => {
@@ -28,7 +28,6 @@ export const useYourDecks = () => {
         setIsLoading(false)
       }
     }
-    fetchDecks()
   }, [])
   return { decks, setDecks, isLoading, setIsLoading }
 }

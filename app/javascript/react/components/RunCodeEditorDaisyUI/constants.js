@@ -2,13 +2,12 @@ export const LANGUAGE_VERSIONS = {
   javascript: "18.15.0",
   typescript: "5.0.3",
   python: "3.10.0",
-  java: "15.0.2",
-  csharp: "6.12.0",
+  ruby: "3.0.1",
   php: "8.2.3",
   go: "1.16.2",
+  java: "15.0.2",
+  csharp: "6.12.0",
   swift: "5.3.3",
-  ruby: "3.0.1",
-  rust: "1.68.2",
   kotolin: "1.8.20", 
 }
 
@@ -21,3 +20,29 @@ export const CODE_SNIPPETS = {
     'using System;\n\nnamespace HelloWorld\n{\n\tclass Hello { \n\t\tstatic void Main(string[] args) {\n\t\t\tConsole.WriteLine("Hello World in C#");\n\t\t}\n\t}\n}\n',
   php: "<?php\n\n$name = 'PHP';\necho $name;\n",
 };
+
+export const LANGUAGE_LABELS = {
+  javascript: "JavaScript",
+  typescript: "TypeScript",
+  python: "Python",
+  ruby: "Ruby",
+  php: "PHP",
+  go: "Go",
+  java: "Java",
+  csharp: "C#",
+  swift: "Swift",
+  kotolin: "Kotolin",
+}
+
+export const LANGUAGE_LOGO = {
+  javascript: {},
+  typescript: "TypeScript",
+  python: "Python",
+  java: "Java",
+  csharp: "C#",
+  php: "PHP",
+  go: "Go",
+  swift: "Swift",
+  ruby: "Ruby",
+  kotolin: "Kotolin",
+}

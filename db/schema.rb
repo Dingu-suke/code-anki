@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_02_184655) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_01_100322) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -51,6 +51,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_02_184655) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "language"
+    t.string "category"
+    t.string "status", default: "private", null: false
     t.index ["user_id"], name: "index_decks_on_user_id"
   end
 
