@@ -5,17 +5,17 @@ import { CATEGORY } from '../RunCodeEditorDaisyUI/constants'
 
 export const SelectedDeckDisplay = ({ selectedDeck }) => {
   useEffect(() => {
-    
+
   }, [selectedDeck])
   return(
     <>
     <div className="border border-slate-600 bg-stone-950 text-cyan-50 rounded-t overflow-hidden border-b-transparent">
       {selectedDeck
         ? <div className="flex items-center justify-center overflow-hidden">
-            <div className="bg-slate-800 py-1 text-xs font-semibold truncate">選択中デッキ</div>
+            <div className="w-full bg-slate-800 py-1 text-xs font-semibold truncate">選択中デッキ</div>
         </div>
         : <div className="flex items-center justify-center overflow-hidden">
-            <div className="bg-slate-800 py-1 text-xs font-semibold truncate">デッキ未選択</div>
+            <div className="w-full bg-slate-800 py-1 text-xs font-semibold truncate">デッキ未選択</div>
         </div>
         }
     </div>
