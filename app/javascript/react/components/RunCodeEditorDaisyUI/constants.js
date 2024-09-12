@@ -46,3 +46,10 @@ export const LANGUAGE_LOGO = {
   ruby: "Ruby",
   kotolin: "Kotolin",
 }
+
+export const CATEGORY = {
+  methodLearning: "メソッド学習",
+  algorithm: "アルゴリズム",
+  refactoring: "リファクタリング",
+  tradeOff: "トレードオフ"
+}

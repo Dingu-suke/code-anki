@@ -35,13 +35,13 @@ export const CardList = () => {
           )
         )
       .sort((a, b) => a.title.localeCompare(b.title));
-      setFilteredCards(filtered);  
+      setFilteredCards(filtered);
     }}, [cards, searchTerm]);
 
   // カード更新時にカード一覧を再レンダリングさせる
   const handleCardUpdate = (updatedCard) => {
     setSelectedCard(updatedCard);
-    setCards(prevCards => 
+    setCards(prevCards =>
       prevCards.map(card => card.id === updatedCard.id ? updatedCard : card)
     );
   };

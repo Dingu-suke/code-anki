@@ -8,13 +8,17 @@ import ResponsiveWindow from '../Window/ResponsiveWindow';
 
 export const YourDecksIndex = ({ 
                                   selectedDeck, setSelectedDeck,
+                                  checkedCards, setCheckedCards,
                                   filteredDecks,
                                   isDeckLoading,
                                   searchTerm,
                                   error
                                   ,
                                   addDeck,
-                                  setSearchTermAndFilter }) => {
+                                  setSearchTermAndFilter,
+                                  reRenderDeckList
+                                  // handleCheckCardsOfDeck
+                                }) => {
 
   const [isDeckNewWindowOpen, setIsDeckNewWindowOpen] = useState(false);
 
@@ -30,21 +34,11 @@ export const YourDecksIndex = ({
     setIsDeckNewWindowOpen(false);
   };
 
-  // const handleAddDeck = async (newDeck) => {
-  //   const addedDeck = await addDeck(newDeck);
-  //   if (addedDeck) {
-  //     fetchDecks();
-  //     // ウィンドウを閉じずに、フォームをリセットする処理をここに追加
-  //     // ここでDeckNewコンポーネントの状態をリセットするための関数を呼び出す
-  //   }
-  // };
-
   const handleAddDeckSuccess = useCallback((newDeck) => {
     // 必要に応じて追加の処理を行う
     // 例: 新しいデッキを選択状態にする、など
     console.log('新しいデッキが追加されました:', newDeck);
   }, []);
-
 
   if (isDeckLoading) {
     return (
@@ -65,7 +59,7 @@ export const YourDecksIndex = ({
           onChange={handleSearch}
           className="col-span-5 p-2 rounded bg-gray-700 border focus:outline-none focus:border-2 focus:border-blue-800 border-blue-900 text-cyan-100"
         />
-        <button 
+        <button
           className="col-span-2 p-2 rounded-md bg-slate-900 border border-pink-500 text-pink-500 hover:bg-slate-800"
           onClick={openNewDeckWindow}
         >
@@ -77,9 +71,12 @@ export const YourDecksIndex = ({
         <div className="p-6 h-[calc(60vh-2rem)] overflow-auto">
           {filteredDecks.length > 0 ? (
             <DeckTable
+              checkedCards={checkedCards} setCheckedCards={setCheckedCards}
               filteredDecks={filteredDecks}
               selectedDeck={selectedDeck}
               setSelectedDeck={setSelectedDeck}
+              reRenderDeckList={reRenderDeckList}
+              // handleCheckCardsOfDeck={handleCheckCardsOfDeck}
             />
           ) : (
             <div className="text-center py-4">デッキがありません</div>

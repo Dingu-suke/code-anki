@@ -10,7 +10,7 @@ import { EditorAndAnswer } from "./EditorAndAnswer";
 //     body: '',
 //     answer: ``, 
 //     language: 'javascript', 
-//     remarks:'' 
+//     remarks:''
 //   },
 // ]
 
@@ -23,8 +23,6 @@ const initialCard = {
 }
 
 export const PreviewCard = ({ previewCardList, card, setPreviewCard, moveToNextCard, moveToPreviousCard}) => {
-  // const [cards, setCards] = useState(initialCards)
-  // const [card, setCard] = useState(initialCard)
   const [currentCardId, setCurrentCardId] = useState(card.id)
   const currentCard = card
 
@@ -40,13 +38,13 @@ export const PreviewCard = ({ previewCardList, card, setPreviewCard, moveToNextC
   } = useRunCode(currentCard.language);
 
   const { 
-    runCode: runAnswerCode, 
-    editorRef: answerEditorRef, 
-    language: answerLanguage, 
-    output: answerOutput, 
-    setOutput: setAnswerOutput, 
-    isError: answerIsError, 
-    isLoading: answerIsLoading, 
+    runCode: runAnswerCode,
+    editorRef: answerEditorRef,
+    language: answerLanguage,
+    output: answerOutput,
+    setOutput: setAnswerOutput,
+    isError: answerIsError,
+    isLoading: answerIsLoading,
     setIsError: setAnswerIsError
   } = useRunCode(currentCard.language);
 

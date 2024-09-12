@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
+import { setupCSRFToken } from '../components/Form/setupCSRFToken';
 
 // axiosのインスタンスを作成し、共通の設定を適用
 const api = axios.create({
@@ -16,7 +17,7 @@ export const useYourDeckList = () => {
   const [selectedDeck, setSelectedDeck] = useState(null);
   const [isDeckLoading, setIsDeckLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [error, setError] = useState(null);  
+  const [error, setError] = useState(null);
 
   const fetchDecks = useCallback(async () => {
     setIsDeckLoading(true);
@@ -35,7 +36,11 @@ export const useYourDeckList = () => {
 
   useEffect(() => {
     fetchDecks()
-  }, [fetchDecks])
+  }, [fetchDecks, ])
+
+  const reRenderDeckList = useCallback(() => {
+    fetchDecks()
+  }, [fetchDecks, filteredDecks])
 
   useEffect(() => {
     const searchTerms = searchTerm.toLowerCase().split(' ');
@@ -62,7 +67,7 @@ export const useYourDeckList = () => {
       console.log('デッキ作成成功', response.data)
       console.log("reRenderYourDecks()")
 
-      console.log(response.data)
+      // console.log(response.data)
 
       const newDeck = response.data; // APIレスポンスがそのままデッキオブジェクト
     
@@ -86,20 +91,36 @@ export const useYourDeckList = () => {
   }, []);
   // ---- newDeck から移植 --- //
 
-  const updateDeck = useCallback(async (updatedDeck) => {
+  const updateDeck = useCallback(async (selectedDeck, checkedCards) => {
     setError(null);
+    const deckId = selectedDeck.id
     try {
-      const { data: returnedDeck } = await api.put(`/your_decks/${updatedDeck.id}`, updatedDeck);
-      setDecks(prevDecks => prevDecks.map(deck => 
-        deck.id === returnedDeck.id ? returnedDeck : deck
-      ));
-      return returnedDeck;
+      const response = await axios.patch(`/decks/${deckId}`, {
+        deck: {
+          card_ids: checkedCards.map((card) => card.id)
+        }
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }}
+      );
+      fetchDecks()      
+      if (response.status === 200) {
+        console.log('Deck updated successfully');
+      }
     } catch (error) {
       setError('デッキの更新に失敗しました: ' + error.message);
       console.error('Error updating deck:', error);
     }
   }, []);
 
+
+  useEffect(() => {
+    setSelectedDeck(selectedDeck)
+  }, [updateDeck])
+  
   const deleteDeck = useCallback(async (deckId) => {
     setError(null);
     try {
@@ -125,6 +146,8 @@ export const useYourDeckList = () => {
     ,
     addDeck,
     fetchDecks,
-    setSearchTermAndFilter
+    updateDeck,
+    setSearchTermAndFilter,
+    reRenderDeckList
   };
 };

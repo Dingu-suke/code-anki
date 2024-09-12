@@ -47,11 +47,19 @@ class DecksController < ApplicationController
   # PATCH/PUT /decks/1 or /decks/1.json
   def update
     @deck = current_user.decks.find(params[:id])
-    if @deck.update(deck_params)
-      redirect_to your_decks_path, success: "保存成功"
-    else
-      flash.now[:danger] = "保存失敗"
-      render :edit
+    Rails.logger.debug "Recieved params : #{params.inspect}"
+    
+    respond_to do |format|
+      if @deck.update(deck_params)
+        format.html
+        format.json { render json: @deck, status: :ok }
+      else
+        format.html do
+          flash.now[:danger] = "保存失敗"
+          render :edit
+        end
+        # format.json { render json: @deck.errors, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -61,11 +69,11 @@ class DecksController < ApplicationController
     redirect_to your_decks_path, success: "デッキを削除しました", status: :see_other
   end
 
+  # 使用ユーザーのみのデッキ一覧
   def your_decks
     @your_decks = Deck.where(user_id: current_user.id).includes(:user).order("created_at DESC")
     @your_cards = Card.where(user_id: current_user.id).includes(:user).order("created_at DESC")
     respond_to do |format|
-      format.html
       format.json {
         render json: @your_decks.as_json(
         include: { cards: { only: [:id, :title, :body, :language, :answer, :remarks]} }

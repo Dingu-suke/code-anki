@@ -40,8 +40,6 @@ export const NewResponsiveWindow = ({ isOpen, onClose, children, title, initialP
     debouncedSetSize(newSize)
   }, []);
   
-  // console.log("NewWindow", WindowBoolean)
-  console.log("NewWindow", isOpen)
   if (!isOpen) return null;
 
   return (

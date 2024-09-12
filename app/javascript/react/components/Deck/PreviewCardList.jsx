@@ -2,27 +2,40 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import React from 'react';
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
-export const PreviewCardList = ({checkedCards, setCheckedCards, previewCard, setPreviewCard }) => {
+export const PreviewCardList = ({checkedCards, setCheckedCards, previewCard, setPreviewCard, selectedDeck }) => {
   
   const scrollContainerRef = useRef(null)
   const prevCheckedCardsLengthRef = useRef(checkedCards.length);
+  const prevSelectedDeckRef = useRef(selectedDeck);
   const [cardOrder, setCardOrder] = useState([]);
 
   useEffect(() => {
-    const currentLength = checkedCards.length;
-    const prevLength = prevCheckedCardsLengthRef.current;
+    if (scrollContainerRef.current) {
+      if (selectedDeck !== prevSelectedDeckRef.current) {
+        // selectedDeck が変更されたときは左端にスクロール
+        scrollContainerRef.current.scrollTo({
+          left: 0,
+          behavior: 'smooth'
+        });
+      } else {
+        const currentLength = checkedCards.length;
+        const prevLength = prevCheckedCardsLengthRef.current;
 
-    if (currentLength > prevLength && scrollContainerRef.current) {
-      const maxScrollLeft = scrollContainerRef.current.scrollWidth - scrollContainerRef.current.clientWidth;
-      scrollContainerRef.current.scrollTo({
-        left: maxScrollLeft,
-        behavior: 'smooth'
-      });
+        if (currentLength > prevLength) {
+          // checkedCards の要素数が増えたときのみ右端にスクロール
+          const maxScrollLeft = scrollContainerRef.current.scrollWidth - scrollContainerRef.current.clientWidth;
+          scrollContainerRef.current.scrollTo({
+            left: maxScrollLeft,
+            behavior: 'smooth'
+          });
+        }
+      }
     }
 
-    // 現在の長さを保存して、次回の比較に使用
-    prevCheckedCardsLengthRef.current = currentLength;
-  }, [checkedCards]);
+    // 現在の値を保存して、次回の比較に使用
+    prevCheckedCardsLengthRef.current = checkedCards.length;
+    prevSelectedDeckRef.current = selectedDeck;
+  }, [checkedCards, selectedDeck]);
 
   useEffect(() => {
     if (checkedCards.length > 0 && scrollContainerRef.current) {

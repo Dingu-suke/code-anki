@@ -1,30 +1,45 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ResponsiveWindow from '../Window/ResponsiveWindow';
 
 export const SelectCardIndex = (
   { 
     selectedCard, setSelectedCard,
+    checkedCards, setCheckedCards,
     searchTerm,
     setSearchTerm,
     filteredCards,
     isWindowOpen,
     handleCardClick,
     closeWindow,
-    CheckCard,
-    handleCheckboxClick }) => {
+    // selectedDeck
+  }) => {
+
+  const handleCheckboxClick = (card) => {
+    setCheckedCards((prevCheckedCards) => {
+      if (prevCheckedCards.some((c) => c.id === card.id)) {
+        return prevCheckedCards.filter((c) => c.id !== card.id)
+      } else {
+        return [...prevCheckedCards, card]
+      }
+    })
+  };
+
+  useEffect(() => {
+    console.log(checkedCards);
+  }, [checkedCards])
 
   return (
-  <div className="container mx-auto">
+  <div className="">
     <h1 className="text-2xl font-bold text-orange-400 font-courier">{/* あなたのカード */}</h1>
       <div className="grid grid-cols-6">
-          <input
-            type="text"
-            id="searchCards"
-            name="searchCards"
-            placeholder="カードを検索"
-            value={searchTerm}
-            onChange={(e) => { setSearchTerm(e.target.value)}}
-            className="col-start-1 col-span-4 w-full p-2 pl-3 mb-4 border rounded bg-gray-700 focus:outline-none focus:border-2 focus:border-blue-800 border-blue-900 text-cyan-100"
+        <input
+          type="text"
+          id="searchCards"
+          name="searchCards"
+          placeholder="カードを検索"
+          value={searchTerm}
+          onChange={(e) => { setSearchTerm(e.target.value)}}
+          className="col-start-1 col-span-4 w-full p-2 pl-3 mb-4 border rounded bg-gray-700 focus:outline-none focus:border-2 focus:border-blue-800 border-blue-900 text-cyan-100"
         />
       </div>
       <div className="col-span-4">
@@ -53,9 +68,12 @@ export const SelectCardIndex = (
                       <input 
                         type="checkbox"
                         className="checkbox checkbox-lg checkbox-secondary hover:bg-pink-900 m-1 flex items-center"
-                        // checked={sedCards.some((c) => c.id === card.id)}
-                        onClick={() => handleCheckboxClick(card)}
-                        checked={card.isSelected} // カードの選択状態を反映
+                        checked={checkedCards.some((c) => c.id === card.id)}
+                        onChange={(e) => {
+                          // イベントの伝播を停止、カード全体の onClick の阻止
+                          e.stopPropagation();
+                          handleCheckboxClick(card);
+                        }}
                         />
                     </div>
                   </div>
@@ -75,12 +93,12 @@ export const SelectCardIndex = (
                 initialSize={{ width: 600, height: 450 }}
                 onClose={closeWindow}
               >
-                <CheckCard selectedCard={selectedCard} />
+                {/* <CheckCard selectedCard={selectedCard} /> */}
               </ResponsiveWindow>
             )}
           </div>
         </div>
       </div>
     </div>    
-);
+  );
 }

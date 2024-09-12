@@ -11,8 +11,10 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
   get 'your_decks' => 'decks#your_decks'
+  
   get 'your_cards' => 'cards#your_cards'
   get 'deck_cards/:id' => 'decks#deck_cards', as: 'deck_cards'
+  patch 'decks/:id'  => 'decks#update'
   
   delete 'destroy_your_deck/:id' => 'decks#destroy_your_deck', as:'destroy_your_deck'
   delete 'destroy_your_card/:id' => 'cards#destroy_your_card', as:'destroy_your_card'

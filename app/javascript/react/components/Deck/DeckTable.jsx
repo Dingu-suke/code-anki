@@ -1,6 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
-export const DeckTable = ({ filteredDecks, selectedDeck, setSelectedDeck }) => {
+export const DeckTable = ({ checkedCards, setCheckedCards, filteredDecks, selectedDeck, setSelectedDeck, handleCheckCardsOfDeck, reRenderDeckList }) => {
+
+
+  const setDeck = (deck) => {
+    selectedDeck === deck 
+  ? (
+      () => {
+        setSelectedDeck(null);
+        // handleCheckCardsOfDeck(deck)
+        setCheckedCards([]);
+      }
+    )()
+  : (
+      () => {
+        setSelectedDeck(deck);
+        // handleCheckCardsOfDeck(deck)
+        setCheckedCards(deck.cards);
+      }
+    )()
+  }
 
   return (
     <div className="overflow-x-auto shadow-lg rounded-lg">
@@ -22,7 +41,7 @@ export const DeckTable = ({ filteredDecks, selectedDeck, setSelectedDeck }) => {
               className={`border-b bg-gray-800 border-gray-700  ${
                 selectedDeck && selectedDeck.id === deck.id ? 'bg-indigo-900 hover:bg-blue-900' : 'hover:bg-cyan-900'
               }`}
-              onClick={() => {setSelectedDeck(card)}}
+              onClick={() => {setDeck(deck)}}
             >
               <th scope="row" className="px-6 py-4 font-medium whitespace-nowrap text-cyan-400">
                 {deck.name}
