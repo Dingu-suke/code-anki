@@ -51,13 +51,11 @@ class DecksController < ApplicationController
     
     respond_to do |format|
       if @deck.update(deck_params)
-        format.html
-        format.json { render json: @deck, status: :ok }
+        format.html { head :no_content }
+        format.json { render json: @deck.as_json(include: :cards), status: :ok }
       else
-        format.html do
-          flash.now[:danger] = "保存失敗"
-          render :edit
-        end
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @deck.errors, status: :unprocessable_entity }
         # format.json { render json: @deck.errors, status: :unprocessable_entity }
       end
     end
@@ -74,6 +72,7 @@ class DecksController < ApplicationController
     @your_decks = Deck.where(user_id: current_user.id).includes(:user).order("created_at DESC")
     @your_cards = Card.where(user_id: current_user.id).includes(:user).order("created_at DESC")
     respond_to do |format|
+
       format.json {
         render json: @your_decks.as_json(
         include: { cards: { only: [:id, :title, :body, :language, :answer, :remarks]} }

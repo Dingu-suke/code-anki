@@ -64,8 +64,6 @@ export const useYourDeckList = () => {
           'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
         }
       });
-      console.log('デッキ作成成功', response.data)
-      console.log("reRenderYourDecks()")
 
       // console.log(response.data)
 
@@ -103,23 +101,28 @@ export const useYourDeckList = () => {
       {
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
           'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         }}
       );
-      fetchDecks()      
-      if (response.status === 200) {
-        console.log('Deck updated successfully');
+      console.log('Response:', {
+        status: response.status,
+        headers: response.headers,
+        data: response.data
+      });
+
+      if (response.data) {
+        const updatedDeck = response.data;
+        setDecks(prevDecks => prevDecks.map(deck => deck.id === updatedDeck.id ? updatedDeck : deck));
+        setFilteredDecks(prevFilteredDeck => prevFilteredDeck.map(deck => deck.id === updatedDeck.id ? updateDeck : deck));
+        setSelectedDeck(updatedDeck)
       }
+      fetchDecks()
     } catch (error) {
       setError('デッキの更新に失敗しました: ' + error.message);
       console.error('Error updating deck:', error);
     }
   }, []);
-
-
-  useEffect(() => {
-    setSelectedDeck(selectedDeck)
-  }, [updateDeck])
   
   const deleteDeck = useCallback(async (deckId) => {
     setError(null);
