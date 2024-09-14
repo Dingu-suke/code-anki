@@ -13,17 +13,18 @@
     <meta name="turbo-visit-control" content="reload">
   </head>
 
-  <body class="flex flex-col min-h-screen">
-    <header  class="navbar bg-base-10 bg-blue-200">
-      <%= render 'shared/header' %>
-    </header>
-    <div>
-      <%= render 'shared/menubar' %>
+  <body class="flex flex-col min-h-screen bg-black">
+    <%# <div  class="navbar bg-base-10 bg-blue-200"> %>
+      <%# <%= render 'shared/header' %>
+    <div class="sidebar fixed top-0 bottom-0 lg:left-0 p-2 w-[300px] overflow-y-auto text-center bg-gray-900">
+      <%= render 'shared/sidebar' %>
     </div>
-    <div class="flex-grow bg-slate-950">
-      <%= yield %>
+    <div class="flex-1 ml-[300px] p-4">
+      <main class="flex-grow bg-slate-900 rounded-lg shadow-xl p-6">
+        <%= yield %>
+      </main>
+    </div>
 
-    </div>
     <%# <%= render 'shared/footer' %>
   </body>
 
