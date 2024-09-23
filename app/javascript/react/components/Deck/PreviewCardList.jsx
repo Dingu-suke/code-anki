@@ -7,6 +7,8 @@ export const PreviewCardList = ({checkedCards, setCheckedCards, previewCard, set
   const scrollContainerRef = useRef(null)
   const prevCheckedCardsLengthRef = useRef(checkedCards.length);
   const prevSelectedDeckRef = useRef(selectedDeck);
+  const prevChekedCardsRef = useRef([])
+  const checkedCardsRef = useRef(checkedCards)
   const [cardOrder, setCardOrder] = useState([]);
 
   useEffect(() => {
@@ -36,6 +38,13 @@ export const PreviewCardList = ({checkedCards, setCheckedCards, previewCard, set
     prevCheckedCardsLengthRef.current = checkedCards.length;
     prevSelectedDeckRef.current = selectedDeck;
   }, [checkedCards, selectedDeck]);
+  
+  // カードを編集したときにDOMにも変更を反映
+  useEffect(() => {
+    if (selectedDeck && selectedDeck.cards) {
+      setCheckedCards(selectedDeck.cards);
+    }
+  }, [selectedDeck]);
 
   useEffect(() => {
     if (checkedCards.length > 0 && scrollContainerRef.current) {
@@ -64,7 +73,7 @@ export const PreviewCardList = ({checkedCards, setCheckedCards, previewCard, set
       }
     }
   }, [previewCard]);
-
+  
   // ------------------------------------------------
 
   const updateCardOrder = useCallback(() => {

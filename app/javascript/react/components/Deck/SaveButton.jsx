@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-export const SaveButton = ({ selectedDeck, checkedCards, updateDeck, fetchDecks }) => {
+export const SaveButton = ({ selectedDeck, checkedCards, editDeck, fetchDecks }) => {
   const {isLoading, setIsLaoding} = useForm()
   const [error, setError] = useState(null)
 
   const SaveDeckOrganization = (selectedDeck, checkedCards) => {
     console.log("SaveDeckOrganization")
-    updateDeck(selectedDeck, checkedCards)
+    editDeck(selectedDeck, checkedCards)
     // fetchDecks()
   }
 

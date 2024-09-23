@@ -68,7 +68,7 @@ export const YourDecksIndex = ({
       </div>
       
       <div className="border border-slate-600 bg-stone-950 text-cyan-50 rounded overflow-hidden">
-        <div className="p-6 h-[calc(60vh-2rem)] overflow-auto">
+        
           {filteredDecks.length > 0 ? (
             <DeckTable
               checkedCards={checkedCards} setCheckedCards={setCheckedCards}
@@ -81,7 +81,6 @@ export const YourDecksIndex = ({
           ) : (
             <div className="text-center py-4">デッキがありません</div>
           )}
-        </div>
       </div>
 
       {/* {isDeckNewWindowOpen && (

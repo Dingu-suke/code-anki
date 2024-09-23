@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IoWarning } from "react-icons/io5";
 import { useCardNavigation } from '../../hooks/useCardNavigation';
 import { useCards } from '../../hooks/useCards';
@@ -18,6 +18,7 @@ export const DeckInfo = () => {
   const [filteredCards, setFilteredCards] = useState([]);
   const [isWindowOpen, setIsWindowOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
+  const prevSelectedCardRef = useRef(null);
   const { checkedCards, setCheckedCards,
           previewCard, setPreviewCard
           ,
@@ -35,9 +36,11 @@ export const DeckInfo = () => {
     ,
     addDeck,
     fetchDecks,
-    updateDeck,
+    editDeck,
     setSearchTermAndFilter,
-    reRenderDeckList
+    reRenderDeckList,
+    updateDeckAndCard
+    
   } = useYourDeckList()
   
   const closeWindow = () => {  
@@ -45,41 +48,83 @@ export const DeckInfo = () => {
     setSelectedCard(null);
   }
 
+  useEffect(() => {
+    // 🍉
+    prevSelectedCardRef.current = selectedCard;
+  }, [selectedCard])
+
   const handleCardClick = (event, card) => {
     // チェックボックス以外の領域がクリックされた場合のみウィンドウを開く
     if (!event.target.closest('.checkbox-container')) {
-      setIsWindowOpen(true);
-      setSelectedCard(card);
+      const isCurrentlySelected = selectedCard && selectedCard.id === card.id
+      setSelectedCard(isCurrentlySelected ? null : card);
+      setIsWindowOpen(!isCurrentlySelected);
     }
+    // 🍉 useEffect で更新
   };
-
+  
   useEffect(() => {
     if (cards) {
       const searchTerms = searchTerm.toLowerCase().split(' ');
       const filtered = cards
-        .filter(card =>
+      .filter(card =>
           searchTerms.every(term => 
             card.title .toLowerCase().includes(term) || 
             card.body  .toLowerCase().includes(term) ||
             card.answer.toLowerCase().includes(term) 
           )
         )
-      .sort((a, b) => a.title.localeCompare(b.title));
-      setFilteredCards(filtered);
-    }}, [cards, searchTerm]);
-
+        .sort((a, b) => a.title.localeCompare(b.title));
+        setFilteredCards(filtered);
+      }}, [cards, searchTerm]);
+      
   const borderCalss = "border-teal-700 text-emerald-400 text-bold"
   const tabClass = "px-4 border-t border-x rounded-t-sm font-bold focus:outline-none relative";
   const activeTabClass = `bg-slate-950 ${borderCalss} border-b-0 after:absolute after:bottom-[-1px] after:left-0 after:right-0 after:h-[1px] after:bg-slate-950`;
   const inactiveTabClass = "bg-slate-900 text-emerald-700 border-transparent hover:text-green-600";
-
+  
   const [activeTab, setActiveTab] = useState('deckIndex')
-
+  
   const handleTabChange = (tabName) => {
     setActiveTab(tabName);
   };
+      
+  const updateCardInDecks = useCallback((updatedCard) => {
+    // カードの状態を更新
+    setCards(prevCards =>
+      prevCards.map(card => card.id === updatedCard.id ? updatedCard : card)
+    );
 
-  // const [activeTab, setActiveTab] = useState('cardIndex')
+    // 選択されているカードを更新
+    setSelectedCard(updatedCard);
+
+    // すべてのデッキを更新
+    setDecks(prevDecks =>
+      prevDecks.map(deck => ({
+        ...deck,
+        cards: deck.cards.map(card => 
+          card.id === updatedCard.id ? updatedCard : card
+        )
+      }))
+    );
+
+    // 選択されているデッキも更新
+    setSelectedDeck(prevDeck => {
+      if (!prevDeck) return prevDeck;
+      return {
+        ...prevDeck,
+        cards: prevDeck.cards.map(card => 
+          card.id === updatedCard.id ? updatedCard : card
+        )
+      };
+    });
+  }, []);
+
+  // カード更新のハンドラー
+  const handleCardUpdate = useCallback((updatedCard) => {
+    updateCardInDecks(updatedCard);
+  }, [updateCardInDecks]);
+        
   if (isLoading) {
     return <div>Loading...</div>
   }
@@ -96,7 +141,7 @@ export const DeckInfo = () => {
           <PreviewCardList checkedCards={checkedCards} setCheckedCards={setCheckedCards} previewCard={previewCard} setPreviewCard={setPreviewCard} selectedDeck={selectedDeck} />
         </div>
         <div className="col-start-6 col-span-1 py-4">
-          <SaveButton selectedDeck={selectedDeck} checkedCards={checkedCards} updateDeck={updateDeck} fetchDecks={fetchDecks}/>
+          <SaveButton selectedDeck={selectedDeck} checkedCards={checkedCards} editDeck={editDeck} fetchDecks={fetchDecks}/>
         </div>
       </div>
       <div className="px-4 w-full">
@@ -166,7 +211,9 @@ export const DeckInfo = () => {
             // CheckCard={CheckCard}
             checkedCards={checkedCards}
             setCheckedCards={setCheckedCards}
-            // selectedDeck={selectedDeck}
+            handleCardUpdate={handleCardUpdate}
+            updateDeckAndCard={updateDeckAndCard}
+            selectedDeck={selectedDeck}
           />
           </div>
           <div

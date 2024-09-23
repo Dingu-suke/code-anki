@@ -1,32 +1,64 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import ResponsiveWindow from '../Window/ResponsiveWindow';
+import { CheckCard } from '../card/CheckCard';
+import CardForm from '../Form/CardEditForm';
 
 export const SelectCardIndex = (
   { 
     selectedCard, setSelectedCard,
     checkedCards, setCheckedCards,
-    searchTerm,
-    setSearchTerm,
+    searchTerm, setSearchTerm,
     filteredCards,
     isWindowOpen,
     handleCardClick,
     closeWindow,
-    // selectedDeck
+    handleCardUpdate,
+    editDeck,
+    selectedDeck,
+    selCheckedCards
   }) => {
 
+  const prevCheckedCardsRef = useRef([])
+
   const handleCheckboxClick = (card) => {
-    setCheckedCards((prevCheckedCards) => {
-      if (prevCheckedCards.some((c) => c.id === card.id)) {
-        return prevCheckedCards.filter((c) => c.id !== card.id)
+    setCheckedCards(prevCheckedCards => {
+      if (prevCheckedCards.some(c => c.id === card.id)) {
+        return prevCheckedCards.filter(c => c.id !== card.id);
       } else {
-        return [...prevCheckedCards, card]
+        return [...prevCheckedCards, card];
       }
-    })
+    });
   };
 
+  // カード更新時にカード一覧を再レンダリングさせる
   useEffect(() => {
     console.log(checkedCards);
   }, [checkedCards])
+
+  useEffect(() => {
+    if (selectedDeck && selectedDeck.cards) {
+      
+      // 更新前のカード群をRefに保存
+      prevCheckedCardsRef.current = checkedCards;
+      console.log("checkedCards",checkedCards)
+      const updatedCheckedCards = selectedDeck.cards.map(newCard => {
+        const prevCard = prevCheckedCardsRef.current.find(card => card.id === newCard.id);
+        return prevCard ? { ...newCard, isChecked: prevCard.isChecked } : newCard;
+      })
+      setCheckedCards(updatedCheckedCards);
+    }
+  },[])
+
+  const handleCardChecked = (cardId) => {
+    selCheckedCards(prevCards => 
+      {
+        console.log(prevCards)
+        prevCards.map(card =>
+          card.id === cardId ? { ...card, isChecked: !card.isChecked} : card
+        )
+      }
+    )
+  }
 
   return (
   <div className="">
@@ -42,50 +74,70 @@ export const SelectCardIndex = (
           className="col-start-1 col-span-4 w-full p-2 pl-3 mb-4 border rounded bg-gray-700 focus:outline-none focus:border-2 focus:border-blue-800 border-blue-900 text-cyan-100"
         />
       </div>
-      <div className="col-span-4">
+      <div className="col-span-4 ounded">
         <div className="border border-slate-600 bg-stone-950 text-cyan-50 rounded overflow-hidden">
-          <div className="p-6 h-[calc(60vh-2rem)] overflow-auto">
-
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4" >
-              <div className="border border-dashed hover:border-solid border-pink-400 hover:border-pink-400 text-pink-400 p-4 rounded shadow  bg-slate-950 flex items-center">
-                <h2 className='text-xl font-semibold'>+ new card</h2>
-              </div>
-              {filteredCards.map((card) => (
-                <div
-                key={card.id}
-                className={`border hover:border-cyan-300 p-4 rounded shadow hover:bg-indigo-900 
-                ${card === selectedCard ? 'bg-indigo-900 border-green-500' : 'bg-indigo-950 border-cyan-600' }`}
-                onClick={(event) => handleCardClick(event, card)}
+          <div className="h-[calc(60vh-2rem)] overflow-auto">
+            <div>
+              <table className="w-full text-sm text-left text-gray-300">
+                <thead className="text-xs uppercase bg-gray-700 text-gray-300 sticky top-0 z-10">
+                  <tr>
+                    <th scope="col" className="py-3 text-fuchsia-500 text-center px-3" style={{ width: '5px' }}>✓</th>
+                    <th scope="col" className="px-6 py-3 justify-center border-r border-slate-600">カード名</th>
+                    <th scope="col" className="px-6 py-3">言語</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {filteredCards.map((card) => (
+                  <tr
+                  className={`border-b bg-gray-800 border-gray-700 ${selectedCard && selectedCard.id === card.id ? 'bg-indigo-900 hover:bg-blue-900' : 'hover:bg-cyan-900'}`}
+                  onClick={(event) => {
+                      if (!event.target.closest('td:first-child')) {
+                      handleCardClick(event, card);
+                    }
+                  }}
+                  // onChange={() => handleCardChecked(card.id)}
                 >
-                  <h2 className='text-xl font-semibold '>
-                    <div className="grid grid-cols-2">
-                      <div className="text-cyan-100 flex items-center">
-                        {card.title}
-                      <div>
-                    </div>
-                    </div>
-                    <div className="justify-self-end checkbox-container" >
-                      <input 
+                  <td className={`font-medium whitespace-nowrap text-cyan-400 px-3`}>
+                    <div className="flex items-center justify-center w-full h-full">
+                      <input
+                        className="checkbox checkbox-md checkbox-secondary hover:bg-pink-900"
                         type="checkbox"
-                        className="checkbox checkbox-lg checkbox-secondary hover:bg-pink-900 m-1 flex items-center"
                         checked={checkedCards.some((c) => c.id === card.id)}
-                        onChange={(e) => {
+                        onChange={(event) => {
                           // イベントの伝播を停止、カード全体の onClick の阻止
-                          e.stopPropagation();
+                          event.stopPropagation();
                           handleCheckboxClick(card);
                         }}
-                        />
+                      />
                     </div>
-                  </div>
-                  </h2>
-                </div>
-              ))}
+                  </td>
+                
+                    <td className="px-6 py-4 font-medium whitespace-nowrap text-cyan-400 border-r border-gray-700">
+                      <div className="flex items-center justify-start w-64 h-full truncate">
+                        <div
+                          
+                        >
+                          {card.title}
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div className="flex items-center justify-start w-48 h-full px-6 py-4">
+                        {card.language}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+                  
+                </tbody>
+              </table>
+              <br/><br/><br/><br/>
+              <br/><br/><br/><br/>
+              <br/><br/><br/><br/>
+              <br/><br/><br/><br/>
+              <br/><br/><br/><br/>
+
             </div>
-              <br/><br/><br/><br/>
-              <br/><br/><br/><br/>
-              <br/><br/><br/><br/>
-              <br/><br/><br/><br/>
-              <br/><br/><br/><br/>
             {isWindowOpen && (
               <ResponsiveWindow
                 title={`${selectedCard.title}`}
@@ -93,7 +145,13 @@ export const SelectCardIndex = (
                 initialSize={{ width: 600, height: 450 }}
                 onClose={closeWindow}
               >
-                {/* <CheckCard selectedCard={selectedCard} /> */}
+                <CheckCard selectedCard={selectedCard} />
+                {/* <CardForm
+                  useInWindow={true}
+                  selectedCard={selectedCard}
+                  onUpdateSuccess={handleCardUpdate}
+                  handleCardUpdate={handleCardUpdate}
+                /> */}
               </ResponsiveWindow>
             )}
           </div>

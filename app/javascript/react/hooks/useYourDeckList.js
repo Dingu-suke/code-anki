@@ -89,7 +89,7 @@ export const useYourDeckList = () => {
   }, []);
   // ---- newDeck から移植 --- //
 
-  const updateDeck = useCallback(async (selectedDeck, checkedCards) => {
+  const editDeck = useCallback(async (selectedDeck, checkedCards) => {
     setError(null);
     const deckId = selectedDeck.id
     try {
@@ -112,10 +112,8 @@ export const useYourDeckList = () => {
       });
 
       if (response.data) {
-        const updatedDeck = response.data;
-        setDecks(prevDecks => prevDecks.map(deck => deck.id === updatedDeck.id ? updatedDeck : deck));
-        setFilteredDecks(prevFilteredDeck => prevFilteredDeck.map(deck => deck.id === updatedDeck.id ? updateDeck : deck));
-        setSelectedDeck(updatedDeck)
+        updateDeckAndCard(response.data)
+
       }
       fetchDecks()
     } catch (error) {
@@ -123,6 +121,17 @@ export const useYourDeckList = () => {
       console.error('Error updating deck:', error);
     }
   }, []);
+
+  useEffect(() => {
+    console.log("aa", selectedDeck)
+  }, [selectedDeck])
+
+  const updateDeckAndCard = (updatedDeck) => {
+        setDecks(prevDecks => prevDecks.map(deck => deck.id === updatedDeck.id ? updatedDeck : deck));
+        setFilteredDecks(prevFilteredDeck => prevFilteredDeck.map(deck => deck.id === updatedDeck.id ? editDeck : deck));
+        setSelectedDeck(updatedDeck)
+        // setDecks(prevDecks => prevDecks.cards.map(card => card.id === updatedDeck.card.id ? updatedDeck.card : card));
+  }
   
   const deleteDeck = useCallback(async (deckId) => {
     setError(null);
@@ -148,9 +157,10 @@ export const useYourDeckList = () => {
     error, setError
     ,
     addDeck,
+    editDeck,
     fetchDecks,
-    updateDeck,
     setSearchTermAndFilter,
-    reRenderDeckList
+    reRenderDeckList,
+    updateDeckAndCard
   };
 };

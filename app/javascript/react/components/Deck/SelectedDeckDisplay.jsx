@@ -37,7 +37,7 @@ export const SelectedDeckDisplay = ({ selectedDeck }) => {
                         </div>
                       </div>
                       <div className="bg-blue-800 text-blue-100 text-xs font-medium mr-2 px-2.5 rounded row-start-2 row-span-1 col-start-2 col-span-2 flex items-center justify-center py-3 my-2">
-                        {selectedDeck.cards ? selectedDeck.cards.length : 0}
+                        {selectedDeck.cards ? selectedDeck.cards.length : ""}
                       </div>
                       <div className="row-start-3 row-span-1 col-start-1 col-span-1 flex overflow-hidden items-center justify-center">
                         <div className="bg-stone-950 text-cyan-300 rounded truncate px-1">
