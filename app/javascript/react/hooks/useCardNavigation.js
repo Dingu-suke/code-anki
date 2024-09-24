@@ -3,7 +3,7 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 
 export const useCardNavigation = () => {
   const initialCard = {
-    id: 999, title: 'タイトル',
+    id: 9999999999999, title: 'タイトル',
     body: '',
     answer: ``, 
     language: 'javascript', 
@@ -49,6 +49,7 @@ export const useCardNavigation = () => {
     setPreviewCard,
     moveToNextCard,
     moveToPreviousCard,
+    initialCard
     // scrollContainerRef
   };
 };

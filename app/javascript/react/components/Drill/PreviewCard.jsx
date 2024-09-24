@@ -5,23 +5,6 @@ import Output from "../RunCodeEditorDaisyUI/RunButton&Output/Output";
 import { EditorAndAnswer } from "./EditorAndAnswer";
 
 
-// const initialCards = [
-//   {id: 900, title: 'タイトル',
-//     body: '',
-//     answer: ``, 
-//     language: 'javascript', 
-//     remarks:''
-//   },
-// ]
-
-const initialCard = {
-  id: 20, title: 'タイトル10',
-  body: '',
-  answer: ``, 
-  language: 'javascript', 
-  remarks:''
-}
-
 export const PreviewCard = ({ previewCardList, card, setPreviewCard, moveToNextCard, moveToPreviousCard}) => {
   const [currentCardId, setCurrentCardId] = useState(card.id)
   const currentCard = card
@@ -31,9 +14,9 @@ export const PreviewCard = ({ previewCardList, card, setPreviewCard, moveToNextC
     editorRef: userEditorRef, 
     language: userLanguage, 
     output: userOutput, 
-    setOutput: setUserOutput, 
+    setOutput: setUserOutput,
     isError: userIsError, 
-    isLoading: userIsLoading, 
+    isLoading: userIsLoading,
     setIsError: setUserIsError
   } = useRunCode(currentCard.language);
 

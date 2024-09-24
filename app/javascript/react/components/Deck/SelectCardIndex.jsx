@@ -74,6 +74,7 @@ export const SelectCardIndex = (
           className="col-start-1 col-span-4 w-full p-2 pl-3 mb-4 border rounded bg-gray-700 focus:outline-none focus:border-2 focus:border-blue-800 border-blue-900 text-cyan-100"
         />
       </div>
+      
       <div className="col-span-4 ounded">
         <div className="border border-slate-600 bg-stone-950 text-cyan-50 rounded overflow-hidden">
           <div className="h-[calc(60vh-2rem)] overflow-auto">
@@ -157,6 +158,6 @@ export const SelectCardIndex = (
           </div>
         </div>
       </div>
-    </div>    
+    </div>
   );
 }

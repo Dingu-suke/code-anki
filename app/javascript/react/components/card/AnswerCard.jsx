@@ -9,7 +9,7 @@ import { RemarksEditor } from '../Editor/MarkdownEditor';
 
 
 export const Answer = ({ value, onChange, language, onLanguageChange }) => {
-
+  
   const onSelect = (newLanguage) => {
     onLanguageChange(newLanguage);
     onChange(CODE_SNIPPETS[newLanguage]);

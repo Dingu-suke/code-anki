@@ -23,7 +23,7 @@ export const DeckTable = ({ checkedCards, setCheckedCards, filteredDecks, select
               <th scope="col" className="px-6 py-3">カード数</th>
               <th scope="col" className="px-6 py-3">言語</th>
               <th scope="col" className="px-6 py-3">カテゴリ</th>
-              <th scope="col" className="px-6 py-3">最終更新日</th>
+              <th scope="col" className="px-6 py-3">作成日</th>
               <th scope="col" className="px-3 py-3">非公開 / 公開</th>
             </tr>
           </thead>

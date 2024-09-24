@@ -68,13 +68,12 @@ export const DeckList = ({ selectedCard }) => {
     return <div>Loading...</div>
   }
 
-
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4 text-green-400 font-courier"></h1>
       <input
         type="text"
-        placeholder=" デッキを検索"
+        placeholder="デッキを検索"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         className="w-full p-2 mb-4 border rounded bg-gray-700 focus:outline-none focus:border-2 focus:border-blue-800 border-blue-900 text-cyan-100"

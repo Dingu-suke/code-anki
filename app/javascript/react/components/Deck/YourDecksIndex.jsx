@@ -5,6 +5,8 @@ import { useYourDeckList } from '../../hooks/useYourDeckList';
 import { GiConsoleController } from 'react-icons/gi';
 import { NewResponsiveWindow } from '../Window/NewResponsiveWindow';
 import ResponsiveWindow from '../Window/ResponsiveWindow';
+import { LanguageSelector } from '../RunCodeEditorDaisyUI/LanguageController';
+import { LANGUAGE_LABELS } from '../RunCodeEditorDaisyUI/constants';
 
 export const YourDecksIndex = ({ 
                                   selectedDeck, setSelectedDeck,
@@ -21,6 +23,7 @@ export const YourDecksIndex = ({
                                 }) => {
 
   const [isDeckNewWindowOpen, setIsDeckNewWindowOpen] = useState(false);
+  const [language, setLanguage] = useState("");
 
   const handleSearch = (e) => {
     setSearchTermAndFilter(e.target.value);
@@ -40,6 +43,15 @@ export const YourDecksIndex = ({
     console.log('新しいデッキが追加されました:', newDeck);
   }, []);
 
+  const onLanguageChange=(lang) => {
+    // setValue('language', lang)
+  }
+
+  const onSelect = (newLanguage) => {
+    // onLanguageChange(newLanguage);
+    setLanguage(LANGUAGE_LABELS[newLanguage]);
+  };
+
   if (isDeckLoading) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -57,14 +69,17 @@ export const YourDecksIndex = ({
           placeholder="デッキを検索"
           value={searchTerm}
           onChange={handleSearch}
-          className="col-span-5 p-2 rounded bg-gray-700 border focus:outline-none focus:border-2 focus:border-blue-800 border-blue-900 text-cyan-100"
+          className="col-span-4 p-2 pl-3 rounded bg-gray-700 border focus:outline-none focus:border-2 focus:border-blue-800 border-blue-900 text-cyan-100"
         />
         <button
-          className="col-span-2 p-2 rounded-md bg-slate-900 border border-pink-500 text-pink-500 hover:bg-slate-800"
+          className="col-span-1 p-2 rounded-md bg-slate-900 border border-pink-500 text-pink-500 hover:bg-slate-800"
           onClick={openNewDeckWindow}
         >
           + New Deck
         </button>
+        <div className="z-50 flex items-center">
+          <LanguageSelector language={language} onSelect={onSelect} />
+        </div>
       </div>
       
       <div className="border border-slate-600 bg-stone-950 text-cyan-50 rounded overflow-hidden">
@@ -82,17 +97,6 @@ export const YourDecksIndex = ({
             <div className="text-center py-4">デッキがありません</div>
           )}
       </div>
-
-      {/* {isDeckNewWindowOpen && (
-        <ResponsiveWindow
-          title="空のデッキを作成"
-          initialPosition={{ x: 900, y: 500 }}
-          initialSize={{ width: 700, height: 400 }}
-          onClose={closeNewDeckWindow}
-        >
-          <DeckNew onSubmit={handleAddDeck} filteredDecks={filteredDecks} addDeck={addDeck}/>
-        </ResponsiveWindow>
-      )} */}
       <NewResponsiveWindow
         isOpen={isDeckNewWindowOpen}
         title="空のデッキを作成"

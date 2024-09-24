@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useRef, useState, useCallback, useEffect, useDebugValue } from 'react';
 import { DiffEditor, Editor } from "@monaco-editor/react";
 import { LanguageLabel } from '../RunCodeEditorDaisyUI/LanguageController';
 import RunButton from '../RunCodeEditorDaisyUI/RunButton&Output/RunButton';
@@ -15,7 +15,26 @@ export const EditorAndAnswer = ({
   setCurrentCardId
 }) => {
   const diffEditorRef = useRef(null);
+  const [userEditorContent,  setUserEditorContent]  = useState("");
+  const prevCardIdRef = useRef(null);
+  const userEditorContentMap = useRef(new Map());
   const [activeTab, setActiveTab] = useState('editor')
+
+  useEffect(() => {
+    if (prevCardIdRef.current !== card.id) {
+      // カードが変更された場合
+      if (prevCardIdRef.current) {
+        // 前のカードの内容を保存
+        userEditorContentMap.current.set(prevCardIdRef.current, userEditorContent);
+      }
+      
+      // 新しいカードの内容をロード（存在する場合）または空にする
+      const newContent = userEditorContentMap.current.get(card.id) || "";
+      setUserEditorContent(newContent);
+      
+      prevCardIdRef.current = card.id;
+    }
+  }, [card.id, userEditorContent]);
 
   const handleUserEditorDidMount = (editor) => {
     userEditorRef.current = editor;
@@ -46,6 +65,10 @@ export const EditorAndAnswer = ({
     }
   };
 
+  const handleUserEditorChange = (value) => {
+    setUserEditorContent(value);
+  };
+
   const tabClass = "px-4 border-t border-x rounded-t-sm font-bold focus:outline-none relative";
   const activeTabClass = "bg-slate-950 text-orange-500 border-yellow-800 border-b-0 after:absolute after:bottom-[-1px] after:left-0 after:right-0 after:h-[1px] after:bg-slate-950";
   const inactiveTabClass = "bg-slate-900 text-yellow-900 border-transparent hover:text-amber-700";
@@ -61,11 +84,13 @@ export const EditorAndAnswer = ({
           height="15vh"
           theme="vs-dark"
           language={card.language}
+          value={userEditorContent}
           defaultValue=""
           options={{
             fontSize: 14
           }}
           onMount={handleUserEditorDidMount}
+          onChange={handleUserEditorChange}
         />
       </div>
       <div className="border border-purple-900 bg-slate-950 p-4 rounded-sm">

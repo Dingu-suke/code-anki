@@ -23,7 +23,9 @@ export const DeckInfo = () => {
           previewCard, setPreviewCard
           ,
           moveToNextCard,
-          moveToPreviousCard /*, 
+          moveToPreviousCard,
+          initialCard
+          /*, 
           scrollContainerRef*/ } = useCardNavigation();
   
   const {
@@ -52,6 +54,16 @@ export const DeckInfo = () => {
     // 🍉
     prevSelectedCardRef.current = selectedCard;
   }, [selectedCard])
+
+  useEffect(() => {
+    // checkedCardsが配列であることを前提としています
+    const isPreviewCardChecked = checkedCards.some(card => card.id === previewCard.id);
+    
+    if (!isPreviewCardChecked && previewCard?.id !== initialCard?.id) {
+      console.log('Updating previewCard to initialCard');
+      setPreviewCard(initialCard);
+    }
+  }, [checkedCards, previewCard, initialCard, setPreviewCard]);
 
   const handleCardClick = (event, card) => {
     // チェックボックス以外の領域がクリックされた場合のみウィンドウを開く
@@ -88,7 +100,7 @@ export const DeckInfo = () => {
   const handleTabChange = (tabName) => {
     setActiveTab(tabName);
   };
-      
+
   const updateCardInDecks = useCallback((updatedCard) => {
     // カードの状態を更新
     setCards(prevCards =>
@@ -222,13 +234,16 @@ export const DeckInfo = () => {
             className={`px-6 pt-6 ${activeTab === 'preview' ? '' : 'hidden'} text-white`}
           >
             {/* プレビュー */}
-            <PreviewCard previewCardList={checkedCards} card={previewCard} moveToNextCard={moveToNextCard} moveToPreviousCard={moveToPreviousCard} />
+            <PreviewCard
+              previewCardList={checkedCards}
+              card={previewCard}
+              moveToNextCard={moveToNextCard}
+              moveToPreviousCard={moveToPreviousCard}
+              checkedCards={checkedCards}
+            />
           </div>
         </div>
-      </div>      
-    {/* <br /><br /><br /><br />
-    <br /><br /><br /><br />
-    <br /><br /><br /><br /> */}
+      </div>
     </div>
   )
 }

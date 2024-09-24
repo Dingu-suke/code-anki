@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { LANGUAGE_VERSIONS } from "./constants";
+import { LANGUAGE_LABELS, LANGUAGE_LOGO, LANGUAGE_VERSIONS, LanguageIcon } from "./constants";
 
 const languages = Object.entries(LANGUAGE_VERSIONS);
 
@@ -57,31 +57,43 @@ export const LanguageSelector = ({ language, onSelect }) => {
           onMouseLeave={handleMouseLeave}
           
       >
-        <button tabIndex={0} ref={buttonRef} type="button" role="button" className="btn w-28 min-h-0 h-7 mx-3 border-purple-700 text-slate-200 bg-slate-800 font-courier hover:bg-slate-800 hover:border-purple-700">{language}</button>
+        <button ref={buttonRef} type="button" role="button" className="size-12 min-h-0 rounded border border-purple-500 rounded:lg text-slate-200 bg-slate-950 font-courier hover:bg-slate-800 hover:border-purple-700 cursor-default">
+          <div className="flex itemsenter justify-center">
+            {/* <div className="text-lg">{(LANGUAGE_LOGO[language.toLowerCase()])}</div> */}
+            <LanguageIcon language={language.toLowerCase()} size={35}/>
+          </div>
+        </button>
           {isOpen && (
             <div 
             ref={dropdownRef}
-            className="absolute top-full left-0 pt-2 w-full"
+            className="absolute top-full left-0 pt-2 w-full cursor-default"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave} 
             >
-              <ul tabIndex={0} className="dropdown-content menu rounded-box z-[1] w-52 shadow border border-indigo-300 bg-gray-900"
+              <ul tabIndex={0} className="dropdown-content menu rounded-box z-[1] w-52 shadow border border-indigo-300 bg-gray-900" 
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
               >
                 {languages.map(([lang, version]) => (
                   <li
                     key={lang}
-                    onClick={() => onSelectAndClose(lang)}
+                    onClick={() => onSelectAndClose(lang)}                    
                   >
-                    <a className={`border-indigo-900 text-sky-500 hover:bg-sky-950 hover:text-cyan-300 font-courier ${
-                    lang === language ? 'bg-sky-950 text-cyan-400' : ''
-                  }`}>
-                    {lang}
-                    <span className="text-gray-400 text-sm border-indigo-900">
-                      {version}
-                    </span>
-                  </a>
+                    <div className={`flex items-center justify-start 
+                      border-indigo-900 text-sky-500 hover:bg-sky-950 hover:text-cyan-300 font-courier
+                      ${ lang === language 
+                        ? 'bg-sky-950 text-cyan-400' 
+                        : ''}`}
+                      >
+                      <span>{LANGUAGE_LOGO[lang]}</span>
+                      <a className="">
+                      {LANGUAGE_LABELS[lang]}
+                      <span className="text-gray-400 text-sm border-indigo-900 pl-4">
+                        <br />
+                        {version}
+                      </span>
+                    </a>
+                    </div>
                   </li>
                 ))}
               </ul>
