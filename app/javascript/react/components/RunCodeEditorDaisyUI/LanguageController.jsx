@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { LANGUAGE_LABELS, LANGUAGE_LOGO, LANGUAGE_VERSIONS, LanguageIcon } from "./constants";
+import { getLabelKey, LANGUAGE_LABELS, LANGUAGE_LOGO, LANGUAGE_VERSIONS, LanguageIcon } from "./constants";
 
 const languages = Object.entries(LANGUAGE_VERSIONS);
 
@@ -40,6 +40,7 @@ export const LanguageSelector = ({ language, onSelect }) => {
   const onSelectAndClose = (lang) => {
     onSelect(lang);
     setIsOpen(false);
+    console.log("onSelectAndClose", lang)
   };
 
   useEffect(() => {
@@ -57,10 +58,9 @@ export const LanguageSelector = ({ language, onSelect }) => {
           onMouseLeave={handleMouseLeave}
           
       >
-        <button ref={buttonRef} type="button" role="button" className="size-12 min-h-0 rounded border border-purple-500 rounded:lg text-slate-200 bg-slate-950 font-courier hover:bg-slate-800 hover:border-purple-700 cursor-default">
+        <button ref={buttonRef} type="button" role="button" className="size-14 min-h-0 rounded border border-blue-500 rounded:lg text-slate-200 bg-slate-950 font-courier hover:bg-indigo-950 hover:border-blue-500 cursor-default">
           <div className="flex itemsenter justify-center">
-            {/* <div className="text-lg">{(LANGUAGE_LOGO[language.toLowerCase()])}</div> */}
-            <LanguageIcon language={language.toLowerCase()} size={35}/>
+            <LanguageIcon language={getLabelKey(language)} size={35}/>
           </div>
         </button>
           {isOpen && (
@@ -70,7 +70,7 @@ export const LanguageSelector = ({ language, onSelect }) => {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave} 
             >
-              <ul tabIndex={0} className="dropdown-content menu rounded-box z-[1] w-52 shadow border border-indigo-300 bg-gray-900" 
+              <ul tabIndex={0} className="dropdown-content menu rounded-box z-[1] w-64 shadow border border-indigo-300 bg-gray-900" 
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
               >
@@ -85,14 +85,14 @@ export const LanguageSelector = ({ language, onSelect }) => {
                         ? 'bg-sky-950 text-cyan-400' 
                         : ''}`}
                       >
-                      <span>{LANGUAGE_LOGO[lang]}</span>
-                      <a className="">
-                      {LANGUAGE_LABELS[lang]}
-                      <span className="text-gray-400 text-sm border-indigo-900 pl-4">
-                        <br />
-                        {version}
-                      </span>
-                    </a>
+                      <div>{LANGUAGE_LOGO[lang]}</div>
+                      <div className="flex flex-col items-start justify-center pl-2">
+                        {LANGUAGE_LABELS[lang]}
+                        <div className="text-gray-400 text-sm border-indigo-900">
+                          {/* <br /> */}
+                          {version}
+                        </div>
+                      </div>
                     </div>
                   </li>
                 ))}

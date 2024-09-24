@@ -16,8 +16,7 @@ export const CODE_SNIPPETS = {
   typescript: `\ntype Params = {\n\tname: string;\n}\n\nfunction greet(data: Params) {\n\tconsole.log("Hello, " + data.name + "!");\n}\n\ngreet({ name: "TypeScript" });\n`,
   java: `\npublic class HelloWorld {\n\tpublic static void main(String[] args) {\n\t\tSystem.out.println("Hello World");\n\t}\n}\n`,
   python: `\ndef greet(name):\n\tprint("Hello, " + name + "!")\n\ngreet("Python")\n`,
-  csharp:
-    'using System;\n\nnamespace HelloWorld\n{\n\tclass Hello { \n\t\tstatic void Main(string[] args) {\n\t\t\tConsole.WriteLine("Hello World in C#");\n\t\t}\n\t}\n}\n',
+  csharp:'using System;\n\nnamespace HelloWorld\n{\n\tclass Hello { \n\t\tstatic void Main(string[] args) {\n\t\t\tConsole.WriteLine("Hello World in C#");\n\t\t}\n\t}\n}\n',
   php: "<?php\n\n$name = 'PHP';\necho $name;\n",
 };
 
@@ -51,6 +50,7 @@ export const LANGUAGE_LOGO = {
 }
 
 export const LanguageIcon = ({ language, size = 24 }) => {
+  console.log("LanguageIcon", language)
   const getIcon = (iconSvg) => {
     return React.cloneElement(iconSvg, { width: size, height: size });
   };
@@ -71,4 +71,8 @@ export const LanguageIcon = ({ language, size = 24 }) => {
       {icons[language] ? getIcon(icons[language]) : null}
     </div>
   );
+};
+
+export const getLabelKey = (label) => {
+  return Object.keys(LANGUAGE_LABELS).find(key => LANGUAGE_LABELS[key] === label);
 };
