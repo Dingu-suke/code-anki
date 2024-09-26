@@ -1,4 +1,6 @@
 import React from 'react';
+import { Toggle } from '../Toggle/Toggle';
+import { LanguageIcon } from '../RunCodeEditorDaisyUI/constants';
 
 export const DeckTable = ({ checkedCards, setCheckedCards, filteredDecks, selectedDeck, setSelectedDeck, handleCheckCardsOfDeck, reRenderDeckList }) => {
   const setDeck = (deck) => {
@@ -13,18 +15,25 @@ export const DeckTable = ({ checkedCards, setCheckedCards, filteredDecks, select
         })()
   }
 
+  const handleClickToggleSwitch = (event, deck) => {
+    console.log('handleClickToggleSwitch called', event.target);
+    if (!event.target.closest('.js-toggle-button')) {
+      setDeck(deck)
+    }
+  }
+
   return (
     <div className="overflow-x-auto shadow-lg rounded-md">
       <div className="overflow-y-auto max-h-[500px]"> {/* スクロール可能な高さを設定 */}
         <table className="w-full text-sm text-left text-gray-300">
           <thead className="text-xs uppercase bg-gray-700 text-gray-300 sticky top-0 z-10"> {/* stickyヘッダーの設定 */}
-            <tr>
-              <th scope="col" className="px-6 py-3">デッキ名</th>
-              <th scope="col" className="px-6 py-3">カード数</th>
-              <th scope="col" className="px-6 py-3">言語</th>
-              <th scope="col" className="px-6 py-3">カテゴリ</th>
-              <th scope="col" className="px-6 py-3">作成日</th>
-              <th scope="col" className="px-3 py-3">非公開 / 公開</th>
+            <tr className=''>
+              <th scope="col" className="px-4 py-3">デッキ名</th>
+              <th scope="col" className="px-4 py-3 min-w-20">カード数</th>
+              <th scope="col" className="px-8 py-3">言語</th>
+              <th scope="col" className="px-4 py-3">カテゴリ</th>
+              <th scope="col" className="px-4 py-3">作成日</th>
+              <th scope="col" className="px-4 py-3 min-w-28 flex items-center justify-center">公開 / 非公開</th>
             </tr>
           </thead>
           <tbody>
@@ -34,20 +43,21 @@ export const DeckTable = ({ checkedCards, setCheckedCards, filteredDecks, select
                 className={`border-b bg-gray-800 border-gray-700 ${
                   selectedDeck && selectedDeck.id === deck.id ? 'bg-indigo-900 hover:bg-blue-900' : 'hover:bg-cyan-900'
                 }`}
-                onClick={() => {setDeck(deck)}}
+                onClick={(event) => {handleClickToggleSwitch(event, deck)}}
+                
               >
                 <th scope="row" className="px-6 py-4 font-medium whitespace-nowrap text-cyan-400">
                   {deck.name}
                 </th>
-                <td className="px-6 py-4">
+                <td className="px-4 py-3">
                   <span className="bg-blue-800 text-blue-100 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">
                     {deck.cards ? deck.cards.length : 0}
                   </span>
                 </td>
-                <td className="px-6 py-4">
-                  {deck.language || ""}
+                <td className="px-8 py-3">
+                  {deck.language ? <LanguageIcon language={deck.language} /> : ""}
                 </td>
-                <td className="px-6 py-4">
+                <td className="px-4 py-3">
                   {deck.category
                   ? <span className="bg-blue-800 text-blue-100 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">
                       {deck.category}
@@ -56,11 +66,12 @@ export const DeckTable = ({ checkedCards, setCheckedCards, filteredDecks, select
                     <span className="text-blue-100 text-xs font-medium mr-2 px-2.5 py-0.5 rounded"></span>
                   }
                 </td>
-                <td className="px-6 py-4">
+                <td className="px-4 py-3">
                   {new Date(deck.updated_at).toLocaleDateString()}
                 </td>
-                <td className="px-6 py-4">
-                  {/* ... アクションボタン ... */}
+                <td className="px-4 py-3 min-w-24 flex items-center justify-center">
+                  <Toggle />
+                  {deck.status}
                 </td>
               </tr>
             ))}

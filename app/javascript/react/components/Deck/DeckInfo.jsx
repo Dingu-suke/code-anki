@@ -66,12 +66,9 @@ export const DeckInfo = () => {
   }, [checkedCards, previewCard, initialCard, setPreviewCard]);
 
   const handleCardClick = (event, card) => {
-    // チェックボックス以外の領域がクリックされた場合のみウィンドウを開く
-    if (!event.target.closest('.checkbox-container')) {
       const isCurrentlySelected = selectedCard && selectedCard.id === card.id
       setSelectedCard(isCurrentlySelected ? null : card);
       setIsWindowOpen(!isCurrentlySelected);
-    }
     // 🍉 useEffect で更新
   };
   

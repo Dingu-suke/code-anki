@@ -6,7 +6,7 @@ import { GiConsoleController } from 'react-icons/gi';
 import { NewResponsiveWindow } from '../Window/NewResponsiveWindow';
 import ResponsiveWindow from '../Window/ResponsiveWindow';
 import { LanguageSelector } from '../RunCodeEditorDaisyUI/LanguageController';
-import { LANGUAGE_LABELS } from '../RunCodeEditorDaisyUI/constants';
+import { CATEGORY, LANGUAGE_LABELS } from '../RunCodeEditorDaisyUI/constants';
 
 export const YourDecksIndex = ({ 
                                   selectedDeck, setSelectedDeck,
@@ -63,23 +63,34 @@ export const YourDecksIndex = ({
   return (
     <div className="p-6">
       {error && <div className="text-red-500 mb-4">{error}</div>}
-      <div className="grid grid-cols-7 gap-4 mb-4">
+      <div className="grid grid-cols-12 gap-4 mb-4">
         <input
           type="text"
           placeholder="デッキを検索"
           value={searchTerm}
           onChange={handleSearch}
-          className="col-span-4 p-2 pl-3 rounded bg-gray-700 border focus:outline-none focus:border-2 focus:border-blue-800 border-blue-900 text-cyan-100"
+          className="col-span-5 p-2 pl-3 rounded bg-gray-700 border focus:outline-none focus:border-2 focus:border-blue-800 border-blue-900 text-cyan-100"
         />
+        <div className="z-40 flex items-center justify-center">
+          <LanguageSelector language={language} onSelect={onSelect} />
+        </div>
+        <select
+          id="category"
+          name="category"
+          className="col-span-3 px-3 py-2 rounded bg-gray-800 focus:outline-none focus:ring border-gray-700 border-2 text-cyan-100"
+        >
+          <option value="">( 未選択 )</option>
+          <option value="methodLearning">{CATEGORY["methodLearning"]}</option>
+          <option value="algorithm">{CATEGORY["algorithm"]}</option>
+          <option value="refactoring">{CATEGORY["refactoring"]}</option>
+          <option value="tradeOff">{CATEGORY["tradeOff"]}</option>
+        </select>
         <button
-          className="col-span-1 p-2 rounded-md bg-slate-900 border border-pink-500 text-pink-500 hover:bg-slate-800"
+          className="col-span-2 p-2 rounded-md bg-slate-900 border border-pink-500 text-pink-500 hover:bg-slate-800"
           onClick={openNewDeckWindow}
         >
           + New Deck
         </button>
-        <div className="z-50 flex items-center">
-          <LanguageSelector language={language} onSelect={onSelect} />
-        </div>
       </div>
       
       <div className="border border-slate-600 bg-stone-950 text-cyan-50 rounded overflow-hidden">

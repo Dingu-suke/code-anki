@@ -52,7 +52,7 @@ export const LanguageSelector = ({ language, onSelect }) => {
   }, []);
 
   return (
-    <div className="mr-2">
+    <div>
       <div className="dropdown dropdown-hover relative"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
@@ -60,7 +60,7 @@ export const LanguageSelector = ({ language, onSelect }) => {
       >
         <button ref={buttonRef} type="button" role="button" className="size-14 min-h-0 rounded border border-blue-500 rounded:lg text-slate-200 bg-slate-950 font-courier hover:bg-indigo-950 hover:border-blue-500 cursor-default">
           <div className="flex itemsenter justify-center">
-            <LanguageIcon language={getLabelKey(language)} size={35}/>
+            <LanguageIcon language={getLabelKey(language)} size={35}/>  {/* 値からキーを取得する */}
           </div>
         </button>
           {isOpen && (
@@ -77,19 +77,18 @@ export const LanguageSelector = ({ language, onSelect }) => {
                 {languages.map(([lang, version]) => (
                   <li
                     key={lang}
-                    onClick={() => onSelectAndClose(lang)}                    
+                    onClick={() => onSelectAndClose(lang)}
                   >
-                    <div className={`flex items-center justify-start 
+                    <div className={`flex items-center justify-start
                       border-indigo-900 text-sky-500 hover:bg-sky-950 hover:text-cyan-300 font-courier
                       ${ lang === language 
-                        ? 'bg-sky-950 text-cyan-400' 
+                        ? 'bg-sky-950 text-green-400'
                         : ''}`}
                       >
                       <div>{LANGUAGE_LOGO[lang]}</div>
                       <div className="flex flex-col items-start justify-center pl-2">
                         {LANGUAGE_LABELS[lang]}
                         <div className="text-gray-400 text-sm border-indigo-900">
-                          {/* <br /> */}
                           {version}
                         </div>
                       </div>
