@@ -6,7 +6,7 @@ import { GiConsoleController } from 'react-icons/gi';
 import { NewResponsiveWindow } from '../Window/NewResponsiveWindow';
 import ResponsiveWindow from '../Window/ResponsiveWindow';
 import { LanguageSelector } from '../RunCodeEditorDaisyUI/LanguageController';
-import { CATEGORY, LANGUAGE_LABELS } from '../RunCodeEditorDaisyUI/constants';
+import { CATEGORY, LANGUAGE_LABELS, getLabelKey } from '../RunCodeEditorDaisyUI/constants';
 
 export const YourDecksIndex = ({ 
                                   selectedDeck, setSelectedDeck,
@@ -18,6 +18,9 @@ export const YourDecksIndex = ({
                                   ,
                                   addDeck,
                                   setSearchTermAndFilter,
+                                  setSelectedLanguage,
+                                  setStatus,
+                                  setSelectedCategory,
                                   reRenderDeckList
                                   // handleCheckCardsOfDeck
                                 }) => {
@@ -28,6 +31,11 @@ export const YourDecksIndex = ({
   const handleSearch = (e) => {
     setSearchTermAndFilter(e.target.value);
   };
+
+  useEffect(() => {
+    setSelectedLanguage(getLabelKey(language));
+    console.log(getLabelKey(language))
+  }, [language])
 
   const openNewDeckWindow = () => {
     setIsDeckNewWindowOpen(true);
@@ -69,7 +77,7 @@ export const YourDecksIndex = ({
           placeholder="デッキを検索"
           value={searchTerm}
           onChange={handleSearch}
-          className="col-span-5 p-2 pl-3 rounded bg-gray-700 border focus:outline-none focus:border-2 focus:border-blue-800 border-blue-900 text-cyan-100"
+          className="col-span-4 p-2 pl-3 rounded bg-gray-700 border focus:outline-none focus:border-2 focus:border-blue-800 border-blue-900 text-cyan-100"
         />
         <div className="z-40 flex items-center justify-center">
           <LanguageSelector language={language} onSelect={onSelect} />
@@ -77,16 +85,27 @@ export const YourDecksIndex = ({
         <select
           id="category"
           name="category"
-          className="col-span-3 px-3 py-2 rounded bg-gray-800 focus:outline-none focus:ring border-gray-700 border-2 text-cyan-100"
+          className="col-span-3 px-3 py-2 rounded bg-gray-800 focus:outline-none focus:ring border-gray-700 border-2 text-cyan-100 truncate"
+          onChange={(event) => setSelectedCategory(event.target.value)}
         >
-          <option value="">( 未選択 )</option>
+          <option value="">すべて</option>
           <option value="methodLearning">{CATEGORY["methodLearning"]}</option>
           <option value="algorithm">{CATEGORY["algorithm"]}</option>
           <option value="refactoring">{CATEGORY["refactoring"]}</option>
           <option value="tradeOff">{CATEGORY["tradeOff"]}</option>
         </select>
+        <select
+          id="status"
+          name="status"
+          className="col-span-2 px-3 py-2 rounded bg-gray-800 focus:outline-none focus:ring border-gray-700 border-2 text-cyan-100 truncate"
+          onChange={(event) => {setStatus(event.target.value)}}
+        >
+          <option value="">すべて</option>
+          <option value="public">公開</option>
+          <option value="private">非公開</option>
+        </select>
         <button
-          className="col-span-2 p-2 rounded-md bg-slate-900 border border-pink-500 text-pink-500 hover:bg-slate-800"
+          className="col-span-2 p-2 rounded-md bg-slate-900 border border-pink-500 text-pink-500 hover:bg-slate-800 truncate"
           onClick={openNewDeckWindow}
         >
           + New Deck
@@ -94,19 +113,14 @@ export const YourDecksIndex = ({
       </div>
       
       <div className="border border-slate-600 bg-stone-950 text-cyan-50 rounded overflow-hidden">
-        
-          {filteredDecks.length > 0 ? (
-            <DeckTable
-              checkedCards={checkedCards} setCheckedCards={setCheckedCards}
-              filteredDecks={filteredDecks}
-              selectedDeck={selectedDeck}
-              setSelectedDeck={setSelectedDeck}
-              reRenderDeckList={reRenderDeckList}
-              // handleCheckCardsOfDeck={handleCheckCardsOfDeck}
-            />
-          ) : (
-            <div className="text-center py-4">デッキがありません</div>
-          )}
+        <DeckTable
+          checkedCards={checkedCards} setCheckedCards={setCheckedCards}
+          filteredDecks={filteredDecks}
+          selectedDeck={selectedDeck}
+          setSelectedDeck={setSelectedDeck}
+          reRenderDeckList={reRenderDeckList}
+          // handleCheckCardsOfDeck={handleCheckCardsOfDeck}
+        />
       </div>
       <NewResponsiveWindow
         isOpen={isDeckNewWindowOpen}

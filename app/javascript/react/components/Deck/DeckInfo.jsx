@@ -40,7 +40,10 @@ export const DeckInfo = () => {
     fetchDecks,
     editDeck,
     setSearchTermAndFilter,
-    reRenderDeckList,
+    setSelectedLanguage,
+    setSelectedCategory,
+    setStatus,
+    reRenderDeckList,    
     updateDeckAndCard
     
   } = useYourDeckList()
@@ -198,6 +201,9 @@ export const DeckInfo = () => {
             searchTerm={searchTerm}
             error={error}
             addDeck={addDeck}
+            setSelectedLanguage={setSelectedLanguage}
+            setSelectedCategory={setSelectedCategory}
+            setStatus={setStatus}
             setSearchTermAndFilter={setSearchTermAndFilter}
             reRenderDeckList={reRenderDeckList}
             // handleCheckCardsOfDeck={handleCheckCardsOfDeck}

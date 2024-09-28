@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { setupCSRFToken } from '../components/Form/setupCSRFToken';
+import { CATEGORY } from '../components/RunCodeEditorDaisyUI/constants';
 
 // axiosのインスタンスを作成し、共通の設定を適用
 const api = axios.create({
@@ -13,10 +14,16 @@ const api = axios.create({
 
 export const useYourDeckList = () => {
   const [decks, setDecks] = useState([]);
+  
+  // 絞り込み検索用
   const [filteredDecks, setFilteredDecks] = useState([]);
+  const [selectedLanguage, setSelectedLanguage] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [status, setStatus] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  
   const [selectedDeck, setSelectedDeck] = useState(null);
   const [isDeckLoading, setIsDeckLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
   const [error, setError] = useState(null);
 
   const fetchDecks = useCallback(async () => {
@@ -36,23 +43,36 @@ export const useYourDeckList = () => {
 
   useEffect(() => {
     fetchDecks()
-  }, [fetchDecks, ])
+  }, [fetchDecks])
 
   const reRenderDeckList = useCallback(() => {
     fetchDecks()
   }, [fetchDecks, filteredDecks])
 
+  // デッキを絞り込み検索
   useEffect(() => {
     const searchTerms = searchTerm.toLowerCase().split(' ');
     const filtered = decks
       .filter(deck =>
-        searchTerms.every(term =>
+        (searchTerms.every(term =>
           deck.name?.toLowerCase().includes(term)
-        )
+        )) // ワード検索
+        &&
+        (selectedLanguage ? deck.language === selectedLanguage : true ) // 言語検索
+        &&
+        (selectedCategory ? deck.category === selectedCategory : true)  // カテゴリ検索
+        &&
+        (status ? deck.status === status : true) // 公開/非公開 検索
       )
       .sort((a, b) => a.name.localeCompare(b.name));
     setFilteredDecks(filtered);
-  }, [decks, searchTerm]);
+  }, [decks, searchTerm, selectedLanguage, selectedCategory, status]);
+
+  useEffect(() => {console.log("stauts", status)}, [status]) // デバッグ用
+
+  useEffect(() => {
+    console.log(selectedCategory)
+  }, [selectedCategory])
 
   // ---- newDeck から移植 ---
   const addDeck = useCallback(async (data) => {
@@ -160,6 +180,9 @@ export const useYourDeckList = () => {
     editDeck,
     fetchDecks,
     setSearchTermAndFilter,
+    setSelectedLanguage,
+    setSelectedCategory,
+    setStatus,
     reRenderDeckList,
     updateDeckAndCard
   };
