@@ -72,7 +72,7 @@ class DecksController < ApplicationController
     @your_decks = Deck.where(user_id: current_user.id).includes(:user).order("created_at DESC")
     @your_cards = Card.where(user_id: current_user.id).includes(:user).order("created_at DESC")
     respond_to do |format|
-
+      format.html
       format.json {
         render json: @your_decks.as_json(
         include: { cards: { only: [:id, :title, :body, :language, :answer, :remarks]} }
