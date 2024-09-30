@@ -47,7 +47,6 @@ export const LanguageSelector = ({ language, onSelect }) => {
       prevlanguageRef.current = lang
     }
     setIsOpen(false);
-    console.log("onSelectAndClose", lang)    
   };  
 
   useEffect(() => {

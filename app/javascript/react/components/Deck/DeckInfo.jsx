@@ -37,6 +37,7 @@ export const DeckInfo = () => {
     error, setError
     ,
     addDeck,
+    updateDeckInfo,
     fetchDecks,
     editDeck,
     setSearchTermAndFilter,
@@ -63,7 +64,6 @@ export const DeckInfo = () => {
     const isPreviewCardChecked = checkedCards.some(card => card.id === previewCard.id);
     
     if (!isPreviewCardChecked && previewCard?.id !== initialCard?.id) {
-      console.log('Updating previewCard to initialCard');
       setPreviewCard(initialCard);
     }
   }, [checkedCards, previewCard, initialCard, setPreviewCard]);
@@ -197,6 +197,7 @@ export const DeckInfo = () => {
             selectedDeck={selectedDeck} setSelectedDeck={setSelectedDeck}
             checkedCards={checkedCards} setCheckedCards={setCheckedCards}
             filteredDecks={filteredDecks}
+            updateDeckInfo={updateDeckInfo}
             isDeckLoading={isDeckLoading}
             searchTerm={searchTerm}
             error={error}

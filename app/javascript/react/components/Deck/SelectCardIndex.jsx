@@ -32,15 +32,10 @@ export const SelectCardIndex = (
 
   // カード更新時にカード一覧を再レンダリングさせる
   useEffect(() => {
-    console.log(checkedCards);
-  }, [checkedCards])
-
-  useEffect(() => {
     if (selectedDeck && selectedDeck.cards) {
       
       // 更新前のカード群をRefに保存
       prevCheckedCardsRef.current = checkedCards;
-      console.log("checkedCards",checkedCards)
       const updatedCheckedCards = selectedDeck.cards.map(newCard => {
         const prevCard = prevCheckedCardsRef.current.find(card => card.id === newCard.id);
         return prevCard ? { ...newCard, isChecked: prevCard.isChecked } : newCard;
@@ -51,8 +46,7 @@ export const SelectCardIndex = (
 
   const handleCardChecked = (cardId) => {
     selCheckedCards(prevCards => 
-      {
-        console.log(prevCards)
+      {        
         prevCards.map(card =>
           card.id === cardId ? { ...card, isChecked: !card.isChecked} : card
         )
@@ -89,6 +83,7 @@ export const SelectCardIndex = (
               <tbody>
               {filteredCards.map((card) => (
                 <tr
+                key={card.id}
                 className={`border-b bg-gray-800 border-gray-700 ${selectedCard && selectedCard.id === card.id ? 'bg-indigo-900 hover:bg-blue-900' : 'hover:bg-cyan-900'}`}
                 onClick={(event) => {
                     if (!event.target.closest('td:first-child')) {

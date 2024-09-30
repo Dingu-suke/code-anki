@@ -68,15 +68,8 @@ export const useYourDeckList = () => {
     setFilteredDecks(filtered);
   }, [decks, searchTerm, selectedLanguage, selectedCategory, status]);
 
-  useEffect(() => {console.log("stauts", status)}, [status]) // デバッグ用
-
-  useEffect(() => {
-    console.log(selectedCategory)
-  }, [selectedCategory])
-
   // ---- newDeck から移植 ---
   const addDeck = useCallback(async (data) => {
-    console.log('送信データ:', data);
     try {
       const response = await axios.post('/decks',
         { deck: data },
@@ -84,16 +77,10 @@ export const useYourDeckList = () => {
           'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
         }
       });
-
-      // console.log(response.data)
-
       const newDeck = response.data; // APIレスポンスがそのままデッキオブジェクト
-    
+
       // 新しいデッキを既存のデッキリストに追加
       setDecks(prevDecks => [...prevDecks, newDeck]);
-
-       // フィルタリングデッキリストに追加
-      // setFilteredDecks(prevFiltered => [...prevFiltered, newDeck]);
 
       return newDeck;
 
@@ -120,7 +107,7 @@ export const useYourDeckList = () => {
       },
       {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/jso§n',
           'Accept': 'application/json',
           'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         }}
@@ -133,7 +120,6 @@ export const useYourDeckList = () => {
 
       if (response.data) {
         updateDeckAndCard(response.data)
-
       }
       fetchDecks()
     } catch (error) {
@@ -142,9 +128,50 @@ export const useYourDeckList = () => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log("aa", selectedDeck)
-  }, [selectedDeck])
+  const updateDeckInfo = useCallback( async(deckId, data) => {
+    try {
+      const response = await axios.patch(`decks/${deckId}`, data);
+      console.log("Server response:", response);
+  
+      // const updatedDeck = response.status === 204
+      //   ? { id: deckId, ...data }
+      //   : response.data || { id: deckId, ...data };
+      const updatedDeck = response.status === 204
+  ? (() => {
+      console.log('Status is 204');
+      return { id: deckId, ...data };
+    })()
+  : (() => {
+      console.log('Status is not 204, using response.data or default');
+      console.log("response.data", response.data)
+      return response.data || { id: deckId, ...data };
+    })();
+  
+      console.log("Updated deck:", updatedDeck);
+  
+      setDecks(prevDecks => {
+        console.log("Previous decks:", prevDecks);
+        const newDecks = prevDecks.map(deck => deck.id === deckId 
+                                        ? { 
+                                            id: deckId, // id
+                                            ...data, // name, caatgory, language
+                                            user_id:deck.user_id, // user_id
+                                            cards: deck.cards,
+                                            status: deck.status,
+                                            created_at: deck.created_at,
+                                            updated_at: response.data?.updated_at || deck.updated_at
+                                          }
+                                        : deck );
+        console.log("New decks:", newDecks);
+        return newDecks;
+      });
+      // カードのみ更新しないようにする
+
+    } catch (error) {
+      console.error('デッキ更新エラー:', error);
+    }
+  }, [setFilteredDecks]);
+
 
   const updateDeckAndCard = (updatedDeck) => {
         setDecks(prevDecks => prevDecks.map(deck => deck.id === updatedDeck.id ? updatedDeck : deck));
@@ -177,6 +204,7 @@ export const useYourDeckList = () => {
     error, setError
     ,
     addDeck,
+    updateDeckInfo,
     editDeck,
     fetchDecks,
     setSearchTermAndFilter,

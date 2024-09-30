@@ -50,7 +50,6 @@ export const LANGUAGE_LOGO = {
 }
 
 export const LanguageIcon = ({ language, size = 24 }) => {
-  console.log("LanguageIcon", language)
   const getIcon = (iconSvg) => {
     return React.cloneElement(iconSvg, { width: size, height: size });
   };

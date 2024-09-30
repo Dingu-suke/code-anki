@@ -28,8 +28,8 @@ export const DeckNew = ({ addDeck, onSuccess }) => {
     <>
       <div>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="grid grid-cols-6 p-3">
-            <label htmlFor="name" className="col-start-1 col-span-1 flex items-center justify-items-center text-cyan-200">デッキ名</label>
+        <div className="grid grid-cols-6 p-3">
+          <label htmlFor="name" className="col-start-1 col-span-1 flex items-center justify-items-center text-cyan-200">デッキ名</label>
             <input
               {...register("name", {required: "デッキ名は必須です" })}
               id="name"
@@ -86,6 +86,84 @@ export const DeckNew = ({ addDeck, onSuccess }) => {
   );
 }
 
-export const DeckEdit = () => {
+export const DeckEdit = ({ deck, updateDeckInfo }) => {
+  const { register ,
+          handleSubmit,
+          formState:{errors}} = useForm({ mode: "onChange",
+                                          defaultValues:{
+                                            name: deck.name,
+                                            category: deck.category,
+                                            language: deck.language,
+                                            cards: deck.cards
+                                          }
+          })
 
+  useEffect(() => {
+    setupCSRFToken()
+  })
+
+  const onSubmit = async (data) => {
+    const { cards, ...updateData } = data
+    await updateDeckInfo(deck.id, updateData)
+  }
+
+  return(
+    <>
+      <div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="grid grid-cols-6 p-3">
+            <label htmlFor="name" className="col-start-1 col-span-1 flex items-center justify-items-center text-cyan-200">デッキ名</label>
+              <input
+                {...register("name", {required: "デッキ名は必須です" })}
+                id="name"
+                name="name"
+                type="text"
+                className="px-4 col-start-2 col-span-4 w-full py-2 rounded bg-gray-800 focus:outline-none focus:ring border-gray-700 border-2 text-cyan-100"
+              />
+          </div>
+          <div className="grid grid-cols-6 p-3">
+            <label htmlFor="selectTag" className="col-start-1 col-span-1 flex items-center justify-items-center text-cyan-200">カテゴリ</label>
+            <select
+              {...register("category")}
+              id="category"
+              name="category"
+              className="col-start-2 col-span-4 px-3 py-2 rounded bg-gray-800 focus:outline-none focus:ring border-gray-700 border-2 text-cyan-100"
+            >
+              <option value="">( 未選択 )</option>
+              <option value="methodLearning">{CATEGORY["methodLearning"]}</option>
+              <option value="algorithm">{CATEGORY["algorithm"]}</option>
+              <option value="refactoring">{CATEGORY["refactoring"]}</option>
+              <option value="tradeOff">{CATEGORY["tradeOff"]}</option>
+            </select>
+          </div>
+          <div className="grid grid-cols-6 p-3">
+            <label htmlFor="selectTag" className="col-start-1 col-span-1 flex items-center justify-items-center text-cyan-200">言語</label>
+            <select
+              {...register("language")}
+              id="language"
+              name="language"
+              className="col-start-2 col-span-4 px-3 py-2 rounded bg-gray-800 focus:outline-none focus:ring border-gray-700 border-2 text-cyan-100"
+            >
+              <option value="">( 未選択 )</option>
+              {Object.entries(LANGUAGE_LABELS).map(([key, value]) => (
+                <option key={key} value={key}>
+                  {value}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex items-center justify-center py-3 text-red-400">
+            <p>{errors.name? errors.name.message : <br/>}</p>
+          </div>
+          
+          <div className="flex items-center justify-center">
+            <button type="submit" className="font-bold text-lg py-3 px-5 w-32 flex items-center justify-center rounded-sm text-sky-400 bg-cyan-950 hover:text-sky-300 hover:bg-blue-950 border border-sky-800 hover:border-cyan-500 font-courier xl:w-auto xl:inline-block cursor-default">
+              保存する
+            </button>
+          </div>
+        </form>
+      </div>
+    </>
+
+  );
 }

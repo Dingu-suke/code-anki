@@ -17,6 +17,7 @@ export const YourDecksIndex = ({
                                   error
                                   ,
                                   addDeck,
+                                  updateDeckInfo,
                                   setSearchTermAndFilter,
                                   setSelectedLanguage,
                                   setStatus,
@@ -34,7 +35,6 @@ export const YourDecksIndex = ({
 
   useEffect(() => {
     setSelectedLanguage(getLabelKey(language));
-    console.log(getLabelKey(language))
   }, [language])
 
   const openNewDeckWindow = () => {
@@ -48,6 +48,7 @@ export const YourDecksIndex = ({
   const handleAddDeckSuccess = useCallback((newDeck) => {
     // 必要に応じて追加の処理を行う
     // 例: 新しいデッキを選択状態にする、など
+    // トースト
     console.log('新しいデッキが追加されました:', newDeck);
   }, []);
 
@@ -116,6 +117,7 @@ export const YourDecksIndex = ({
         <DeckTable
           checkedCards={checkedCards} setCheckedCards={setCheckedCards}
           filteredDecks={filteredDecks}
+          updateDeckInfo={updateDeckInfo}
           selectedDeck={selectedDeck}
           setSelectedDeck={setSelectedDeck}
           reRenderDeckList={reRenderDeckList}

@@ -15,6 +15,7 @@ export const Toggle = ({initialStatus, deck}) => {
   const handleToggle = async () => {
     if (deck.cards.length < 5) {
       console.log("カードが5枚以上のデッキのみ公開できます")
+      // トースト追加したい
       return
     }
     const newStatus = status === "public" ? "private" : "public"

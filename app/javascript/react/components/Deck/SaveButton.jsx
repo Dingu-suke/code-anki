@@ -6,9 +6,7 @@ export const SaveButton = ({ selectedDeck, checkedCards, editDeck, fetchDecks })
   const [error, setError] = useState(null)
 
   const SaveDeckOrganization = (selectedDeck, checkedCards) => {
-    console.log("SaveDeckOrganization")
     editDeck(selectedDeck, checkedCards)
-    // fetchDecks()
   }
 
   return (

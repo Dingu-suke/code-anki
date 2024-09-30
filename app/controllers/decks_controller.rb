@@ -1,5 +1,6 @@
 class DecksController < ApplicationController
-  before_action :set_deck, only: %i[ show edit update destroy ]
+  before_action :set_deck, only: %i[ show edit destroy ]
+  before_action :set_your_deck, only: %i[ update ]
   before_action :authenticate, except: %i[ index deck_cards ]
 
   # GET /decks or /decks.json
@@ -46,18 +47,10 @@ class DecksController < ApplicationController
 
   # PATCH/PUT /decks/1 or /decks/1.json
   def update
-    @deck = current_user.decks.find(params[:id])
-    Rails.logger.debug "Recieved params : #{params.inspect}"
-    
-    respond_to do |format|
-      if @deck.update(deck_params)
-        format.html { head :no_content }
-        format.json { render json: @deck.as_json(include: :cards), status: :ok }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @deck.errors, status: :unprocessable_entity }
-        # format.json { render json: @deck.errors, status: :unprocessable_entity }
-      end
+    if @deck.update(deck_params)
+      render json: @deck
+    else
+      render json: @deck.errors, status: :unprocessable_entity
     end
   end
 
@@ -102,6 +95,10 @@ class DecksController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_deck
       @deck = Deck.find(params[:id])
+    end
+
+    def set_your_deck
+      @deck = current_user.decks.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.

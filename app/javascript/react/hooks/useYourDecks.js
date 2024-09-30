@@ -18,7 +18,6 @@ export const useYourDecks = () => {
         if (response.ok) {
           const data = await response.json()
           setDecks(data)
-          // console.log(`${data || "data is nill" } `)
         } else {
           console.log('server error')
         }
