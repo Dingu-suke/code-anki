@@ -131,26 +131,8 @@ export const useYourDeckList = () => {
   const updateDeckInfo = useCallback( async(deckId, data) => {
     try {
       const response = await axios.patch(`decks/${deckId}`, data);
-      console.log("Server response:", response);
-  
-      // const updatedDeck = response.status === 204
-      //   ? { id: deckId, ...data }
-      //   : response.data || { id: deckId, ...data };
-      const updatedDeck = response.status === 204
-  ? (() => {
-      console.log('Status is 204');
-      return { id: deckId, ...data };
-    })()
-  : (() => {
-      console.log('Status is not 204, using response.data or default');
-      console.log("response.data", response.data)
-      return response.data || { id: deckId, ...data };
-    })();
-  
-      console.log("Updated deck:", updatedDeck);
-  
+      
       setDecks(prevDecks => {
-        console.log("Previous decks:", prevDecks);
         const newDecks = prevDecks.map(deck => deck.id === deckId 
                                         ? { 
                                             id: deckId, // id
@@ -162,7 +144,6 @@ export const useYourDeckList = () => {
                                             updated_at: response.data?.updated_at || deck.updated_at
                                           }
                                         : deck );
-        console.log("New decks:", newDecks);
         return newDecks;
       });
       // カードのみ更新しないようにする

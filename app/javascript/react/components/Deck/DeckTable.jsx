@@ -20,6 +20,8 @@ export const DeckTable = (
       handleCheckCardsOfDeck,
       reRenderDeckList
     }) => {
+
+  const [] = useState('')
   
   const setDeck = (deck) => {
     selectedDeck === deck 
@@ -147,7 +149,10 @@ export const DeckTable = (
         initialSize={{ width: 700, height: 400 }}
         onClose={closeNewDeckWindow}
       >
-        <DeckEdit deck={editDeck} updateDeckInfo={updateDeckInfo} />
+        <DeckEdit
+                  deck={editDeck}
+                  updateDeckInfo={updateDeckInfo}
+        />
       </NewResponsiveWindow>
     </div>
   );

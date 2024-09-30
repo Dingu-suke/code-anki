@@ -89,18 +89,30 @@ export const DeckNew = ({ addDeck, onSuccess }) => {
 export const DeckEdit = ({ deck, updateDeckInfo }) => {
   const { register ,
           handleSubmit,
-          formState:{errors}} = useForm({ mode: "onChange",
-                                          defaultValues:{
-                                            name: deck.name,
-                                            category: deck.category,
-                                            language: deck.language,
-                                            cards: deck.cards
-                                          }
+          formState:{errors},
+          reset } = useForm({ mode: "onChange"
+                                          // defaultValues:{
+                                          //   name: deck.name,
+                                          //   category: deck.category,
+                                          //   language: deck.language,
+                                          //   cards: deck.cards
+                                          // }
           })
 
   useEffect(() => {
     setupCSRFToken()
   })
+
+  useEffect(() => {
+    if (deck) {
+      reset({
+        name: deck.name,
+        category: deck.category,
+        language: deck.language,
+        cards: deck.cards
+      });
+    }
+  }, [deck, reset]);
 
   const onSubmit = async (data) => {
     const { cards, ...updateData } = data
