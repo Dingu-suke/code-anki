@@ -90,14 +90,7 @@ export const DeckEdit = ({ deck, updateDeckInfo }) => {
   const { register ,
           handleSubmit,
           formState:{errors},
-          reset } = useForm({ mode: "onChange"
-                                          // defaultValues:{
-                                          //   name: deck.name,
-                                          //   category: deck.category,
-                                          //   language: deck.language,
-                                          //   cards: deck.cards
-                                          // }
-          })
+          reset } = useForm({ mode: "onChange" })
 
   useEffect(() => {
     setupCSRFToken()

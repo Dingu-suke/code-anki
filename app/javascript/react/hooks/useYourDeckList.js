@@ -107,7 +107,7 @@ export const useYourDeckList = () => {
       },
       {
         headers: {
-          'Content-Type': 'application/jso§n',
+          'Content-Type': 'application/json',
           'Accept': 'application/json',
           'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         }}

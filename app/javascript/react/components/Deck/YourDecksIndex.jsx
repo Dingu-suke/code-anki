@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { DeckNew } from '../Form/DeckFormTest';
+import { DeckNew } from '../Form/DeckForm';
 import { DeckTable } from './DeckTable';
 import { useYourDeckList } from '../../hooks/useYourDeckList';
 import { GiConsoleController } from 'react-icons/gi';

@@ -3,7 +3,7 @@ import { Toggle } from '../Toggle/Toggle';
 import { LanguageIcon, CATEGORY } from '../RunCodeEditorDaisyUI/constants';
 import { LuPencil } from "react-icons/lu";
 import { NewResponsiveWindow } from '../Window/NewResponsiveWindow';
-import { DeckEdit } from '../Form/DeckFormTest';
+import { DeckEdit } from '../Form/DeckForm';
 
 const methodLearningColor = "bg-yellow-950 text-amber-200 bg-opacity-55"
 const algorithmColor = "bg-green-950 text-emerald-200"
@@ -112,7 +112,7 @@ export const DeckTable = (
                 <td className="px-4 py-3 min-w-20">
                   {deck.category
                   ? 
-                  <div className={`text-xs font-medium ml-1 px-2 rounded truncate
+                  <div className={`inline-block text-xs font-medium ml-1 px-2 rounded truncate
                       ${deck.category === "methodLearning" && methodLearningColor}
                       ${deck.category === "algorithm" && algorithmColor}
                       ${deck.category === "refactoring" && refactoringColor}
