@@ -5,7 +5,7 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 export const PreviewCardList = ({checkedCards, setCheckedCards, previewCard, setPreviewCard, selectedDeck }) => {
   
   const scrollContainerRef = useRef(null)
-  const prevCheckedCardsLengthRef = useRef(checkedCards.length);
+  const prevCheckedCardsLengthRef = useRef(checkedCards?.length);
   const prevSelectedDeckRef = useRef(selectedDeck);
   const prevChekedCardsRef = useRef([])
   const checkedCardsRef = useRef(checkedCards)
@@ -35,7 +35,7 @@ export const PreviewCardList = ({checkedCards, setCheckedCards, previewCard, set
     }
 
     // 現在の値を保存して、次回の比較に使用
-    prevCheckedCardsLengthRef.current = checkedCards.length;
+    prevCheckedCardsLengthRef.current = checkedCards?.length;
     prevSelectedDeckRef.current = selectedDeck;
   }, [checkedCards, selectedDeck]);
   
@@ -77,7 +77,7 @@ export const PreviewCardList = ({checkedCards, setCheckedCards, previewCard, set
   // ------------------------------------------------
 
   const updateCardOrder = useCallback(() => {
-    const newOrder = checkedCards.map((card, index) => ({
+    const newOrder = checkedCards?.map((card, index) => ({
       ...card,
       order: index + 1
     }));

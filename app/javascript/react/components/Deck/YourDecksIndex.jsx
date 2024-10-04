@@ -17,6 +17,7 @@ export const YourDecksIndex = ({
                                   error
                                   ,
                                   addDeck,
+                                  deleteDeck,
                                   updateDeckInfo,
                                   setSearchTermAndFilter,
                                   setSelectedLanguage,
@@ -118,6 +119,7 @@ export const YourDecksIndex = ({
           checkedCards={checkedCards} setCheckedCards={setCheckedCards}
           filteredDecks={filteredDecks}
           updateDeckInfo={updateDeckInfo}
+          deleteDeck={deleteDeck}
           selectedDeck={selectedDeck}
           setSelectedDeck={setSelectedDeck}
           reRenderDeckList={reRenderDeckList}

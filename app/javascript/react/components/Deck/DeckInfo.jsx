@@ -39,6 +39,7 @@ export const DeckInfo = () => {
     addDeck,
     updateDeckInfo,
     fetchDecks,
+    deleteDeck,
     editDeck,
     setSearchTermAndFilter,
     setSelectedLanguage,
@@ -61,7 +62,7 @@ export const DeckInfo = () => {
 
   useEffect(() => {
     // checkedCardsが配列であることを前提としています
-    const isPreviewCardChecked = checkedCards.some(card => card.id === previewCard.id);
+    const isPreviewCardChecked = checkedCards?.some(card => card.id === previewCard.id);
     
     if (!isPreviewCardChecked && previewCard?.id !== initialCard?.id) {
       setPreviewCard(initialCard);
@@ -141,6 +142,12 @@ export const DeckInfo = () => {
     return <div>Loading...</div>
   }
 
+  const displayDeck = () => {
+    
+    // filteredDecks.map(deck => console.log(deck))
+    console.log(filteredDecks);
+  }
+
   return (
     <div>
       <div className="grid grid-cols-6">
@@ -156,6 +163,9 @@ export const DeckInfo = () => {
           <SaveButton selectedDeck={selectedDeck} checkedCards={checkedCards} editDeck={editDeck} fetchDecks={fetchDecks}/>
         </div>
       </div>
+      <button type="button" onClick={() => displayDeck()} className="border border-cyan-500 p-3 ">
+        全デッキを表示
+      </button>
       <div className="px-4 w-full">
         <div role="tablist" className={`flex border-b ${borderCalss}`}>
           <button
@@ -202,6 +212,7 @@ export const DeckInfo = () => {
             searchTerm={searchTerm}
             error={error}
             addDeck={addDeck}
+            deleteDeck={deleteDeck}
             setSelectedLanguage={setSelectedLanguage}
             setSelectedCategory={setSelectedCategory}
             setStatus={setStatus}

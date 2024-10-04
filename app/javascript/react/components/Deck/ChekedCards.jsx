@@ -29,7 +29,7 @@ export const CheckedCards = ({ previewCards, previewCard, setPreviewCard }) => {
           <div className="flex flex-col overflow-x-auto">
               <div className="bg-stone-950 text-cyan-50 rounded overflow-hidden">
                 <div className="p-2 m-1">
-                  {previewCards && previewCards.length > 0 && (
+                  {previewCards && previewCards?.length > 0 && (
                     <div
                       className="space-x-4 overflow-x-auto pb-4 flex justify-start items-start"
                       ref={scrollContainerRef}
@@ -64,7 +64,7 @@ export const CheckedCards = ({ previewCards, previewCard, setPreviewCard }) => {
                       </div>
                     </div>
                   )}
-                  { previewCards.length > 0 || (
+                  { previewCards?.length > 0 || (
                     <>
                     </>
                   )}

@@ -1,11 +1,13 @@
-class Deck < ApplicationRecord
+class Deck < ApplicationRecord  
+  attribute :cards, :json, default: []
   belongs_to :user
-  has_many :deck_cards
+  has_many :deck_cards, dependent: :destroy
   has_many :cards, through: :deck_cards
-  has_many :deck_tags
+  has_many :deck_tags, dependent: :destroy
   has_many :tags, through: :deck_tags
 
   validates :name, presence: true, length: { maximum: 255 }
+
   # validate :at_least_a_cards
 
   # attr_accessor :tag_names

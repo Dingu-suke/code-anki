@@ -22,7 +22,7 @@ export const SelectCardIndex = (
 
   const handleCheckboxClick = (card) => {
     setCheckedCards(prevCheckedCards => {
-      if (prevCheckedCards.some(c => c.id === card.id)) {
+      if (prevCheckedCards?.some(c => c.id === card.id)) {
         return prevCheckedCards.filter(c => c.id !== card.id);
       } else {
         return [...prevCheckedCards, card];
@@ -97,7 +97,7 @@ export const SelectCardIndex = (
                     <input
                       className="checkbox checkbox-md checkbox-secondary hover:bg-pink-900"
                       type="checkbox"
-                      checked={checkedCards.some((c) => c.id === card.id)}
+                      checked={checkedCards?.some((c) => c.id === card.id)}
                       onChange={(event) => {
                         // イベントの伝播を停止、カード全体の onClick の阻止
                         event.stopPropagation();

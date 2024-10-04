@@ -79,12 +79,12 @@ export const DeckList = ({ selectedCard }) => {
         className="w-full p-2 mb-4 border rounded bg-gray-700 focus:outline-none focus:border-2 focus:border-blue-800 border-blue-900 text-cyan-100"
       />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-        {filteredDecks.length > 0 ? (
+        {filteredDecks?.length > 0 ? (
           filteredDecks.map((deck) => (
             <StackedDeckCard key={deck.id} deck={deck} cards={deck.cards} onClick={toggleDeckSelection} isSelected={selectedDeck && selectedDeck.id === deck.id} />
           ))
         ) : (
-          <div>デッキがありません</div>
+          <div className="text-lg text-center">デッキがありません</div>
         )}
       </div>
       {selectedDeck && (

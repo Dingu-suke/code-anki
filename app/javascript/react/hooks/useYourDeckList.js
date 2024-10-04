@@ -68,7 +68,13 @@ export const useYourDeckList = () => {
     setFilteredDecks(filtered);
   }, [decks, searchTerm, selectedLanguage, selectedCategory, status]);
 
-  // ---- newDeck から移植 ---
+  const processApiResponse = (response) => {
+    return {
+      ...response,
+      cards: response.cards || []    
+    };
+  };
+
   const addDeck = useCallback(async (data) => {
     try {
       const response = await axios.post('/decks',
@@ -77,24 +83,22 @@ export const useYourDeckList = () => {
           'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
         }
       });
-      const newDeck = response.data; // APIレスポンスがそのままデッキオブジェクト
-
       // 新しいデッキを既存のデッキリストに追加
       setDecks(prevDecks => [...prevDecks, newDeck]);
-
+      
+      const newDeck = processApiResponse(response.data);
       return newDeck;
-
-    }  catch (error) {
+  
+    } catch (error) {
       console.error('デッキ作成失敗', error);
       setError('デッキの作成に失敗しました: ' + error.message);
       return null; // エラー時にはnullを返す
     }
-  }, [])
+  }, [setDecks, setError]);
 
   const setSearchTermAndFilter = useCallback((term) => {
     setSearchTerm(term);
   }, []);
-  // ---- newDeck から移植 --- //
 
   const editDeck = useCallback(async (selectedDeck, checkedCards) => {
     setError(null);
@@ -153,7 +157,6 @@ export const useYourDeckList = () => {
     }
   }, [setFilteredDecks]);
 
-
   const updateDeckAndCard = (updatedDeck) => {
         setDecks(prevDecks => prevDecks.map(deck => deck.id === updatedDeck.id ? updatedDeck : deck));
         setFilteredDecks(prevFilteredDeck => prevFilteredDeck.map(deck => deck.id === updatedDeck.id ? editDeck : deck));
@@ -161,16 +164,29 @@ export const useYourDeckList = () => {
         // setDecks(prevDecks => prevDecks.cards.map(card => card.id === updatedDeck.card.id ? updatedDeck.card : card));
   }
   
-  const deleteDeck = useCallback(async (deckId) => {
-    setError(null);
+  const deleteDeck = async (deckId, onSuccess) => {
+    setupCSRFToken();
     try {
-      await api.delete(`/your_decks/${deckId}`);
-      setDecks(prevDecks => prevDecks.filter(deck => deck.id !== deckId));
+      const response = await axios.delete(`/destroy_your_deck/${deckId}`, {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      });
+      if (response.status === 204) {        
+        setDecks(prevDecks => prevDecks.filter(deck => deck.id !== deckId));
+        setSelectedDeck(prevSelectedDeck => prevSelectedDeck && prevSelectedDeck.id === deckId ? null : prevSelectedDeck);
+        console.log('デッキの削除成功')
+        
+        // 成功時のみコールバックを実行
+        if (onSuccess && typeof onSuccess === 'function') {
+          onSuccess();
+        }
+      }
     } catch (error) {
-      setError('デッキの削除に失敗しました: ' + error.message);
-      console.error('Error deleting deck:', error);
-    }
-  }, []);
+        console.error('デッキ削除失敗',error)
+      }
+  }
 
   const selectDeck = useCallback((deck) => {
     setSelectedDeck(prevDeck => prevDeck?.id === deck?.id ? null : deck);
@@ -187,6 +203,7 @@ export const useYourDeckList = () => {
     addDeck,
     updateDeckInfo,
     editDeck,
+    deleteDeck,
     fetchDecks,
     setSearchTermAndFilter,
     setSelectedLanguage,

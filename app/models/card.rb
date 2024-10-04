@@ -1,6 +1,6 @@
 class Card < ApplicationRecord
   belongs_to :user
-  has_many :deck_cards
+  has_many :deck_cards, dependent: :destroy
   has_many :decks, through: :deck_cards
   
   before_validation :set_default_remarks, on: :create
@@ -12,3 +12,4 @@ class Card < ApplicationRecord
     self.remarks = 'なし' if body.blank?
   end
 end
+1
