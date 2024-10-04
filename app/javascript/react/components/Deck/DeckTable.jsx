@@ -50,11 +50,9 @@ export const DeckTable = (
   const handleClickConditions = (event, deck) => {
     event.stopPropagation()
     if (!event.target.closest('.js-toggle-button')) {
-      console.log("setDeck")
       setDeck(deck)
     } 
     else if (!event.target.closest('.js-edit-icon')) {
-      console.log("setDeck")
       setDeck(deck)
     }
   }
@@ -160,6 +158,7 @@ export const DeckTable = (
         <DeckEdit
                   deck={editDeck}
                   deleteDeck={deleteDeck}
+                  setCheckedCards={setCheckedCards}
                   updateDeckInfo={updateDeckInfo}
                   setIsDeckEditWindowOpen={setIsDeckEditWindowOpen}
         />

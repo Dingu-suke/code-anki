@@ -100,7 +100,7 @@ export const DeckNew = ({ addDeck, onSuccess }) => {
   );
 }
 
-export const DeckEdit = ({ deck, updateDeckInfo, deleteDeck, setIsDeckEditWindowOpen }) => {
+export const DeckEdit = ({ deck, updateDeckInfo, setCheckedCards, deleteDeck, setIsDeckEditWindowOpen }) => {
   const { register ,
           handleSubmit,
           formState:{errors},
@@ -120,6 +120,10 @@ export const DeckEdit = ({ deck, updateDeckInfo, deleteDeck, setIsDeckEditWindow
       });
     }
   }, [deck, reset]);
+
+  const handleDelete = (deck) => {
+    deleteDeck(deck.id, () => {setIsDeckEditWindowOpen(false)}, () => {setCheckedCards(null)})
+  }
 
   const onSubmit = async (data) => {
     const { cards, ...updateData } = data
@@ -180,7 +184,7 @@ export const DeckEdit = ({ deck, updateDeckInfo, deleteDeck, setIsDeckEditWindow
               更新する
             </button>
             <button type="button" className="col-start-11 col-span-1 min-w-11 font-bold text-lg p-3 rounded-md text-gray-400 bg-cyan-950 hover:text-red-500 hover:bg-blue-950 border border-red-800 hover:border-red-500 font-courier xl:w-auto xl:inline-block cursor-default px-1" 
-                    onClick={() => deleteDeck(deck.id, () => {setIsDeckEditWindowOpen(false)})}>
+                    onClick={() => handleDelete(deck)}>
               <div className="flex items-center justify-center">
                 <FaTrashCan />
               </div>

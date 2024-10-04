@@ -164,7 +164,7 @@ export const useYourDeckList = () => {
         // setDecks(prevDecks => prevDecks.cards.map(card => card.id === updatedDeck.card.id ? updatedDeck.card : card));
   }
   
-  const deleteDeck = async (deckId, onSuccess) => {
+  const deleteDeck = async (deckId, windowOpenFalse, resetCheckedCards) => {
     setupCSRFToken();
     try {
       const response = await axios.delete(`/destroy_your_deck/${deckId}`, {
@@ -179,8 +179,11 @@ export const useYourDeckList = () => {
         console.log('デッキの削除成功')
         
         // 成功時のみコールバックを実行
-        if (onSuccess && typeof onSuccess === 'function') {
-          onSuccess();
+        if (windowOpenFalse && typeof windowOpenFalse === 'function') {
+          windowOpenFalse();
+        }
+        if (resetCheckedCards && typeof resetCheckedCards === 'function') {
+          resetCheckedCards()
         }
       }
     } catch (error) {
