@@ -1,5 +1,6 @@
 class DecksController < ApplicationController
-  before_action :set_deck, only: %i[ show edit update destroy ]
+  before_action :set_deck, only: %i[ show edit destroy ]
+  before_action :set_your_deck, only: %i[ update ]
   before_action :authenticate, except: %i[ index deck_cards ]
 
   # GET /decks or /decks.json
@@ -29,6 +30,7 @@ class DecksController < ApplicationController
   # POST /decks or /decks.json
   def create
     @deck = current_user.decks.build(deck_params)
+    
     if @deck.save
       render json: @deck, status: :created
     else
@@ -46,21 +48,24 @@ class DecksController < ApplicationController
 
   # PATCH/PUT /decks/1 or /decks/1.json
   def update
-    @deck = current_user.decks.find(params[:id])
     if @deck.update(deck_params)
-      redirect_to your_decks_path, success: "保存成功"
+      render json: @deck
     else
-      flash.now[:danger] = "保存失敗"
-      render :edit
+      render json: @deck.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /decks/1 or /decks/1.json
   def destroy
-    @deck.destroy!
-    redirect_to your_decks_path, success: "デッキを削除しました", status: :see_other
+    @deck = Deck.find(params[:id])
+    if @deck.destroy
+      head :no_content
+    else
+      render json: {error: 'デッキの削除に失敗しました'}, status: unprocessable_entity
+    end
   end
 
+  # 使用ユーザーのみのデッキ一覧
   def your_decks
     @your_decks = Deck.where(user_id: current_user.id).includes(:user).order("created_at DESC")
     @your_cards = Card.where(user_id: current_user.id).includes(:user).order("created_at DESC")
@@ -84,11 +89,12 @@ class DecksController < ApplicationController
   end
 
   def destroy_your_deck
-    @deck = Deck.find(params[:id])
-    @deck.deck_cards.destroy_all
-    @deck.deck_tags.destroy_all
-    @deck.destroy!
-    redirect_to your_decks_path, success: "デッキを削除しました", status: :see_other
+    @deck = current_user.decks.find(params[:id])
+    if @deck.destroy
+      head :no_content
+    else
+      render json: { errors: @deck.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   private
@@ -97,8 +103,12 @@ class DecksController < ApplicationController
       @deck = Deck.find(params[:id])
     end
 
+    def set_your_deck
+      @deck = current_user.decks.find(params[:id])
+    end
+
     # Only allow a list of trusted parameters through.
     def deck_params
-      params.require(:deck).permit(:name, :tag_names, :language, :category, :status, card_ids:[])
+      params.require(:deck).permit(:name, :tag_names, :language, :category, :status, card_ids: [])
     end
 end

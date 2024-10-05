@@ -1,30 +1,42 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { DeckNew } from '../Form/DeckFormTest';
+import { DeckNew } from '../Form/DeckForm';
 import { DeckTable } from './DeckTable';
 import { useYourDeckList } from '../../hooks/useYourDeckList';
 import { GiConsoleController } from 'react-icons/gi';
 import { NewResponsiveWindow } from '../Window/NewResponsiveWindow';
 import ResponsiveWindow from '../Window/ResponsiveWindow';
+import { LanguageSelector } from '../RunCodeEditorDaisyUI/LanguageController';
+import { CATEGORY, LANGUAGE_LABELS, getLabelKey } from '../RunCodeEditorDaisyUI/constants';
 
-
-export const YourDecksIndex = () => {
-  const {
-    filteredDecks,
-    selectedDeck,
-    isLoading,
-    error,
-    searchTerm,
-    fetchDecks,
-    addDeck,
-    selectDeck,
-    setSearchTermAndFilter,
-  } = useYourDeckList();
+export const YourDecksIndex = ({ 
+                                  selectedDeck, setSelectedDeck,
+                                  checkedCards, setCheckedCards,
+                                  filteredDecks,
+                                  isDeckLoading,
+                                  searchTerm,
+                                  error
+                                  ,
+                                  addDeck,
+                                  deleteDeck,
+                                  updateDeckInfo,
+                                  setSearchTermAndFilter,
+                                  setSelectedLanguage,
+                                  setStatus,
+                                  setSelectedCategory,
+                                  reRenderDeckList
+                                  // handleCheckCardsOfDeck
+                                }) => {
 
   const [isDeckNewWindowOpen, setIsDeckNewWindowOpen] = useState(false);
+  const [language, setLanguage] = useState("");
 
   const handleSearch = (e) => {
     setSearchTermAndFilter(e.target.value);
   };
+
+  useEffect(() => {
+    setSelectedLanguage(getLabelKey(language));
+  }, [language])
 
   const openNewDeckWindow = () => {
     setIsDeckNewWindowOpen(true);
@@ -34,23 +46,23 @@ export const YourDecksIndex = () => {
     setIsDeckNewWindowOpen(false);
   };
 
-  // const handleAddDeck = async (newDeck) => {
-  //   const addedDeck = await addDeck(newDeck);
-  //   if (addedDeck) {
-  //     fetchDecks();
-  //     // ウィンドウを閉じずに、フォームをリセットする処理をここに追加
-  //     // ここでDeckNewコンポーネントの状態をリセットするための関数を呼び出す
-  //   }
-  // };
-
   const handleAddDeckSuccess = useCallback((newDeck) => {
     // 必要に応じて追加の処理を行う
     // 例: 新しいデッキを選択状態にする、など
+    // トースト
     console.log('新しいデッキが追加されました:', newDeck);
   }, []);
 
+  const onLanguageChange=(lang) => {
+    // setValue('language', lang)
+  }
 
-  if (isLoading) {
+  const onSelect = (newLanguage) => {
+    // onLanguageChange(newLanguage);
+    setLanguage(LANGUAGE_LABELS[newLanguage]);
+  };
+
+  if (isDeckLoading) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
         <div className="text-white loading loading-ring loading-lg"></div>
@@ -61,16 +73,41 @@ export const YourDecksIndex = () => {
   return (
     <div className="p-6">
       {error && <div className="text-red-500 mb-4">{error}</div>}
-      <div className="grid grid-cols-7 gap-4 mb-4">
+      <div className="grid grid-cols-12 gap-4 mb-4">
         <input
           type="text"
           placeholder="デッキを検索"
           value={searchTerm}
           onChange={handleSearch}
-          className="col-span-5 p-2 rounded bg-gray-700 border focus:outline-none focus:border-2 focus:border-blue-800 border-blue-900 text-cyan-100"
+          className="col-span-4 p-2 pl-3 rounded bg-gray-700 border focus:outline-none focus:border-2 focus:border-blue-800 border-blue-900 text-cyan-100"
         />
-        <button 
-          className="col-span-2 p-2 rounded-md bg-slate-900 border border-pink-500 text-pink-500 hover:bg-slate-800"
+        <div className="z-40 flex items-center justify-center">
+          <LanguageSelector language={language} onSelect={onSelect} />
+        </div>
+        <select
+          id="category"
+          name="category"
+          className="col-span-3 px-3 py-2 rounded bg-gray-800 focus:outline-none focus:ring border-gray-700 border-2 text-cyan-100 truncate"
+          onChange={(event) => setSelectedCategory(event.target.value)}
+        >
+          <option value="">すべて</option>
+          <option value="methodLearning">{CATEGORY["methodLearning"]}</option>
+          <option value="algorithm">{CATEGORY["algorithm"]}</option>
+          <option value="refactoring">{CATEGORY["refactoring"]}</option>
+          <option value="tradeOff">{CATEGORY["tradeOff"]}</option>
+        </select>
+        <select
+          id="status"
+          name="status"
+          className="col-span-2 px-3 py-2 rounded bg-gray-800 focus:outline-none focus:ring border-gray-700 border-2 text-cyan-100 truncate"
+          onChange={(event) => {setStatus(event.target.value)}}
+        >
+          <option value="">すべて</option>
+          <option value="public">公開</option>
+          <option value="private">非公開</option>
+        </select>
+        <button
+          className="col-span-2 p-2 rounded-md bg-slate-900 border border-pink-500 text-pink-500 hover:bg-slate-800 truncate"
           onClick={openNewDeckWindow}
         >
           + New Deck
@@ -78,30 +115,17 @@ export const YourDecksIndex = () => {
       </div>
       
       <div className="border border-slate-600 bg-stone-950 text-cyan-50 rounded overflow-hidden">
-        <div className="p-6 h-[calc(60vh-2rem)] overflow-auto">
-          {filteredDecks.length > 0 ? (
-            <DeckTable
-              filteredDecks={filteredDecks}
-              onClick={selectDeck}
-              selectedDeck={selectedDeck}
-              fetchDecks={fetchDecks}
-            />
-          ) : (
-            <div className="text-center py-4">デッキがありません</div>
-          )}
-        </div>
+        <DeckTable
+          checkedCards={checkedCards} setCheckedCards={setCheckedCards}
+          filteredDecks={filteredDecks}
+          updateDeckInfo={updateDeckInfo}
+          deleteDeck={deleteDeck}
+          selectedDeck={selectedDeck}
+          setSelectedDeck={setSelectedDeck}
+          reRenderDeckList={reRenderDeckList}
+          // handleCheckCardsOfDeck={handleCheckCardsOfDeck}
+        />
       </div>
-
-      {/* {isDeckNewWindowOpen && (
-        <ResponsiveWindow
-          title="空のデッキを作成"
-          initialPosition={{ x: 900, y: 500 }}
-          initialSize={{ width: 700, height: 400 }}
-          onClose={closeNewDeckWindow}
-        >
-          <DeckNew onSubmit={handleAddDeck} filteredDecks={filteredDecks} addDeck={addDeck}/>
-        </ResponsiveWindow>
-      )} */}
       <NewResponsiveWindow
         isOpen={isDeckNewWindowOpen}
         title="空のデッキを作成"

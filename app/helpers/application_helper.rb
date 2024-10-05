@@ -28,3 +28,18 @@ module ApplicationHelper
   end
 end
 
+module ApplicationHelper
+  def language_logos_data
+    {
+      javascript: asset_path('javascript-logo.svg'),
+      typescript: asset_path('typescript-logo.svg'),
+      python: asset_path('python-logo.svg'),
+      java: asset_path('java-logo.svg'),
+      csharp: asset_path('csharp-logo.svg'),
+      php: asset_path('php-logo.svg'),
+      go: asset_path('go-logo.svg'),
+      ruby: asset_path('ruby-logo.svg')
+    }.to_json
+  end
+end
+

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useCards } from '../../hooks/useCards';
 import ResponsiveWindow from '../Window/ResponsiveWindow';
-import CardEditForm from '../Form/CardEditForm';
+import CardForm from '../Form/CardEditForm';
 
 export const CardList = () => {
   const { cards, setCards, isLoading, setIsLoading } = useCards();
@@ -35,13 +35,13 @@ export const CardList = () => {
           )
         )
       .sort((a, b) => a.title.localeCompare(b.title));
-      setFilteredCards(filtered);  
+      setFilteredCards(filtered);
     }}, [cards, searchTerm]);
 
   // カード更新時にカード一覧を再レンダリングさせる
   const handleCardUpdate = (updatedCard) => {
     setSelectedCard(updatedCard);
-    setCards(prevCards => 
+    setCards(prevCards =>
       prevCards.map(card => card.id === updatedCard.id ? updatedCard : card)
     );
   };
@@ -64,7 +64,7 @@ export const CardList = () => {
           onChange={handleSearch}
           className="w-full p-2 mb-4 border rounded bg-gray-700 focus:outline-none focus:border-2 focus:border-blue-800 border-blue-900 text-cyan-100"
         />
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4" >
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
 
         <div className={`border border-dashed hover:border-solid border-pink-400 hover:border-pink-400 text-pink-400 p-4 rounded shadow  bg-slate-950`}>
           <h2 className='text-xl font-semibold '>+ new card</h2>
@@ -88,7 +88,7 @@ export const CardList = () => {
           initialSize={{ width: 700, height: 800 }}
           onClose={closeWindow}
         >
-          <CardEditForm
+          <CardForm
             useInWindow={true}
             selectedCard={selectedCard}
             onUpdateSuccess={handleCardUpdate}
