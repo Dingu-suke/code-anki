@@ -6,7 +6,6 @@ import MarkdownView from "./components/EditorView/MarkdownView";
 
 import RunCodeEditor from './components/RunCodeEditorDaisyUI/CodeEditor';
 import TextBox from "./components/TextBox";
-import Test from "./test/test";
 import { Answer } from "./components/card/AnswerCard";
 import QuestionCard from "./components/card/QuiestionCard";
 import { CardList } from "./components/card/CardIndex";
@@ -16,9 +15,6 @@ import App from "./components/Window/App";
 import { Drill } from './components/Drill/Drill';
 import { YourDecksIndex } from "./components/Deck/YourDecksIndex";
 import { DeckInfo } from "./components/Deck/DeckInfo";
-// import DeckFormContainer from '../../../docker compose up/app/javascript/react/components/deck/DeckIndex';
-
-
 
 document.addEventListener("DOMContentLoaded", () => {
   const monacoModalRoot   = document.getElementById("monacoModal");
