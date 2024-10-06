@@ -16,7 +16,7 @@ const setupCSRFToken = () => {
   }
 };
 
-const CardForm = ({useInWindow, selectedCard, onUpdateSuccess}) => {
+export const CardEditForm = ({useInWindow, selectedCard, onUpdateSuccess}) => {
   // -----
   const questionEditorRef = useRef(null);
   const remarksEditorRef = useRef(null);  
@@ -205,5 +205,3 @@ const CardForm = ({useInWindow, selectedCard, onUpdateSuccess}) => {
     </div>
   );
 }
-
-export default CardForm;

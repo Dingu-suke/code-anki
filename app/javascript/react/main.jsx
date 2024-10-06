@@ -9,12 +9,12 @@ import TextBox from "./components/TextBox";
 import { Answer } from "./components/card/AnswerCard";
 import QuestionCard from "./components/card/QuiestionCard";
 import { CardList } from "./components/card/CardIndex";
-import CardForm from './components/Form/CardForm';
 import ParentComponent from "./components/PaarentComponent";
 import App from "./components/Window/App";
 import { Drill } from './components/Drill/Drill';
 import { YourDecksIndex } from "./components/Deck/YourDecksIndex";
 import { DeckInfo } from "./components/Deck/DeckInfo";
+import { CardEditForm } from "./components/Form/CardEditForm";
 
 document.addEventListener("DOMContentLoaded", () => {
   const monacoModalRoot   = document.getElementById("monacoModal");
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   quiestionCardRoot && createRoot(quiestionCardRoot).render(<QuestionCard />);
   answerCardRoot    && createRoot(answerCardRoot)   .render(<Answer />);
-  cardFormRoot      && createRoot(cardFormRoot)     .render(<CardForm />);
+  cardFormRoot      && createRoot(cardFormRoot)     .render(<CardEditForm />);
 
   runCodeEditorRoot && createRoot(runCodeEditorRoot).render(<RunCodeEditor />);
   markdownViewRoot  && createRoot(markdownViewRoot) .render(<MarkdownView />);

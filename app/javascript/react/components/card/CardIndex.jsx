@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useCards } from '../../hooks/useCards';
 import ResponsiveWindow from '../Window/ResponsiveWindow';
-import CardForm from '../Form/CardEditForm';
+import { CardEditForm } from '../Form/CardEditForm';
 
 export const CardList = () => {
   const { cards, setCards, isLoading, setIsLoading } = useCards();
@@ -88,7 +88,7 @@ export const CardList = () => {
           initialSize={{ width: 700, height: 800 }}
           onClose={closeWindow}
         >
-          <CardForm
+          <CardEditForm
             useInWindow={true}
             selectedCard={selectedCard}
             onUpdateSuccess={handleCardUpdate}
