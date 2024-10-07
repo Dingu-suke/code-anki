@@ -1,7 +1,8 @@
 import React, { useState } from "react"
 import Markdown from "react-markdown"
 import { useRunCode } from "../../hooks/useRunCode"
-import '../../markdown.css'
+import '../../../../../app/assets/stylesheets/application.tailwind.css'
+// import '@/app/assets/stylesheets/application.tailwind.css'
 import Output from "../runCodeEditorDaisyUI/runButton&Output/Output"
 import { EditorAndAnswer } from "./EditorAndAnswer"
 
