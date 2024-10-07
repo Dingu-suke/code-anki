@@ -1,7 +1,7 @@
 import { DiffEditor, Editor } from "@monaco-editor/react";
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { LanguageLabel } from '../runCodeEditorDaisyUI/LanguageController';
-import RunButton from '../runCodeEditorDaisyUI/RunButton&Output/RunButton';
+import RunButton from '../runCodeEditorDaisyUI/runButton&Output/RunButton';
 
 export const EditorAndAnswer = ({ 
   className = "", 

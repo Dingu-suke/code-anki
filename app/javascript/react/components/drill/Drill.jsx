@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import Markdown from "react-markdown"
 import { useRunCode } from "../../hooks/useRunCode"
 import '../../markdown.css'
-import Output from "../runCodeEditorDaisyUI/RunButton&Output/Output"
+import Output from "../runCodeEditorDaisyUI/runButton&Output/Output"
 import { EditorAndAnswer } from "./EditorAndAnswer"
 
 const initialCards = [

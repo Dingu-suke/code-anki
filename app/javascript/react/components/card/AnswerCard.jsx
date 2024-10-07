@@ -2,10 +2,10 @@ import React from 'react';
 import { useRunCode } from '../../hooks/useRunCode';
 import { RemarksEditor } from '../editor/MarkdownEditor';
 import RunCodeEditor from '../runCodeEditorDaisyUI/CodeEditor';
-import { LanguageSelector } from '../runCodeEditorDaisyUI/LanguageController';
-import Output from '../runCodeEditorDaisyUI/RunButton&Output/Output';
-import RunButton from '../runCodeEditorDaisyUI/RunButton&Output/RunButton';
 import { CODE_SNIPPETS } from '../runCodeEditorDaisyUI/constants';
+import { LanguageSelector } from '../runCodeEditorDaisyUI/LanguageController';
+import Output from '../runCodeEditorDaisyUI/runButton&Output/Output';
+import RunButton from '../runCodeEditorDaisyUI/runButton&Output/RunButton';
 
 
 export const Answer = ({ value, onChange, language, onLanguageChange }) => {
