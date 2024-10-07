@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Toggle } from '../Toggle/Toggle';
-import { LanguageIcon, CATEGORY } from '../RunCodeEditorDaisyUI/constants';
 import { LuPencil } from "react-icons/lu";
-import { NewResponsiveWindow } from '../Window/NewResponsiveWindow';
-import { DeckEdit } from '../Form/DeckForm';
+import { DeckEdit } from '../form/DeckForm';
+import { CATEGORY, LanguageIcon } from '../runCodeEditorDaisyUI/constants';
+import { Toggle } from '../toggle/Toggle';
+import { NewResponsiveWindow } from '../window/NewResponsiveWindow';
 
 const methodLearningColor = "bg-yellow-950 text-amber-200 bg-opacity-55"
 const algorithmColor = "bg-green-950 text-emerald-200"

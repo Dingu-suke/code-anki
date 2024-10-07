@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import DraggableModal from './Editor/Modal/DraggableModal'
+import DraggableModal from './editor/Modal/DraggableModal'
 
 const ParentComponent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)

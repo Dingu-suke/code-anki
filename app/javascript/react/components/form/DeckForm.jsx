@@ -1,10 +1,8 @@
-import axios from 'axios';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { CATEGORY, LANGUAGE_LABELS } from '../RunCodeEditorDaisyUI/constants';
-import { setupCSRFToken } from './setupCSRFToken';
-import { useYourDeckList } from '../../hooks/useYourDeckList';
 import { FaTrashCan } from "react-icons/fa6";
+import { CATEGORY, LANGUAGE_LABELS } from '../runCodeEditorDaisyUI/constants';
+import { setupCSRFToken } from './setupCSRFToken';
 
 
 const errors = {

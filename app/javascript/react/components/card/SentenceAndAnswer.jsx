@@ -1,7 +1,7 @@
-import React, { useRef, useState, useCallback } from 'react';
-import Markdown from 'react-markdown';
 import { Editor } from '@monaco-editor/react';
-import { LanguageLabel } from '../RunCodeEditorDaisyUI/LanguageController';
+import React, { useRef, useState } from 'react';
+import Markdown from 'react-markdown';
+import { LanguageLabel } from '../runCodeEditorDaisyUI/LanguageController';
 
 export const SentenceAndAnswer = ({ card }) => {
   const editorEditorRef = useRef(null);
