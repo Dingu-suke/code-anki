@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { DeckNew } from '../Form/DeckForm';
+import { DeckNew } from '../form/DeckForm';
 import { LanguageSelector } from '../runCodeEditorDaisyUI/LanguageController';
 import { CATEGORY, LANGUAGE_LABELS, getLabelKey } from '../runCodeEditorDaisyUI/constants';
 import { NewResponsiveWindow } from '../window/NewResponsiveWindow';

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useCards } from '../../hooks/useCards';
 import ResponsiveWindow from '../window/ResponsiveWindow';
-import { CardEditForm } from '../Form/CardEditForm';
+import { CardEditForm } from '../form/CardEditForm';
 
 
 export const CardList = () => {
