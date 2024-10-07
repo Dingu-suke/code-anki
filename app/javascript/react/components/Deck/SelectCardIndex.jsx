@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import ResponsiveWindow from '../Window/ResponsiveWindow';
-import { CheckCard } from '../card/CheckCard'; 
+import { CheckCard } from '../card/CheckCard';
+import ResponsiveWindow from '../window/ResponsiveWindow';
 
 export const SelectCardIndex = (
   { 

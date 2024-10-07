@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useYourDecks } from '../../hooks/useYourDecks';
-import ResponsiveWindow from '../Window/ResponsiveWindow';
+import ResponsiveWindow from '../window/ResponsiveWindow';
 
 const StackedDeckCard = ({ deck, onClick, isSelected, cards }) => {
   const BackGroundColor = isSelected ? 'bg-slate-950 border-orange-400' : 'bg-slate-900 group-hover:bg-blue-950 group-hover:border-blue-500';
