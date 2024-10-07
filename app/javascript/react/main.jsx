@@ -1,20 +1,21 @@
 // app/javascript/react/main.jsx
 import React from "react";
 import { createRoot } from "react-dom/client";
-import MonacoModal from "./components/editor/MonacoModal";
-import MarkdownView from "./components/editorView/MarkdownView";
+import MonacoModal from "./components/Editor/MonacoModal";
+import MarkdownView from "./components/EditorView/MarkdownView";
 
-import { Answer } from "./components/card/AnswerCard";
-import { CardList } from "./components/card/CardIndex";
-import QuestionCard from "./components/card/QuiestionCard";
-import { DeckInfo } from "./components/deck/DeckInfo";
-import { YourDecksIndex } from "./components/deck/YourDecksIndex";
-import { Drill } from './components/drill/Drill';
-import CardForm from "./components/form/CardForm";
-import ParentComponent from "./components/PaarentComponent";
-import RunCodeEditor from './components/runCodeEditorDaisyUI/CodeEditor';
+import RunCodeEditor from './components/RunCodeEditorDaisyUI/CodeEditor';
 import TextBox from "./components/TextBox";
-import App from "./components/window/App";
+import { Answer } from "./components/card/AnswerCard";
+import QuestionCard from "./components/card/QuiestionCard";
+import { CardList } from "./components/card/CardIndex";
+import ParentComponent from "./components/PaarentComponent";
+import App from "./components/Window/App";
+import { Drill } from './components/Drill/Drill';
+import { YourDecksIndex } from "./components/Deck/YourDecksIndex";
+import { DeckInfo } from "./components/Deck/DeckInfo";
+import { CardEditForm } from "./components/Form/CardEditForm";
+import CardForm from "./components/Form/CardForm";
 
 document.addEventListener("DOMContentLoaded", () => {
   const monacoModalRoot   = document.getElementById("monacoModal");

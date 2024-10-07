@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { AiTwotoneTags } from "react-icons/ai";
 import { IoWarning } from "react-icons/io5";
-import { CATEGORY } from '../runCodeEditorDaisyUI/constants';
+import { CATEGORY } from '../RunCodeEditorDaisyUI/constants'
 
 export const SelectedDeckDisplay = ({ selectedDeck }) => {
   useEffect(() => {

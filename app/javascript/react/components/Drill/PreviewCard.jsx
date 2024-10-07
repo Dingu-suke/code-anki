@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import Markdown from "react-markdown";
+import React, { useState, useEffect } from "react"
+import Markdown from "react-markdown"
 import { useRunCode } from "../../hooks/useRunCode";
-import Output from "../runCodeEditorDaisyUI/RunButton&Output/Output";
+import Output from "../RunCodeEditorDaisyUI/RunButton&Output/Output";
 import { EditorAndAnswer } from "./EditorAndAnswer";
 
 

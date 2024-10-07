@@ -1,11 +1,20 @@
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import axios from 'axios';
-import React, { useCallback, useEffect, useRef } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
+import { CODE_SNIPPETS } from '../RunCodeEditorDaisyUI/constants';
 import { Answer, Remarks } from '../card/AnswerCard';
 import QuestionCard from '../card/QuiestionCard';
-import { CODE_SNIPPETS } from '../runCodeEditorDaisyUI/constants';
 import { setupCSRFToken } from './setupCSRFToken';
+
+// const setupCSRFToken = () => {
+//   const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+//   if (csrfToken) {
+//     axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
+//   } else {
+//     console.error('CSRF token not found');
+//   }
+// };
 
 const CardForm = ({useInWindow}) => {
   // -----

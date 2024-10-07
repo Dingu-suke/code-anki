@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { executeCode } from "../components/runCodeEditorDaisyUI/api";
+import { executeCode } from "../components/RunCodeEditorDaisyUI/api";
 
 export const useRunCode = (language) => {
   const [isLoading, setIsLoading] = useState(false);

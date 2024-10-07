@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react"
+import Markdown from "react-markdown"
+import Output from "../RunCodeEditorDaisyUI/RunButton&Output/Output";
+import { useRunCode } from "../../hooks/useRunCode";
 import { SentenceAndAnswer } from "./SentenceAndAnswer";
 
 export const CheckCard = ({ selectedCard }) => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { QuestionEditor } from '../editor/MarkdownEditor';
+import { QuestionEditor } from '../Editor/MarkdownEditor';
 
 const QuestionCard = ({ editorRef, defaultValue, onBlur }) => {
 

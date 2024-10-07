@@ -1,7 +1,8 @@
-import axios from 'axios';
+import React from 'react';
+import { useEffect, useRef, useState } from "react";
 import { motion } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
-import { setupCSRFToken } from '../form/setupCSRFToken';
+import axios from 'axios';
+import { setupCSRFToken } from '../Form/setupCSRFToken';
 
 export const Toggle = ({initialStatus, deck}) => {
   const [status, setStatus] = useState(initialStatus || "private");  

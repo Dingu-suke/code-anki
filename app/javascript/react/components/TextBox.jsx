@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import MonacoEditor from './editor/MonacoEditor';
+import MonacoEditor from './Editor/MonacoEditor';
 
 const TextBox = () => {
   const [text, setText] = useState("");

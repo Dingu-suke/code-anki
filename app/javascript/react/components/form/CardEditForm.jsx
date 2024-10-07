@@ -1,7 +1,8 @@
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import axios from 'axios';
-import React, { useCallback, useEffect, useRef } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
+import { CODE_SNIPPETS } from '../RunCodeEditorDaisyUI/constants';
 import { Answer, Remarks } from '../card/AnswerCard';
 import QuestionCard from '../card/QuiestionCard';
 import { setupCSRFToken } from './setupCSRFToken';

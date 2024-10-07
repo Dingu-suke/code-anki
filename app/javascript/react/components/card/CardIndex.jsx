@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useCards } from '../../hooks/useCards';
-import ResponsiveWindow from '../window/ResponsiveWindow';
+import ResponsiveWindow from '../Window/ResponsiveWindow';
 import { CardEditForm } from '../Form/CardEditForm';
-
 
 export const CardList = () => {
   const { cards, setCards, isLoading, setIsLoading } = useCards();

@@ -1,14 +1,17 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { IoWarning } from "react-icons/io5";
 import { useCardNavigation } from '../../hooks/useCardNavigation';
 import { useCards } from '../../hooks/useCards';
-import { PreviewCard } from '../drill/PreviewCard';
+import { PreviewCard } from '../Drill/PreviewCard';
 // import { CheckCard } from '../card/CheckCard';
-import { useYourDeckList } from '../../hooks/useYourDeckList';
 import { PreviewCardList } from './PreviewCardList';
-import { SaveButton } from './SaveButton';
 import { SelectCardIndex } from './SelectCardIndex';
-import { SelectedDeckDisplay } from './SelectedDeckDisplay';
 import { YourDecksIndex } from './YourDecksIndex';
+import { useYourDeckList } from '../../hooks/useYourDeckList';
+import { CATEGORY } from '../RunCodeEditorDaisyUI/constants';
+import { AiTwotoneTags } from "react-icons/ai";
+import { SaveButton } from './SaveButton';
+import { SelectedDeckDisplay } from './SelectedDeckDisplay';
 
 export const DeckInfo = () => {
   const { cards, setCards, isLoading, setIsLoading } = useCards();
