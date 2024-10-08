@@ -36,6 +36,14 @@ module.exports = {
         'extrabold': '800',
         'black': '900',
       },
+      colors: {
+        editor: {
+          bg: '#2b2b2b',
+          toolbar: '#474a4d',
+          button: '#bbbcde',
+          buttonHover: '#555555',
+        },
+      },
     }
   }
 }

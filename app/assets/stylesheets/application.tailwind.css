@@ -1,6 +1,8 @@
+@import 'easymde/dist/easymde.min.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 
 /* src/markdownStyles.css */
 
@@ -55,4 +57,94 @@
   background-color: #888;
   border-radius: 6px;
   border: 3px solid #1a1a1a;
+}
+
+.custom-mde .EasyMDEContainer {
+  font-size: 16px;
+}
+
+.custom-mde .CodeMirror {
+  background-color: #2b2b2b;
+  color: #ffffff;
+}
+
+.custom-mde .editor-toolbar {
+  background-color: #474a4d;
+}
+
+.custom-mde .editor-toolbar button {
+  color: #bbbcde !important;
+}
+
+.custom-mde .editor-toolbar button:hover,
+.custom-mde .editor-toolbar button.active {
+  background: #555555;
+}
+
+.custom-mde .CodeMirror-cursor {
+  border-left: 1px solid #ffffff;
+}
+
+.custom-mde .cm-header { color: #ede4cd; }
+.custom-mde .cm-link { color: #bce2e8; }
+.custom-mde .cm-strong { color: #fdeff2; }
+.custom-mde .cm-em { color: #e0ebaf; }
+
+.custom-mde .CodeMirror-placeholder {
+  color: #888888;
+}
+
+.custom-mde .editor-toolbar {
+  background-color: #333333;
+  border: none;
+}
+
+.custom-mde .CodeMirror {
+background-color: #2b2b2b;
+color: #ffffff;
+border: none;
+}
+
+.custom-mde .EasyMDEContainer {
+  font-size: 15px;
+}
+
+.custom-mde .CodeMirror {
+  background-color: #2b2b2b;
+  color: #ffffff;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.custom-mde .CodeMirror-focused {
+  outline: none !important;
+}
+
+.custom-mde .CodeMirror-scroll {
+  padding: 10px;
+}
+
+.custom-mde .editor-toolbar {
+  background-color: #474a4d;
+  border: none !important;
+  opacity: 1;
+}
+
+.custom-mde .editor-toolbar button {
+  color: #bbbcde !important;
+  border: none !important;
+}
+
+.custom-mde .editor-toolbar button:hover,
+.custom-mde .editor-toolbar button.active {
+  background: #555555;
+  border: none !important;
+}
+
+.custom-mde .editor-statusbar {
+  display: none;
+}
+
+.custom-mde .EasyMDEContainer {
+  border: none !important;
 }
