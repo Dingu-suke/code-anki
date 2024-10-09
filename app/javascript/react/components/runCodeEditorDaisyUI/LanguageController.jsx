@@ -64,7 +64,7 @@ export const LanguageSelector = ({ language, onSelect }) => {
           onMouseLeave={handleMouseLeave}
           
       >
-        <button ref={buttonRef} className="size-14 min-h-0 rounded border border-blue-500 rounded:lg text-slate-200 bg-slate-950 font-courier hover:bg-indigo-950 hover:border-blue-500 cursor-default">
+        <button ref={buttonRef} className="size-12 min-h-0 rounded border border-blue-500 rounded:lg text-slate-200 bg-slate-950 font-courier hover:bg-indigo-950 hover:border-blue-500 cursor-default">
           <div className="flex itemsenter justify-center">
             { language ? (<LanguageIcon language={getLabelKey(language)} size={35}/>) : (<div className="pl-8 tl-8">▼</div>)}
             {/* 値からキーを取得する */}

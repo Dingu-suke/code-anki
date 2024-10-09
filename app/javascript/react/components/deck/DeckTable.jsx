@@ -9,6 +9,15 @@ const methodLearningColor = "bg-yellow-950 text-amber-200 bg-opacity-55"
 const algorithmColor = "bg-green-950 text-emerald-200"
 const refactoringColor = "bg-blue-950 text-cyan-200"
 const tradeOffColor = "bg-fuchsia-950 text-pink-200 bg-opacity-60"
+
+const editButtonCell = "py-2 w-10 truncate text-center"
+const deckTitleCell = "px-4 py-3 min-w-64 truncate text-start"
+const cardsLengthCell = "px-2 py-3 min-w-20 max-w-28 truncate text-center"
+const deckLnagageCell = "pl-4 pr-2 py-3 min-w-20 max-w-28 truncate text-center"
+const deckCategoryCell = "px-4 py-3 min-w-32 max-w-40 truncate"
+const deckUpadateDateCell = "px-4 py-3 min-w-20 max-w-28 truncate text-center"
+const deckStatusCell = "px-4 py-3 min-w-28 max-w-40 truncate text-center"
+
 export const DeckTable = (
     { 
       checkedCards,
@@ -63,13 +72,13 @@ export const DeckTable = (
         <table className="w-full text-sm text-left text-gray-300">
           <thead className="text-xs uppercase bg-gray-700 text-gray-300 sticky top-0 z-10"> {/* stickyヘッダーの設定 */}
             <tr className=''>
-              <th scope="col" className="px-2 py-2 min-w-9"></th>
-              <th scope="col" className="px-4 py-3 min-w-20">デッキ名</th>
-              <th scope="col" className="px-4 py-3 min-w-20">カード数</th>
-              <th scope="col" className="px-2 py-3 min-w-20 truncate text-center">言語</th>
-              <th scope="col" className="px-4 py-3 min-w-20">カテゴリ</th>
-              <th scope="col" className="px-4 py-3 min-w-20">最終更新日</th>
-              <th scope="col" className="px-4 py-3 min-w-28 flex items-center justify-center">公開 / 非公開</th>
+              <th scope="col" className={`${editButtonCell}`}></th>
+              <th scope="col" className={`${deckTitleCell}`}>デッキ名</th>
+              <th scope="col" className={`${cardsLengthCell}`}>カード数</th>
+              <th scope="col" className={`${deckLnagageCell}`}>言語</th>
+              <th scope="col" className={`${deckCategoryCell}`}>カテゴリ</th>
+              <th scope="col" className={`${deckUpadateDateCell}`}>最終更新日</th>
+              <th scope="col" className={`${deckStatusCell}`}>公開 / 非公開</th>
             </tr>
           </thead>
           <tbody>
@@ -83,38 +92,38 @@ export const DeckTable = (
                 onClick={(event) => {handleClickConditions(event, deck)}} 
               >
                 <td scope="row"
-                    className="px-2 py-3 font-medium whitespace-nowrap text-gray-400 min-w-4 js-edit-icon hover:text-red-400"
+                    className="font-medium whitespace-nowrap text-gray-400 min-w-4 js-edit-icon hover:text-red-400"
                     onClick={(event) => {
                                       event.stopPropagation();
                                       handleEditDeck(deck)
                                     }}
                   >
-                    <div className="flex items-center justify-center min-w-5">
+                    <div className={`${editButtonCell} flex items-center justify-center`}>
                       <LuPencil />
                     </div>
                 </td>
-                <td scope="row" className="px-4 py-4 ml-3 font-medium whitespace-nowrap text-cyan-400 min-w-20 ">
+                <td scope="row" className={`${deckTitleCell} ml-3 font-medium whitespace-nowrap text-cyan-400`}>
                   {deck.name}
                 </td>
-                <td className="px-4 py-3 min-w-20">
+                <td className={`${cardsLengthCell}`}>
                   <div className="flex justify-center items-center">
                     <div className={`
                       text-sm font-medium rounded min-w-8 text-center
                       ${deck.cards?.length > 4
-                        ? "border border-lime-900 bg-sky-950 text-yellow-100"
+                        ? "border border-lime-900 bg-sky-950 text-green-400"
                         : "bg-red-950 text-pink-400 border border-red-900" }`
                       }>
                       {deck.cards ? deck.cards.length : 0}
                     </div>
                   </div>
                 </td>
-                <td className="px-8 py-3 min-w-20">
-                  <div className='flex justify-center'>
+                <td className={`${deckLnagageCell}`}>
+                  <div className="flex items-center justify-center">
                     {deck.language ? <LanguageIcon language={deck.language} /> : ""}
                   </div>
                 </td>
-                <td className="px-4 py-3 min-w-20">
-                  <div className="flex items-center justify-start">
+                <td className={`${deckCategoryCell} flex justify-start`}>
+                  <div>
                     {deck.category
                     ? 
                     <div className={`inline-block text-xs font-medium rounded truncate
@@ -133,11 +142,13 @@ export const DeckTable = (
                     }
                   </div>
                 </td>
-                <td className="px-4 py-3 min-w-20">
+                <td className={`${deckUpadateDateCell}`}>
                   {new Date(deck.updated_at).toLocaleDateString()}
                 </td>
-                <td className="px-4 py-3 min-w-24 flex items-center justify-center">
-                  <Toggle initialStatus={deck.status} deck={deck}/>
+                <td className={`${deckStatusCell}`}>
+                  <div className="flex justify-center">
+                    <Toggle initialStatus={deck.status} deck={deck}/>
+                  </div>
                 </td>
               </tr>
             ))}

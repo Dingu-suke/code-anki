@@ -11,12 +11,19 @@ import { SelectedDeckDisplay } from './SelectedDeckDisplay';
 import { YourDecksIndex } from './YourDecksIndex';
 
 export const DeckInfo = () => {
-  const { cards, setCards, isLoading, setIsLoading } = useCards();
-  const [filteredCards, setFilteredCards] = useState([]);
+  
   const [isWindowOpen, setIsWindowOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const prevSelectedCardRef = useRef(null);
-  const { checkedCards, setCheckedCards,
+  
+  //  ▼--- カスタムフックス ---▼
+  
+  const { cards, setCards, 
+          isLoading, setIsLoading, 
+          searchCard, setSearchCard, 
+          filteredCards } = useCards();
+  
+          const { checkedCards, setCheckedCards,
           previewCard, setPreviewCard
           ,
           moveToNextCard,
@@ -46,6 +53,8 @@ export const DeckInfo = () => {
     updateDeckAndCard
     
   } = useYourDeckList()
+
+  //  ▲--- カスタムフックス ---▲
   
   const closeWindow = () => {  
     setIsWindowOpen(false);
@@ -72,21 +81,6 @@ export const DeckInfo = () => {
       setIsWindowOpen(!isCurrentlySelected);
     // 🍉 useEffect で更新
   };
-  
-  useEffect(() => {
-    if (cards) {
-      const searchTerms = searchTerm.toLowerCase().split(' ');
-      const filtered = cards
-      .filter(card =>
-          searchTerms.every(term => 
-            card.title .toLowerCase().includes(term) || 
-            card.body  .toLowerCase().includes(term) ||
-            card.answer.toLowerCase().includes(term) 
-          )
-        )
-        .sort((a, b) => a.title.localeCompare(b.title));
-        setFilteredCards(filtered);
-      }}, [cards, searchTerm]);
       
   const borderCalss = "border-teal-700 text-emerald-400 text-bold"
   const tabClass = "px-4 border-t border-x rounded-t-sm font-bold focus:outline-none relative";
@@ -135,9 +129,6 @@ export const DeckInfo = () => {
     updateCardInDecks(updatedCard);
   }, [updateCardInDecks]);
         
-  if (isLoading) {
-    return <div>Loading...</div>
-  }
 
   return (
     <div>
@@ -217,8 +208,8 @@ export const DeckInfo = () => {
             {/* カード選択 */}
           <SelectCardIndex
             selectedCard={selectedCard}
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
+            searchCard={searchCard}
+            setSearchCard={setSearchCard}
             filteredCards={filteredCards}
             isWindowOpen={isWindowOpen}
             closeWindow={closeWindow}
