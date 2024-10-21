@@ -26,18 +26,14 @@
 
   <%= link_to your_decks_path, class: "p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white" do %>
     <i class="bi bi-person-fill"></i>
-    <span class="text-[15px] ml-4 text-gray-200 font-bold">Anki デッキ</span>
+    <span class="text-[15px] ml-4 text-gray-200 font-bold">デッキ編集</span>
   <% end %>
 
   <%= link_to your_cards_path, class: "p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white" do %>
     <i class="bi bi-person-fill"></i>
-    <span class="text-[15px] ml-4 text-gray-200 font-bold">Anki カード</span>
+    <span class="text-[15px] ml-4 text-gray-200 font-bold">カード編集</span>
   <% end %>
 
-  <%= link_to new_card_path, class: "p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white" do %>
-    <i class="bi bi-person-fill"></i>
-    <span class="text-[15px] ml-4 text-gray-200 font-bold">カード作成</span>
-  <% end %>
 <% else %>
   <%= link_to decks_path, class: "p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white" do %>
     <i class="bi bi-house-door-fill"></i>
