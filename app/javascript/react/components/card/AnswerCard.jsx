@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRunCode } from '../../hooks/useRunCode';
 import { RemarksEditor } from '../editor/MarkdownEditor';
 import RunCodeEditor from '../runCodeEditorDaisyUI/CodeEditor';
@@ -8,14 +8,18 @@ import Output from '../runCodeEditorDaisyUI/runButton&Output/Output';
 import RunButton from '../runCodeEditorDaisyUI/runButton&Output/RunButton';
 
 
-export const Answer = ({ value, onChange, language, onLanguageChange }) => {  
-  const [lang, setLang] = useState(language);
+export const Answer = ({ value, onChange, language, onLanguageChange, selectedCard }) => {  
+  const [lang, setLang] = useState(LANGUAGE_LABELS[selectedCard?.language || null]);
   
   const onSelect = (newLanguage) => {
     onLanguageChange(newLanguage);
     setLang(LANGUAGE_LABELS[newLanguage])
     onChange(CODE_SNIPPETS[newLanguage]);
   };
+
+  useEffect(() => {
+    selectedCard && setLang(LANGUAGE_LABELS[selectedCard?.language])
+  }, [selectedCard])
 
   const {runCode, isLoading, output, setOutput, editorRef, isError, setIsError} = useRunCode(language);
 

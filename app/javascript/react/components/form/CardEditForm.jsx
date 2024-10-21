@@ -187,6 +187,7 @@ export const CardEditForm = ({useInWindow, selectedCard, setSelectedCard, onUpda
                     <Answer
                       value={field.value}
                       onChange={field.onChange}
+                      selectedCard={selectedCard}
                       language={watch('language')}
                       onLanguageChange={(lang) => {
                         setValue('language', lang)
