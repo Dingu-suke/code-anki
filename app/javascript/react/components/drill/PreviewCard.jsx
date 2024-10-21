@@ -54,7 +54,7 @@ export const PreviewCard = ({ previewCardList, card, setPreviewCard, moveToNextC
   return (
     <div className=" bg-gray-950">
       <div className="bg-slate-800 font-semibold text-lg grid grid-cols-3 gap-4 rounded-full">
-        <button className="bg-slate-800 hover:bg-slate-700 px-4 py-2 font-semibold rounded-full rounded-r-lg flex items-center justify-center cursor-default"
+        <button className="bg-slate-800 hover:bg-slate-700 px-4 py-2 font-semibold rounded-full rounded-r-lg flex items-center justify-center cursor-default border-r border-gray-700"
         onClick={moveToPreviousCard}
         >
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
@@ -64,7 +64,7 @@ export const PreviewCard = ({ previewCardList, card, setPreviewCard, moveToNextC
         <div className="flex items-center justify-center truncate">
           {card.title}
         </div>
-        <button className="bg-slate-800 hover:bg-slate-700 px-4 py-2 font-semibold rounded-full rounded-l-lg flex items-center justify-center cursor-default"
+        <button className="bg-slate-800 hover:bg-slate-700 px-4 py-2 font-semibold rounded-full rounded-l-lg flex items-center justify-center cursor-default border-l border-gray-700"
         onClick={moveToNextCard}
         >
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">

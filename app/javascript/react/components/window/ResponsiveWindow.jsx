@@ -9,7 +9,36 @@ const ResponsiveWindow = ({ children, title, initialPosition, initialSize, onClo
   const [isResizing, setIsResizing] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [resizeDirection, setResizeDirection] = useState('');
+  const [windowWidth, setWindowWidth] = useState(null);
   const windowRef = useRef(null);
+  const contentRef = useRef(null);
+
+  useEffect(() => {
+    if (!windowRef.current) return;
+
+    const resizeObserver = new ResizeObserver(entries => {
+      for (let entry of entries) {
+        const { width } = entry.contentRect;
+        setWindowWidth(width);
+        console.log('Window width:', width);
+      }
+    });
+
+    resizeObserver.observe(windowRef.current);
+
+    return () => {
+      if (windowRef.current) {
+        resizeObserver.unobserve(windowRef.current);
+      }
+    };
+  }, []);
+
+  const childrenWithProps = React.Children.map(children, child => {
+    if (React.isValidElement(child)) {
+      return React.cloneElement(child, { windowWidth });
+    }
+    return child;
+  });
 
   const updateSizeAndPosition = useCallback(() => {
     const maxWidth = window.innerWidth - 20; // 20pxのマージンを確保
@@ -166,19 +195,19 @@ const ResponsiveWindow = ({ children, title, initialPosition, initialSize, onClo
           onMouseDown={handleMouseDown}
         >
           <h3 className="text-lg font-semibold text-blue-200">{title}</h3>
-          {/* <p className='text-sm justify-start'>マークダウンエディタの全画面編集モードはecsキーで解除できます。</p> */}
           <div
             className="relative cursor-pointer group"
             onClick={onClose}
           >
             <div className="flex items-center justify-center cursor-default">
+              {/* ウィンドウを閉じるボタン */}
               <MdCircle className="text-red-600 text-2xl" />
               <RxCross2 className="text-blue-100 absolute opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-default " />
             </div>
           </div>
         </div>
-        <div className="p-4 overflow-auto" style={{ height: 'calc(100% - 40px)' }}>
-          {children}
+        <div ref={contentRef} className="p-4 overflow-auto custom-scrollbar" style={{ height: 'calc(100% - 40px)' }}>
+          {childrenWithProps}
         </div>
         {resizeHandles.map(({ direction, style }) => (
           <div

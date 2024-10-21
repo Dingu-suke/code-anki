@@ -83,9 +83,8 @@ export const useYourDeckList = () => {
         }
       });
       // 新しいデッキを既存のデッキリストに追加
-      setDecks(prevDecks => [...prevDecks, newDeck]);
-      
       const newDeck = processApiResponse(response.data);
+      setDecks(prevDecks => [...prevDecks, newDeck]);
       return newDeck;
   
     } catch (error) {
@@ -172,7 +171,7 @@ export const useYourDeckList = () => {
           'Content-Type': 'application/json'
         }
       });
-      if (response.status === 204) {        
+      if (response.status === 204) {   
         setDecks(prevDecks => prevDecks.filter(deck => deck.id !== deckId));
         setSelectedDeck(prevSelectedDeck => prevSelectedDeck && prevSelectedDeck.id === deckId ? null : prevSelectedDeck);
         console.log('デッキの削除成功')
