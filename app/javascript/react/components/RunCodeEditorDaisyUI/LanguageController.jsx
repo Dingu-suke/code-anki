@@ -8,7 +8,7 @@ export const LanguageLabel = ({ language }) => {
   return (
     <div className="mr-2">
       <div>
-        <button tabIndex={0} role="button" className="btn w-28 min-h-0 h-7 mx-3 border-purple-700 text-slate-200 bg-slate-800 font-courier hover:bg-slate-800 hover:border-purple-700 cursor-auto">{language}</button>
+        <button tabIndex={0} type="button" className="btn text-sm w-32 min-h-0 h-8 mx-3 border-purple-700 text-slate-200 bg-slate-800 font-courier hover:bg-slate-800 hover:border-purple-700 cursor-auto">{getLabelKey(language)}</button>
       </div>
     </div>
   );
@@ -42,12 +42,18 @@ export const LanguageSelector = ({ language, onSelect }) => {
     if (prevlanguageRef.current === lang) {
       onSelect(null);
       prevlanguageRef.current = null
+      console.log(lang)
     } else {
       onSelect(lang);
       prevlanguageRef.current = lang
+      console.log(lang)
     }
     setIsOpen(false);
-  };  
+  };
+
+  useEffect(() => {
+    console.log(language)
+  }, [language])
 
   useEffect(() => {
     return () => {
@@ -62,11 +68,13 @@ export const LanguageSelector = ({ language, onSelect }) => {
       <div className="dropdown dropdown-hover relative"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          
       >
-        <button ref={buttonRef} className="size-12 min-h-0 rounded border border-blue-500 rounded:lg text-slate-200 bg-slate-950 font-courier hover:bg-indigo-950 hover:border-blue-500 cursor-default">
+        <button ref={buttonRef} type="button" className="size-12 min-h-0 rounded border border-blue-500 rounded:lg text-slate-200 bg-slate-950 font-courier hover:bg-indigo-950 hover:border-blue-500 cursor-default">
           <div className="flex itemsenter justify-center">
-            { language ? (<LanguageIcon language={getLabelKey(language)} size={35}/>) : (<div className="pl-8 tl-8">▼</div>)}
+            { language ? (<LanguageIcon language={getLabelKey(language)} size={35}/>
+          ) : (<div className="pl-6 tl-6">
+              <svg xmlns="http://www.w3.org/2000/svg" height="35px" viewBox="0 -960 960 960" width="35px" fill="#bad1d1"><path d="M480-200 240-440l46.67-46.67 193.33 193 193.33-193L720-440 480-200Zm0-248.67-240-240 46.67-46.66 193.33 193 193.33-193L720-688.67l-240 240Z"/></svg>
+            </div>)}
             {/* 値からキーを取得する */}
           </div>
         </button>

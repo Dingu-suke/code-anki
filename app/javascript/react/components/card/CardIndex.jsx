@@ -4,7 +4,7 @@ import ResponsiveWindow from '../window/ResponsiveWindow';
 import { CardEditForm } from '../form/CardEditForm';
 import { LANGUAGE_LABELS, LanguageIcon } from '../runCodeEditorDaisyUI/constants';
 import { CheckCard } from './CheckCard';
-import { LanguageSelector } from '../runCodeEditorDaisyUI/LanguageController';
+import { LanguageLabel, LanguageSelector } from '../runCodeEditorDaisyUI/LanguageController';
 import { NewResponsiveWindow } from '../window/NewResponsiveWindow';
 import CardForm from '../form/CardForm';
 
@@ -13,7 +13,7 @@ const langCell = "py-3 px-2 w-28 truncate text-center"
 const dateCell = "py-3 px-2 w-48 truncate text-center"
 
 export const CardList = () => {
-  const [language,  setLanguage] = useState('')
+  const [language, setLanguage] = useState('')
   const [isNewWindowOpen, setIsNewWindowOpen] = useState(false);
   const [isEditWindowOpen, setIsEditWindowOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
@@ -32,7 +32,6 @@ export const CardList = () => {
   }, [selectedCard])
   
   const onSelect = (newLanguage) => {
-    // onLanguageChange(newLanguage);
     setLanguage(LANGUAGE_LABELS[newLanguage]);
   };
   
@@ -74,7 +73,6 @@ export const CardList = () => {
   return (
     <div>
       <div className="container p-4">
-        {/* <h1 className="text-2xl font-bold mb-4 text-orange-400 font-courier">あなたのカード</h1> */}
         <div className="p-5 border border-cyan-900 rounded max-w-[660px]">
         <div className="grid grid-cols-12">
           <div className="col-start-1 col-span-7">
