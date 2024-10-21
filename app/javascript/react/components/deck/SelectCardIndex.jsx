@@ -5,6 +5,7 @@ import { LanguageSelector } from '../runCodeEditorDaisyUI/LanguageController';
 import { getLabelKey, LANGUAGE_LABELS, LanguageIcon } from '../runCodeEditorDaisyUI/constants';
 import { useYourCard } from '../../hooks/useYourCard';
 import { useCards } from '../../hooks/useCards';
+import { NewResponsiveWindow } from '../window/NewResponsiveWindow';
 
 const tableCellBorder = "border-r border-gray-700"
 const tableIndexBorder = "border-r border-gray-600"
@@ -18,7 +19,6 @@ export const SelectCardIndex = (
   { 
     selectedCard, setSelectedCard,
     checkedCards, setCheckedCards,
-    // searchCard, setSearchCard,
     isWindowOpen,
     handleCardClick,
     closeWindow,
@@ -29,9 +29,9 @@ export const SelectCardIndex = (
   }) => {
 
   const prevCheckedCardsRef = useRef([])
-  const [language,  setLanguage] = useState('')
+  const [language, setLanguage] = useState('')
 
-  const { cards, setCards, 
+  const { cards, setCards,
     isLoading, setIsLoading, 
     searchCard, setSearchCard, 
     filteredCards } = useCards(language);
@@ -47,7 +47,6 @@ export const SelectCardIndex = (
   };
 
   const onSelect = (newLanguage) => {
-    // onLanguageChange(newLanguage);
     setLanguage(LANGUAGE_LABELS[newLanguage]);
   };
 
@@ -100,11 +99,11 @@ export const SelectCardIndex = (
       </div>
     </div>
     <div className="ounded">
-      <div className="border border-slate-600 bg-stone-950 text-cyan-50 rounded overflow-hidden">
+      <div className="border border-slate-600 bg-stone-950 text-cyan-50 rounded overflow-hidden max-w-xl">
         <div className="h-[calc(60vh-2rem)] overflow-auto">
           <div>
             <table className="w-full text-sm text-left text-gray-300">
-              <thead className="text-xs uppercase bg-gray-700 text-gray-300 top-0 z-10 relative">
+              <thead className="text-xs uppercase bg-gray-700 text-gray-300 sticky top-0 z-10">
                 <tr>
                   <th scope="col" className={`${checkCell} text-fuchsia-500 pl-4 text-center`} style={{ width: '5px' }}>✓</th>
                   <th scope="col" className={`${titleCell}`}>カード名</th>
@@ -164,16 +163,15 @@ export const SelectCardIndex = (
             <br/><br/><br/><br/>
             
             </div>
-            {isWindowOpen && (
-              <ResponsiveWindow
-                title={`${selectedCard.title}`}
-                initialPosition={{ x: 100, y: 500 }}
-                initialSize={{ width: 600, height: 450 }}
-                onClose={closeWindow}
-              >
-                <CheckCard selectedCard={selectedCard} />
-              </ResponsiveWindow>
-            )}
+            <NewResponsiveWindow
+              isOpen={isWindowOpen}
+              title={`${selectedCard?.title}`}
+              initialPosition={{ x: 100, y: 500 }}
+              initialSize={{ width: 600, height: 450 }}
+              onClose={closeWindow}
+            >
+              <CheckCard useInWindow={true} selectedCard={selectedCard} />
+            </NewResponsiveWindow>
           </div>
         </div>
       </div>

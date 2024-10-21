@@ -126,7 +126,7 @@ export const DeckTable = (
                   <div>
                     {deck.category
                     ? 
-                    <div className={`inline-block text-xs font-medium rounded truncate
+                    <div className={`inline-block text-xs font-medium rounded truncate px-2
                         ${deck.category === "methodLearning" && methodLearningColor}
                         ${deck.category === "algorithm" && algorithmColor}
                         ${deck.category === "refactoring" && refactoringColor}

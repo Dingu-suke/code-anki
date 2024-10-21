@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useCardNavigation } from '../../hooks/useCardNavigation';
 import { useCards } from '../../hooks/useCards';
 import { PreviewCard } from '../drill/PreviewCard';
-// import { CheckCard } from '../card/CheckCard';
 import { useYourDeckList } from '../../hooks/useYourDeckList';
 import { PreviewCardList } from './PreviewCardList';
 import { SaveButton } from './SaveButton';
@@ -67,7 +66,7 @@ export const DeckInfo = () => {
   }, [selectedCard])
 
   useEffect(() => {
-    // checkedCardsが配列であることを前提としています
+    // checkedCardsが配列であることが前提
     const isPreviewCardChecked = checkedCards?.some(card => card.id === previewCard.id);
     
     if (!isPreviewCardChecked && previewCard?.id !== initialCard?.id) {
@@ -76,12 +75,12 @@ export const DeckInfo = () => {
   }, [checkedCards, previewCard, initialCard, setPreviewCard]);
 
   const handleCardClick = (event, card) => {
-      const isCurrentlySelected = selectedCard && selectedCard.id === card.id
+      const isCurrentlySelected = selectedCard && selectedCard.id === card.id //boolean
       setSelectedCard(isCurrentlySelected ? null : card);
       setIsWindowOpen(!isCurrentlySelected);
     // 🍉 useEffect で更新
   };
-      
+  
   const borderCalss = "border-teal-700 text-emerald-400 text-bold"
   const tabClass = "px-4 border-t border-x rounded-t-sm font-bold focus:outline-none relative";
   const activeTabClass = `bg-slate-950 ${borderCalss} border-b-0 after:absolute after:bottom-[-1px] after:left-0 after:right-0 after:h-[1px] after:bg-slate-950`;
@@ -197,7 +196,6 @@ export const DeckInfo = () => {
             setStatus={setStatus}
             setSearchTermAndFilter={setSearchTermAndFilter}
             reRenderDeckList={reRenderDeckList}
-            // handleCheckCardsOfDeck={handleCheckCardsOfDeck}
           />
           </div>
           <div
