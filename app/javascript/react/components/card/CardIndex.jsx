@@ -75,8 +75,9 @@ export const CardList = () => {
     <div>
       <div className="container p-4">
         {/* <h1 className="text-2xl font-bold mb-4 text-orange-400 font-courier">あなたのカード</h1> */}
+        <div className="p-5 border border-cyan-900 rounded max-w-[660px]">
         <div className="grid grid-cols-12">
-          <div className="col-start-1 col-span-6 max-w-xl">
+          <div className="col-start-1 col-span-7">
             <input
               type="text"
               placeholder="カードを検索"
@@ -98,7 +99,7 @@ export const CardList = () => {
             </button>
         </div>
         <div className="">
-          <div className="border border-slate-600 bg-stone-950 text-cyan-50 rounded overflow-hidden max-w-xl">
+          <div className="border border-slate-600 bg-stone-950 text-cyan-50 rounded overflow-hidden max-w-[650px]">
             <div className="h-[calc(75vh-2rem)] overflow-auto">
               <div>
                 <table className="w-full text-sm text-left text-gray-300">
@@ -177,6 +178,7 @@ export const CardList = () => {
               </div>
             </div>
           </div>
+        </div>
       </div>
   </div>
   )
