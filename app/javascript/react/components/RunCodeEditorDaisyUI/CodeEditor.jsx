@@ -1,32 +1,25 @@
 import { Editor } from '@monaco-editor/react';
 import React from 'react';
-// import { CODE_SNIPPETS } from './constants';
-// import LanguageSelector from './LanguageSelector';
 
 const RunCodeEditor = ({ value, onChange, language, onLanguageChange, editorRef }) => {
-
-  // const onSelect = (newLanguage) => {
-  //   onLanguageChange(newLanguage);
-  //   onChange(CODE_SNIPPETS[newLanguage]);
-  // };
   
-
   const onMount = (editor) => {
     editorRef.current = editor;
   }
 
   return (
     <>
-      {/* <LanguageSelector language={language} onSelect={onSelect} /> */}
       <Editor
-        height="45vh"
+        height="30vh"
         theme="vs-dark"
         language={language}
         value={value}
         onChange={onChange}
         onMount={onMount}
+        options={{
+          fontSize: 14
+        }}
       />
-      {/* <Output editorRef={editorRef} language={language} /> */}
     </>
   );
 };
