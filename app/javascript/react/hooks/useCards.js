@@ -55,5 +55,12 @@ export const useCards = (language) => {
       setFilteredCards(filtered);
       }}, [cards, searchCard, selectedLanguage]);
 
-  return { cards, setCards, isLoading, setIsLoading, searchCard, setSearchCard, selectedLanguage, filteredCards }
+  
+
+  return { 
+            cards, setCards,
+            isLoading, setIsLoading,
+            searchCard, setSearchCard,
+            filteredCards, setFilteredCards,
+            selectedLanguage }
 }

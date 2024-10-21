@@ -7,7 +7,7 @@ import QuestionCard from '../card/QuiestionCard';
 import { CODE_SNIPPETS } from '../runCodeEditorDaisyUI/constants';
 import { setupCSRFToken } from './setupCSRFToken';
 
-const CardForm = ({useInWindow}) => {
+const CardForm = ({useInWindow, windowWidth, setFilteredCards, filteredCards}) => {
   // -----
   const questionEditorRef = useRef(null);
   const remarksEditorRef = useRef(null);
@@ -46,19 +46,27 @@ const CardForm = ({useInWindow}) => {
   
   const onSubmit = useCallback(async (data) => {
     try {
-      // Ensure language is included in the data
+      // 言語選択
       const formData = {
         ...data,
-        language: watch('language') // Explicitly include the language
+        language: watch('language')
       };
+      console.log("data", data)
       const res = await axios.post('/cards', { card: formData });
+      // ✨️
+      console.log('サーバーレスポンス:', res.data);
+      const newCard = res.data
+      console.log("newCard", newCard)
+      setFilteredCards(prevCards => [...prevCards, newCard])
+      // ✨️
+
       console.log('カードが作成されました', res.data);
     } catch(error) {
       console.error('エラーが発生しました', error.response?.data);
     }
   }, [watch]);
   
-  const buttonText = useInWindow ? "カードを更新する" : "カードを保存する";
+  const buttonText = "カードを保存する";
   const buttonTextLocation = () => {
     if (!useInWindow) {
       return (
@@ -75,28 +83,28 @@ const CardForm = ({useInWindow}) => {
   }
   
   const topButtonClasses = useInWindow
-  ? "hidden" // useInWindowがtrueの場合、上部のボタンを非表示
-  : "btn text-sky-400 bg-cyan-950 hover:text-sky-300 hover:bg-blue-950 border border-sky-800 hover:border-cyan-500 font-courier w-full xl:w-auto hidden xl:inline-block";
+    ? "hidden" // useInWindowがtrueの場合、上部のボタンを非表示
+    : "btn text-sky-400 bg-cyan-950 hover:text-sky-300 hover:bg-blue-950 border border-sky-800 hover:border-cyan-500 font-courier w-full xl:w-auto hidden xl:inline-block";
 
   const bottomButtonClasses = useInWindow
     ? "btn text-sky-400 bg-cyan-950 hover:text-sky-300 hover:bg-blue-950 border border-sky-800 hover:border-cyan-500 font-courier w-full"
     : "btn text-sky-400 bg-cyan-950 hover:text-sky-300 hover:bg-blue-950 border border-sky-800 hover:border-cyan-500 font-courier w-1/2 xl:hidden";
 
-  const containerClasses = useInWindow
-    ? "flex flex-col gap-4 h-full"
+    const containerClasses = useInWindow
+    ? `flex flex-col gap-4 h-full ${windowWidth && windowWidth < 1191 ? '' : 'grid grid-cols-2'}`
     : "flex flex-col xl:grid xl:grid-cols-2 xl:grid-rows-[2fr_1fr] gap-4 xl:h-[calc(100vh-200px)]";
 
-  const questionClasses = useInWindow
+  const questionClasses = useInWindow && windowWidth && windowWidth < 1191
     ? "flex-grow"
-    : "row-start-1 row-end-2 col-start-1 col-end-2";
+    : "col-start-1 col-end-2";
 
-  const answerClasses = useInWindow
+  const answerClasses = useInWindow && windowWidth && windowWidth < 1191
     ? "flex-grow"
-    : "row-start-1 row-end-3 col-start-2 col-end-3";
+    : "col-start-2 col-end-3";
 
-  const remarksClasses = useInWindow
+  const remarksClasses = useInWindow && windowWidth && windowWidth < 1191
     ? "flex-grow"
-    : "row-start-2 row-end-3 col-start-1 col-end-2";
+    : "col-start-1 col-end-2";
       
   return (
     <div className="card shadow-xl min-w-0 m-[30px] bg-gray-800">
@@ -119,7 +127,6 @@ const CardForm = ({useInWindow}) => {
               </button>
               </div>
             </div>
-              {/* <div className="flex flex-col xl:grid xl:grid-cols-2 xl:grid-rows-2 gap-4"> */}
               <div className={containerClasses}>
                 <div className={questionClasses}>
                   <QuestionCard
@@ -142,13 +149,6 @@ const CardForm = ({useInWindow}) => {
                         }}
                       />
                     )}
-                  />
-                </div>
-                <div className={remarksClasses}>
-                  <Remarks
-                    editorRef={remarksEditorRef}
-                    defaultValue=""
-                    onBlur={handleRemarksBlur}
                   />
                 </div>
               </div>
