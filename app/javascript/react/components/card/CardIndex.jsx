@@ -1,43 +1,59 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useCards } from '../../hooks/useCards';
 import ResponsiveWindow from '../window/ResponsiveWindow';
 import { CardEditForm } from '../form/CardEditForm';
+import { LANGUAGE_LABELS, LanguageIcon } from '../runCodeEditorDaisyUI/constants';
+import { CheckCard } from './CheckCard';
+import { LanguageLabel, LanguageSelector } from '../runCodeEditorDaisyUI/LanguageController';
+import { NewResponsiveWindow } from '../window/NewResponsiveWindow';
+import CardForm from '../form/CardForm';
 
+const titleCell = "py-3 pr-4 pl-8 w-96 truncate text-start"
+const langCell = "py-3 px-2 w-28 truncate text-center"
+const dateCell = "py-3 px-2 w-48 truncate text-center"
 
 export const CardList = () => {
-  const { cards, setCards, isLoading, setIsLoading } = useCards();
-  const [filteredCards, setFilteredCards] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  // const { modalRef, openModal, closeModal } = useModal()
-
-  const [isWindowOpen, setIsWindowOpen] = useState(false);
+  const [language, setLanguage] = useState('')
+  const [isNewWindowOpen, setIsNewWindowOpen] = useState(false);
+  const [isEditWindowOpen, setIsEditWindowOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
-  // const [eachCardValue, setEachCardValue] = useState('')
 
-  const openWindow = (card) => {
-    setIsWindowOpen(true)
-    setSelectedCard(card)
+  const prevSelectedCardRef = useRef(null)
+  
+  const { cards, setCards,
+          isLoading, setIsLoading,
+          filteredCards, setFilteredCards,
+          searchCard, setSearchCard, selectedLanguage
+        } = useCards(language);
+
+  useEffect(() => {
+    // 🍉
+    prevSelectedCardRef.current = selectedCard
+  }, [selectedCard])
+  
+  const onSelect = (newLanguage) => {
+    setLanguage(LANGUAGE_LABELS[newLanguage]);
   };
   
-  const closeWindow = () => {  
-    setIsWindowOpen(false);
+  const openNewWindow = () => {
+    setIsNewWindowOpen(true)
+    setIsEditWindowOpen(false)
     setSelectedCard(null)
   }
-  
-  useEffect(() => {
-    if (cards) {
-      const searchTerms = searchTerm.toLowerCase().split(' ');
-      const filtered = cards
-        .filter(card =>
-          searchTerms.every(term => 
-            card.title .toLowerCase().includes(term) || 
-            card.body  .toLowerCase().includes(term) ||
-            card.answer.toLowerCase().includes(term) 
-          )
-        )
-      .sort((a, b) => a.title.localeCompare(b.title));
-      setFilteredCards(filtered);
-    }}, [cards, searchTerm]);
+  const openEditWindow = (card) => {
+    setIsNewWindowOpen(false)
+    const currentlySelectedState = selectedCard && selectedCard.id === card.id // boolean
+    setSelectedCard(currentlySelectedState ? null : card)
+    setIsEditWindowOpen(!currentlySelectedState)
+    // 🍉 useEffect で更新
+  }
+  const closeNewWindow = () => {  
+    setIsNewWindowOpen(false);
+  }
+  const closeEditWindow = () => {
+    setSelectedCard(null)
+    setIsEditWindowOpen(false)
+  }
 
   // カード更新時にカード一覧を再レンダリングさせる
   const handleCardUpdate = (updatedCard) => {
@@ -48,7 +64,7 @@ export const CardList = () => {
   };
 
   const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
+    setSearchCard(e.target.value);
   }
   if (isLoading) {
     return <div>Loading...</div>
@@ -56,47 +72,112 @@ export const CardList = () => {
 
   return (
     <div>
-      <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4 text-orange-400 font-courier">あなたのカード</h1>
-        <input
-          type="text"
-          placeholder="カードを検索"
-          value={searchTerm}
-          onChange={handleSearch}
-          className="w-full p-2 mb-4 border rounded bg-gray-700 focus:outline-none focus:border-2 focus:border-blue-800 border-blue-900 text-cyan-100"
-        />
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
-
-        <div className={`border border-dashed hover:border-solid border-pink-400 hover:border-pink-400 text-pink-400 p-4 rounded shadow  bg-slate-950`}>
-          <h2 className='text-xl font-semibold '>+ new card</h2>
-        </div>
-        
-        {filteredCards.map((card) => (
-          <div
-          key={card.id}
-          className={`border hover:border-cyan-300 p-4 rounded shadow hover:bg-indigo-900
-          ${card === selectedCard ? 'bg-indigo-900 border-green-500' : 'bg-indigo-950 border-cyan-600' }`}
-          onClick={() => openWindow(card)}
-          >
-            <h2 className='text-xl font-semibold text-cyan-300'>{card.title}</h2>
+      <div className="container p-4">
+        <div className="p-5 border border-cyan-900 rounded max-w-[660px]">
+        <div className="grid grid-cols-12">
+          <div className="col-start-1 col-span-7">
+            <input
+              type="text"
+              placeholder="カードを検索"
+              value={searchCard}
+              onChange={handleSearch}
+              className="w-full p-2 mb-4 border rounded 
+                      text-cyan-100 bg-gray-700 border-blue-900
+                      focus:border-blue-800 focus:border-2  focus:outline-none"
+            />
           </div>
-        ))}
+          <div className="z-50 col-span-2 flex justify-center mb-4">
+            <LanguageSelector language={language} onSelect={onSelect} />
+          </div>
+            <button
+              className="col-span-3 max-w-32 p-2 rounded-md bg-slate-900 border border-pink-500 text-pink-500 hover:bg-slate-800 truncate mb-4"
+              onClick={() => openNewWindow()}
+              >
+              + New Card
+            </button>
+        </div>
+        <div className="">
+          <div className="border border-slate-600 bg-stone-950 text-cyan-50 rounded overflow-hidden max-w-[650px]">
+            <div className="h-[calc(75vh-2rem)] overflow-auto">
+              <div>
+                <table className="w-full text-sm text-left text-gray-300">
+                  <thead className="text-xs uppercase bg-gray-700 text-gray-300 sticky top-0 z-10">
+                    <tr>
+                      <th scope="col" className={`${titleCell}`}>カード名</th>
+                      <th scope="col" className={`${langCell}`}>言語</th>
+                      <th scope="col" className={`${dateCell}`}>最終更新日</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {filteredCards.map((card) => (
+                    <tr
+                    key={card.id}
+                    className={`border-b bg-gray-800 border-gray-700 ${selectedCard && selectedCard.id === card.id ? 'bg-indigo-900 hover:bg-blue-900' : 'hover:bg-cyan-900'}`}
+                    onClick={() => { openEditWindow(card);}}
+                  >
+                      <td className={`${titleCell} font-medium text-cyan-400`}>
+                        <div>
+                          {card.title}
+                        </div>
+                      </td>
+                      <td className={`${langCell}`}>
+                        <div className="flex items-center justify-center">
+                          {card.language ? <LanguageIcon language={card.language} /> : ""}
+                        </div>
+                      </td>
+                      <td className={`${dateCell}`}>
+                      <div>
+                        {new Date(card.updated_at).toLocaleDateString()}
+                      </div>
+
+                      </td>
+                    </tr>
+                  ))}
+                    
+                  </tbody>
+                </table>
+                <br/><br/><br/><br/>
+                <br/><br/><br/><br/>
+                <br/><br/><br/><br/>
+                <br/><br/><br/><br/>
+                <br/><br/><br/><br/>
+                
+                </div>
+                <NewResponsiveWindow
+                  isOpen={isEditWindowOpen}
+                  title={selectedCard?.title}
+                  initialPosition={{ x: 900, y: 500 }}
+                  initialSize={{ width: 740, height: 700 }}
+                  onClose={closeEditWindow}
+                >
+                  <CardEditForm
+                      useInWindow={true}
+                      selectedCard={selectedCard}
+                      setSelectedCard={setSelectedCard}
+                      setCards={setCards}
+                      onUpdateSuccess={handleCardUpdate}
+                      setIsEditWindowOpen={setIsEditWindowOpen}
+                    />
+                </NewResponsiveWindow>
+
+                <NewResponsiveWindow
+                  isOpen={isNewWindowOpen}
+                  title={"New Card"}
+                  initialPosition={{ x: 900, y: 500 }}
+                  initialSize={{ width: 740, height: 700 }}
+                  onClose={closeNewWindow}
+                >
+                  <CardForm 
+                      useInWindow={true}
+                      filteredCards={filteredCards}
+                      setFilteredCards={setFilteredCards}
+                    />
+                </NewResponsiveWindow>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      {isWindowOpen && (
-        <ResponsiveWindow
-          title={`${selectedCard.title}`}
-          initialPosition={{ x: 600, y: 90 }}
-          initialSize={{ width: 700, height: 800 }}
-          onClose={closeWindow}
-        >
-          <CardEditForm
-            useInWindow={true}
-            selectedCard={selectedCard}
-            onUpdateSuccess={handleCardUpdate}
-          />
-        </ResponsiveWindow>
-      )}
-    </div>
   </div>
   )
 }

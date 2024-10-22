@@ -60,13 +60,15 @@ class CardsController < ApplicationController
   end
   
   def destroy_your_card
-    @card.deck_cards.destroy_all
-    @card.destroy!
-    redirect_to your_cards_path, success: "カードを削除しました", status: :see_other
+    @card = current_user.cards.find(params[:id])
+    if @card.destroy
+      head :no_content
+    else
+      render json: { errors: @card.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   private
-
 
   def authorize_user!
     unless @card.user_id == current_user.id

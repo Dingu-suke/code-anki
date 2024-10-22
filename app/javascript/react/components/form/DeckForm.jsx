@@ -4,7 +4,6 @@ import { FaTrashCan } from "react-icons/fa6";
 import { CATEGORY, LANGUAGE_LABELS } from '../runCodeEditorDaisyUI/constants';
 import { setupCSRFToken } from './setupCSRFToken';
 
-
 const errors = {
   deck : "デッキ名は必須です"
 }

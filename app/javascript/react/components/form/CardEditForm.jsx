@@ -1,12 +1,12 @@
 import axios from 'axios';
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-
 import { Answer, Remarks } from '../card/AnswerCard';
 import QuestionCard from '../card/QuiestionCard';
 import { setupCSRFToken } from './setupCSRFToken';
+import { FaTrashCan } from "react-icons/fa6";
 
-export const CardEditForm = ({useInWindow, selectedCard, onUpdateSuccess}) => {
+export const CardEditForm = ({useInWindow, selectedCard, setSelectedCard, onUpdateSuccess, windowWidth, setIsEditWindowOpen, setCards}) => {
   // -----
   const questionEditorRef = useRef(null);
   const remarksEditorRef = useRef(null);  
@@ -64,10 +64,9 @@ export const CardEditForm = ({useInWindow, selectedCard, onUpdateSuccess}) => {
   
   const onSubmit = useCallback(async (data) => {
     try {
-      // Ensure language is included in the data
       const formData = {
         ...data,
-        language: watch('language') // Explicitly include the language
+        language: watch('language') // 明示的に言語を追加 
       };
     let res;
       if (selectedCard) {
@@ -83,22 +82,32 @@ export const CardEditForm = ({useInWindow, selectedCard, onUpdateSuccess}) => {
     }
   }, [selectedCard, watch, onUpdateSuccess]);
 
-  
-  // const onSubmit = useCallback(async (data) => {
-    // フォーム送信時に最新の値を取得
-    // const updatedData = {
-      //   ...data,
-      //   body: questionEditorRef.current?.getValue() || ''
-      // };
+  const deleteCard = async (cardId) => {
+    setupCSRFToken();
+    try {
+      const response = await axios.delete(`/destroy_your_card/${cardId}`, {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      });
       
-      // });
+      if (response.status === 204) {   
+        setCards(prevCards => prevCards.filter(card => card.id !== cardId))
+        setIsEditWindowOpen(false)
+      }
+    } catch (error) {
+        console.error('カード削除失敗',error)
+      }
+  }
+
   const buttonText = useInWindow ? "カードを更新する" : "カードを保存する";
   const buttonTextLocation = () => {
     if (!useInWindow) {
       return (
         <button
         type="submit"
-        className="btn text-sky-400 bg-cyan-950 hover:text-sky-300 hover:bg-blue-950 border border-sky-800 hover:border-cyan-500 font-courier w-full xl:w-auto hidden xl:inline-block">
+        className="btn text-sky-400 bg-cyan-950 hover:text-sky-300 hover:bg-blue-950 border border-sky-800 hover:border-cyan-500 font-courier xl:w-auto hidden xl:inline-block w-max-96">
           カードを保存する
       </button>
       )
@@ -110,86 +119,88 @@ export const CardEditForm = ({useInWindow, selectedCard, onUpdateSuccess}) => {
   
   const topButtonClasses = useInWindow
     ? "hidden" // useInWindowがtrueの場合、上部のボタンを非表示
-    : "btn text-sky-400 bg-cyan-950 hover:text-sky-300 hover:bg-blue-950 border border-sky-800 hover:border-cyan-500 font-courier w-full xl:w-auto hidden xl:inline-block";
+    : "btn text-sky-400 bg-cyan-950 hover:text-sky-300 hover:bg-blue-950 border border-sky-800 hover:border-cyan-500 font-courier xl:w-auto hidden xl:inline-block w-min-96";
 
   const bottomButtonClasses = useInWindow
-    ? "btn text-sky-400 bg-cyan-950 hover:text-sky-300 hover:bg-blue-950 border border-sky-800 hover:border-cyan-500 font-courier w-full"
+    ? "btn text-sky-400 bg-cyan-950 hover:text-sky-300 hover:bg-blue-950 border border-sky-800 hover:border-cyan-500 font-courier w-min-96"
     : "btn text-sky-400 bg-cyan-950 hover:text-sky-300 hover:bg-blue-950 border border-sky-800 hover:border-cyan-500 font-courier w-1/2 xl:hidden";
 
-  const containerClasses = useInWindow
-    ? "flex flex-col gap-4 h-full"
+    const containerClasses = useInWindow
+    ? `flex flex-col gap-4 h-full ${windowWidth && windowWidth < 1191 ? '' : 'grid grid-cols-2'}`
     : "flex flex-col xl:grid xl:grid-cols-2 xl:grid-rows-[2fr_1fr] gap-4 xl:h-[calc(100vh-200px)]";
 
-  const questionClasses = useInWindow
+  const questionClasses = useInWindow && windowWidth && windowWidth < 1191
     ? "flex-grow"
-    : "row-start-1 row-end-2 col-start-1 col-end-2";
+    : "col-start-1 col-end-2";
 
-  const answerClasses = useInWindow
+  const answerClasses = useInWindow && windowWidth && windowWidth < 1191
     ? "flex-grow"
-    : "row-start-1 row-end-3 col-start-2 col-end-3";
+    : "col-start-2 col-end-3";
 
-  const remarksClasses = useInWindow
+  const remarksClasses = useInWindow && windowWidth && windowWidth < 1191
     ? "flex-grow"
-    : "row-start-2 row-end-3 col-start-1 col-end-2";
+    : "col-start-1 col-end-2";
       
   return (
-    <div className="card shadow-xl min-w-0 m-[30px] bg-gray-800">
+    <div className="card shadow-xl min-w-0 m-[30px] bg-gray-800">      
       <div className="card-body">
         <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-col">
-            <div className="pb-5 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col">
+            <div className="pb-5 grid grid-cols-12">
               <input
                 type="text"
                 placeholder='タイトル'
                 id="title"
                 {...register("title")}
-                className='bg-gray-700 text-green-100 text-2xl font-courier px-6 py-2 w-full sm:w-1/2 focus:outline-none focus:border-2 focus:border-blue-800 border border-blue-900 mb-4 sm:mb-0'
+                className='col-start-1 col-span-6 bg-gray-700 text-green-100 text-2xl font-courier px-6 py-2 focus:outline-none focus:border-2 focus:border-blue-800 border border-blue-900 mb-4 sm:mb-0'
               />
-              <div >
-              <button
-                type="submit"
-                className={topButtonClasses}>
-                {buttonText}
-              </button>
+              <button type="button" className="col-start-11 col-span-1 font-bold text-lg min-w-12 max-w-12 p-3 rounded-md text-gray-400 bg-cyan-950 hover:text-red-500 hover:bg-blue-950 border border-red-800 hover:border-red-500 font-courier xl:w-auto xl:inline-block cursor-default px-1" 
+                    onClick={() => deleteCard(selectedCard.id)}>
+              <div className="flex items-center justify-center">
+                <FaTrashCan />
+              </div>
+            </button>
+              <div>
+                <button
+                  type="submit"
+                  className={topButtonClasses}>
+                  {buttonText}
+                </button>
               </div>
             </div>
-              {/* <div className="flex flex-col xl:grid xl:grid-cols-2 xl:grid-rows-2 gap-4"> */}
-              <div className={containerClasses}>
-                <div className={questionClasses}>
-                  <QuestionCard
-                    editorRef={questionEditorRef}
-                    defaultValue={selectedCard.body}
-                    onBlur={handleQuestionBlur}
-                  />
-                </div>
-                <div className={answerClasses}>
-                  <Controller
-                    name='answer'
-                    control={control}
-                    render={({ field }) => (
-                      <Answer
-                        value={field.value}
-                        onChange={field.onChange}
-                        language={watch('language')}
-                        onLanguageChange={(lang) => {
-                          setValue('language', lang)
-                        }}
-                      />
-                    )}
-                  />
-                </div>
-                <div className={remarksClasses}>
-                  <Remarks
-                    editorRef={remarksEditorRef}
-                    defaultValue={selectedCard.remarks}
-                    onBlur={handleRemarksBlur}
-                  />
-                </div>
+            <div className={containerClasses}>
+              <div className={questionClasses}>
+                <QuestionCard
+                  editorRef={questionEditorRef}
+                  defaultValue={selectedCard.body}
+                  onBlur={handleQuestionBlur}
+                  remarksEditorRef={remarksEditorRef}
+                  remarksDefaultValue={selectedCard.remarks}
+                  remarksOnBlur={handleRemarksBlur}
+                />
+              </div>
+              <div className={answerClasses}>
+                <Controller
+                  name='answer'
+                  control={control}
+                  render={({ field }) => (
+                    <Answer
+                      value={field.value}
+                      onChange={field.onChange}
+                      selectedCard={selectedCard}
+                      language={watch('language')}
+                      onLanguageChange={(lang) => {
+                        setValue('language', lang)
+                      }}
+                    />
+                  )}
+                />
               </div>
             </div>
-            <div className="pt-6 flex justify-center">
-              <button type="submit" className={bottomButtonClasses}>{buttonText}</button>
-            </div>
+          </div>
+          <div className="pt-6 flex justify-center">
+            <button type="submit" className={bottomButtonClasses}>{buttonText}</button>
+          </div>
         </form>
       </div>
     </div>

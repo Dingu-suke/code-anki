@@ -12,25 +12,29 @@
   </head>
 
 <body class="bg-black min-h-screen flex flex-col">
-  <div class="drawer xl:drawer-open">
+  <div class="drawer xl:drawer-open h-screen">
     <input id="my-drawer" type="checkbox" class="drawer-toggle" />
-    <div class="drawer-content flex flex-col">
-      <!-- 小画面用 ハンバーガーメニュー -->
-      <div class="xl:hidden fixed top-0 left-0 m-4">
-        <label for="my-drawer" class="btn btn-square btn-ghost">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-        </label>
-      </div>
-      <!-- ページ内容 -->
-      <div class="p-4">
-        <main class="bg-slate-900 rounded-lg shadow-xl p-6 min-h-screen">
-          <%= yield %>
-        </main>
+    <div class="drawer-content flex flex-col h-full overflow-hidden">
+      <!-- メインコンテンツエリア -->
+      <div class="flex h-full overflow-hidden">
+        <!-- 小画面用 ハンバーガーメニュー領域 -->
+        <div class="xl:hidden w-14 bg-cyan-950 flex-shrink-0 ">
+          <label for="my-drawer" class="btn btn-ghost btn-circle fixed top-4 left-1 z-10 h-auto text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+          </label>
+        </div>
+        <!-- ページ内容 -->
+        <div class="flex-grow p-4 overflow-auto">
+          <main class="bg-slate-900 rounded-lg shadow-xl p-6 min-h-full">
+            <%= yield %>
+          </main>
+        </div>
       </div>
     </div> 
     <div class="drawer-side cursor-default z-50">
       <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay cursor-default"></label>
-      <div class="w-[270px] min-h-full bg-gray-900 text-white p-4 cursor-default">
+      <div class="w-[270px] min-h-full bg-cyan-950 text-white p-4 cursor-default">
+      <%# 改善 ここにぼかしいれたいな 背景だけをぼかす。%>
         <%= render 'shared/sidebar' %>
       </div>
     </div>
