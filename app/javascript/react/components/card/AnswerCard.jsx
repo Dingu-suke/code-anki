@@ -9,7 +9,7 @@ import RunButton from '../runCodeEditorDaisyUI/runButton&Output/RunButton';
 
 
 export const Answer = ({ value, onChange, language, onLanguageChange, selectedCard }) => {  
-  const [lang, setLang] = useState(LANGUAGE_LABELS[selectedCard?.language || null]);
+  const [lang, setLang] = useState(LANGUAGE_LABELS[language || null]);
   
   const onSelect = (newLanguage) => {
     onLanguageChange(newLanguage);
