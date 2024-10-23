@@ -81,7 +81,7 @@ export const LanguageSelector = ({ language, onSelect }) => {
           {isOpen && (
             <div 
             ref={dropdownRef}
-            className="absolute top-full left-0 pt-2 w-full cursor-default"
+            className="absolute top-full left-0 pt-2 w-full cursor-default z-50"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave} 
             >

@@ -86,7 +86,7 @@ export const CardList = () => {
                       focus:border-blue-800 focus:border-2  focus:outline-none"
             />
           </div>
-          <div className="z-50 col-span-2 flex justify-center mb-4">
+          <div className="col-span-2 flex justify-center mb-4">
             <LanguageSelector language={language} onSelect={onSelect} />
           </div>
             <button

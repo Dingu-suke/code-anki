@@ -186,7 +186,7 @@ const ResponsiveWindow = ({ children, title, initialPosition, initialSize, onClo
           top: `${position.y}px`,
           width: `${size.width}px`,
           height: `${size.height}px`,
-          zIndex: 1000,
+          zIndex: 40,
           scrollbarColor: '#888 #000000',
         }}
       >
