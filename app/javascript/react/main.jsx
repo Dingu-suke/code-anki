@@ -5,7 +5,6 @@ import MonacoModal from "./components/editor/MonacoModal";
 import MarkdownView from "./components/editorView/MarkdownView";
 
 import { Answer } from "./components/card/AnswerCard";
-import { CardList } from "./components/card/CardIndex";
 import QuestionCard from "./components/card/QuiestionCard";
 import { DeckInfo } from "./components/deck/DeckInfo";
 import { YourDecksIndex } from "./components/deck/YourDecksIndex";
@@ -15,6 +14,8 @@ import ParentComponent from "./components/PaarentComponent";
 import RunCodeEditor from './components/runCodeEditorDaisyUI/CodeEditor';
 import TextBox from "./components/TextBox";
 import App from "./components/window/App";
+import { CardList } from "./components/card/CardIndex";
+import { DrillIndex } from "./components/drill/DrillIndex";
 
 document.addEventListener("DOMContentLoaded", () => {
   const monacoModalRoot   = document.getElementById("monacoModal");
@@ -30,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const runCodeEditorRoot = document.getElementById("runCodeEditor");
   const markdownViewRoot  = document.getElementById("markdownView");
   const markdownEditorRoot= document.getElementById("markdownEditor");
-  const cardIndexRoot     = document.getElementById("cardIndex");
+  const CardIndexRoot     = document.getElementById("CardIndex");
   const DraggableModalRoot= document.getElementById("draggableModal");
   const AppRoot           = document.getElementById("window");
   const DeckShowRoot      = document.getElementById("deckShow");
@@ -38,6 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const YourDeckIndex     = document.getElementById("yourDeckIndex");
   const DeckCardsRoot     = document.getElementById("deckCards");
   const DeckFormRoot      = document.getElementById("deckForm");
+  const DrillIndexRoot     = document.getElementById("drillIndex");
   // -------------------------------------------------------------------------
 
   monacoModalRoot   && createRoot(monacoModalRoot)  .render(<MonacoModal />);
@@ -52,11 +54,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   runCodeEditorRoot && createRoot(runCodeEditorRoot).render(<RunCodeEditor />);
   markdownViewRoot  && createRoot(markdownViewRoot) .render(<MarkdownView />);
-  cardIndexRoot     && createRoot(cardIndexRoot)    .render(<CardList />)
+  CardIndexRoot     && createRoot(CardIndexRoot    ).render(<CardList />)
+  DrillIndexRoot     && createRoot(DrillIndexRoot)    .render(<DrillIndex />)
   DraggableModalRoot&& createRoot(DraggableModalRoot).render(<ParentComponent />)
-  YourDeckIndex     && createRoot(YourDeckIndex)    .render(<YourDecksIndex />)
+  YourDeckIndex     && createRoot(YourDeckIndex)    .render(<YourDecksIndex />)   
   DeckShowRoot      && createRoot(DeckShowRoot)     .render(<Drill />)
   DeckFormRoot      && createRoot(DeckFormRoot)     .render(<DeckInfo />)
   
-  AppRoot && createRoot(AppRoot).render(<App />)
+  AppRoot && createRoot(AppRoot).render(<App />)  
 })

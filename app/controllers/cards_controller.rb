@@ -46,13 +46,8 @@ class CardsController < ApplicationController
     end
   end
   
-  # def destroy
-  #   @card.destroy!
-  #   redirect_to your_cards_path, success: "カードを削除しました", status: :see_other
-  # end
-  
   def your_cards 
-    @your_cards = Card.where(user_id: current_user.id).includes(:user).order("created_at DESC")
+    @your_cards = current_user.cards.includes(:user).order(created_at: :desc)
     respond_to do |format|
       format.html # your_cards.html.erb を描画
       format.json { render json: @your_cards }
@@ -81,6 +76,5 @@ class CardsController < ApplicationController
 
   def cards_params
     params.require(:card).permit(:title, :body, :answer, :remarks, :language)
-  end
-  
+  end  
 end
