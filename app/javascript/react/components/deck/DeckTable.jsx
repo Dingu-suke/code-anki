@@ -13,7 +13,7 @@ const tradeOffColor = "bg-fuchsia-950 text-pink-200 bg-opacity-60"
 const editButtonCell = "py-2 w-10 truncate text-center"
 const deckTitleCell = "px-4 py-3 min-w-64 truncate text-start"
 const cardsLengthCell = "px-2 py-3 min-w-20 max-w-28 truncate text-center"
-const deckLnagageCell = "pl-4 pr-2 py-3 min-w-20 max-w-28 truncate text-center"
+const deckLanguageCell = "pl-4 pr-2 py-3 min-w-20 max-w-28 truncate text-center"
 const deckCategoryCell = "px-4 py-3 min-w-32 max-w-40 truncate"
 const deckUpadateDateCell = "px-4 py-3 min-w-20 max-w-28 truncate text-center"
 const deckStatusCell = "px-4 py-3 min-w-28 max-w-40 truncate text-center"
@@ -75,7 +75,7 @@ export const DeckTable = (
               <th scope="col" className={`${editButtonCell}`}></th>
               <th scope="col" className={`${deckTitleCell}`}>デッキ名</th>
               <th scope="col" className={`${cardsLengthCell}`}>カード数</th>
-              <th scope="col" className={`${deckLnagageCell}`}>言語</th>
+              <th scope="col" className={`${deckLanguageCell}`}>言語</th>
               <th scope="col" className={`${deckCategoryCell}`}>カテゴリ</th>
               <th scope="col" className={`${deckUpadateDateCell}`}>最終更新日</th>
               <th scope="col" className={`${deckStatusCell}`}>公開 / 非公開</th>
@@ -117,7 +117,7 @@ export const DeckTable = (
                     </div>
                   </div>
                 </td>
-                <td className={`${deckLnagageCell}`}>
+                <td className={`${deckLanguageCell}`}>
                   <div className="flex items-center justify-center">
                     {deck.language ? <LanguageIcon language={deck.language} /> : ""}
                   </div>
@@ -126,7 +126,7 @@ export const DeckTable = (
                   <div>
                     {deck.category
                     ? 
-                    <div className={`inline-block text-xs font-medium rounded truncate px-2
+                    <div className={`inline-block text-xs font-medium rounded truncate
                         ${deck.category === "methodLearning" && methodLearningColor}
                         ${deck.category === "algorithm" && algorithmColor}
                         ${deck.category === "refactoring" && refactoringColor}
