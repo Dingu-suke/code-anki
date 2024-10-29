@@ -57,6 +57,7 @@ export const Drill = () => {
 
   return (
     <div className=" bg-gray-950">
+
       {cards.map((card) => (
         <div
           key={card.id}

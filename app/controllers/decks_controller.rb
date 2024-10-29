@@ -5,9 +5,14 @@ class DecksController < ApplicationController
 
   # GET /decks or /decks.json
   def index
-    @q = Deck.ransack(params[:q])
-    @all_decks = @q.result(distinct: true)#.includes(:user)
-    @cards = Card.all
+    # @q = Deck.ransack(params[:q])
+    # @all_decks = @q.result(distinct: true)#.includes(:user)
+    # @cards = Card.all
+    @decks = Deck.all
+    respond_to do |format|
+      format.html # your_cards.html.erb を描画
+      format.json { render json: @decks }
+    end
   end
 
   # GET /decks/1 or /decks/1.json
@@ -67,8 +72,8 @@ class DecksController < ApplicationController
 
   # 使用ユーザーのみのデッキ一覧
   def your_decks
-    @your_decks = Deck.where(user_id: current_user.id).includes(:user).order("created_at DESC")
-    @your_cards = Card.where(user_id: current_user.id).includes(:user).order("created_at DESC")
+    @your_decks = current_user.decks.includes(:user).order(created_at: :desc)
+    @your_cards = current_user.cards.includes(:user).order(created_at: :desc)
     respond_to do |format|
       format.html
       format.json {
