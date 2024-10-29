@@ -94,7 +94,7 @@ export const SelectCardIndex = (
           onChange={(e) => { setSearchCard(e.target.value)}}
           className="col-start-1 col-span-8 w-full p-2 pl-3  border rounded bg-gray-700 focus:outline-none focus:border-2 focus:border-blue-800 border-blue-900 text-cyan-100"
         />
-      <div className="z-50 col-start-9">
+      <div className="col-start-9">
         <LanguageSelector language={language} onSelect={onSelect} />
       </div>
     </div>

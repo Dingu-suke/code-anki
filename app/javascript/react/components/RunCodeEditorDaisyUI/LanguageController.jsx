@@ -42,18 +42,12 @@ export const LanguageSelector = ({ language, onSelect }) => {
     if (prevlanguageRef.current === lang) {
       onSelect(null);
       prevlanguageRef.current = null
-      console.log(lang)
     } else {
       onSelect(lang);
       prevlanguageRef.current = lang
-      console.log(lang)
     }
     setIsOpen(false);
   };
-
-  useEffect(() => {
-    console.log(language)
-  }, [language])
 
   useEffect(() => {
     return () => {

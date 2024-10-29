@@ -118,7 +118,7 @@ export const DeckTable = (
                   </div>
                 </td>
                 <td className={`${deckLanguageCell}`}>
-                  <div className="flex items-center justify-center">
+                  <div className="flex -centitemser justify-center">
                     {deck.language ? <LanguageIcon language={deck.language} /> : ""}
                   </div>
                 </td>

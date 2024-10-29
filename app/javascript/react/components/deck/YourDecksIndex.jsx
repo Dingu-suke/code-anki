@@ -31,10 +31,6 @@ export const YourDecksIndex = ({
     setSearchTermAndFilter(e.target.value);
   };
 
-  useEffect(() => {
-    setSelectedLanguage(getLabelKey(language));
-  }, [language])
-
   const openNewDeckWindow = () => {
     setIsDeckNewWindowOpen(true);
   };
@@ -55,9 +51,14 @@ export const YourDecksIndex = ({
   }
 
   const onSelect = (newLanguage) => {
-    // onLanguageChange(newLanguage);
+    // 🍉
     setLanguage(LANGUAGE_LABELS[newLanguage]);
   };
+  
+  useEffect(() => {
+    // 🍉
+    setSelectedLanguage(getLabelKey(language));
+  }, [language])
 
   if (isDeckLoading) {
     return (
