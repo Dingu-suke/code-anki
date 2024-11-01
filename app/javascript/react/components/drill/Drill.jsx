@@ -4,7 +4,7 @@ import { useRunCode } from "../../hooks/useRunCode"
 import '../../../../../app/assets/stylesheets/application.tailwind.css'
 // import '@/app/assets/stylesheets/application.tailwind.css'
 import Output from "../runCodeEditorDaisyUI/runButton&Output/Output"
-import { EditorAndAnswer } from "./EditorAndAnswer"
+import { EditorAndAnswer } from "../card/EditorAndAnswer"
 
 const initialCards = [
   {id: 1, title: 'カード1',

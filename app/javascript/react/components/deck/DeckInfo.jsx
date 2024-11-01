@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useCardNavigation } from '../../hooks/useCardNavigation';
 import { useCards } from '../../hooks/useCards';
-import { PreviewCard } from '../drill/PreviewCard';
+import { PreviewCard } from './PreviewCard';
 import { useYourDeckList } from '../../hooks/useYourDeckList';
 import { PreviewCardList } from './PreviewCardList';
 import { SaveButton } from './SaveButton';

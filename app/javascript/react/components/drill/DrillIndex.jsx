@@ -40,8 +40,8 @@ export const DrillIndex = () => {
     selectedLanguage, setSelectedLanguage,
     selectedCategory, setSelectedCategory,
     filteredDrills, setFilteredDrills
-  }
-        = useDrill()
+  } = useDrill()
+
   const [language, setLanguage] = useState("");
 
   const onSelect = (newLanguage) => {    

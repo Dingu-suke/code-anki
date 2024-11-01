@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { DrillNavi } from './DrillNavi';
+import { CheckedCards } from '../deck/ChekedCards';
 
-export const DrillShow = () => {
-  
+export const DrillShow = ({selectedDrill}) => {
+
+  const [previewCard, setPreviewCard] = useState(selectedDrill && selectedDrill.cards[1])
+  const [checkedCards, setCheckedCards] = useState(selectedDrill?.cards)
+
+
   return (
-    <h1>DrillShow</h1>
+    <>
+    <DrillNavi checkedCards={checkedCards} setCheckedCards={setCheckedCards} previewCard={previewCard} setPreviewCard={setPreviewCard} selectedDeck={selectedDrill} />
+    
+    </>
   )
 }
 

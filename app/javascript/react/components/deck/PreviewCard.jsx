@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Markdown from "react-markdown";
 import { useRunCode } from "../../hooks/useRunCode";
 import Output from "../runCodeEditorDaisyUI/runButton&Output/Output";
-import { EditorAndAnswer } from "./EditorAndAnswer";
+import { EditorAndAnswer } from "../card/EditorAndAnswer";
 
 
 export const PreviewCard = ({ previewCardList, card, setPreviewCard, moveToNextCard, moveToPreviousCard}) => {
