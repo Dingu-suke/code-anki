@@ -33,15 +33,6 @@ export const useCardNavigation = () => {
     else if (currentIndex === -1 && checkedCards.length !== 0) { setPreviewCard(checkedCards[0])};
   }, [checkedCards, findCardIndex]);
 
-  // const moveToPreviousCard = useCallback(() => {
-  //   const currentIndex = findCardIndex();
-  //   if (currentIndex > 0) {
-  //     previewCard.id === initialCard.id
-  //     ? setPreviewCard(checkedCards[0]) : setPreviewCard(checkedCards[currentIndex - 1])
-  //   }
-  //   else if (currentIndex === -1 && checkedCards.length !== 0) { setPreviewCard(checkedCards[0])};
-  // }, [checkedCards, findCardIndex]);
-
   return {
     checkedCards,
     setCheckedCards,

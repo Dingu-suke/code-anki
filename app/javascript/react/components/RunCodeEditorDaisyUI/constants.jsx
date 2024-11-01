@@ -18,6 +18,8 @@ export const CODE_SNIPPETS = {
   python: `\ndef greet(name):\n\tprint("Hello, " + name + "!")\n\ngreet("Python")\n`,
   csharp:'using System;\n\nnamespace HelloWorld\n{\n\tclass Hello { \n\t\tstatic void Main(string[] args) {\n\t\t\tConsole.WriteLine("Hello World in C#");\n\t\t}\n\t}\n}\n',
   php: "<?php\n\n$name = 'PHP';\necho $name;\n",
+  go: `\npackage main\n\nimport "fmt"\n\nfunc main() {\n\tname := "Go"\n\tfmt.Printf("Hello, %s!\n", name)\n}\n`,
+  ruby: `\ndef greet(name)\n\tputs "Hello, #{name}!"\nend\n\ngreet("Ruby")\n`
 };
 
 export const LANGUAGE_LABELS = {
@@ -32,6 +34,7 @@ export const LANGUAGE_LABELS = {
 }
 
 export const CATEGORY = {
+  baseLearning: "基本学習",
   methodLearning: "メソッド学習",
   algorithm: "アルゴリズム",
   refactoring: "リファクタリング",

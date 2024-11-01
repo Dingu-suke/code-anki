@@ -59,10 +59,10 @@ export const DeckNew = ({ addDeck, onSuccess }) => {
               className="col-start-2 col-span-4 px-3 py-2 rounded bg-gray-800 focus:outline-none focus:ring border-gray-700 border-2 text-cyan-100"
             >
               <option value="">( 未選択 )</option>
-              <option value="methodLearning">{CATEGORY["methodLearning"]}</option>
-              <option value="algorithm">{CATEGORY["algorithm"]}</option>
-              <option value="refactoring">{CATEGORY["refactoring"]}</option>
-              <option value="tradeOff">{CATEGORY["tradeOff"]}</option>
+              {Object.entries(CATEGORY).map(([key, string]) => 
+            (
+              <option value={`${key}`}>{string}</option>
+          ))}
             </select>
           </div>
           <div className="grid grid-cols-6 p-3">
@@ -150,10 +150,10 @@ export const DeckEdit = ({ deck, updateDeckInfo, setCheckedCards, deleteDeck, se
               className="col-start-3 col-span-9 px-3 py-2 rounded bg-gray-800 focus:outline-none focus:ring border-gray-700 border-2 text-cyan-100"
             >
               <option value="">( 未選択 )</option>
-              <option value="methodLearning">{CATEGORY["methodLearning"]}</option>
-              <option value="algorithm">{CATEGORY["algorithm"]}</option>
-              <option value="refactoring">{CATEGORY["refactoring"]}</option>
-              <option value="tradeOff">{CATEGORY["tradeOff"]}</option>
+              {Object.entries(CATEGORY).map(([key, string]) => 
+                (                
+                  <option value={`${key}`}>{string}</option>
+              ))}
             </select>
           </div>
           <div className="grid grid-cols-12 p-3">
@@ -165,9 +165,9 @@ export const DeckEdit = ({ deck, updateDeckInfo, setCheckedCards, deleteDeck, se
               className="col-start-3 col-span-9 px-3 py-2 rounded bg-gray-800 focus:outline-none focus:ring border-gray-700 border-2 text-cyan-100"
             >
               <option value="">( 未選択 )</option>
-              {Object.entries(LANGUAGE_LABELS).map(([key, value]) => (
+              {Object.entries(LANGUAGE_LABELS).map(([key, language]) => (
                 <option key={key} value={key}>
-                  {value}
+                  {language}
                 </option>
               ))}
             </select>
