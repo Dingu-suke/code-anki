@@ -14,15 +14,17 @@ export const EditorAndAnswer = ({
   answerEditorRef,
   setCurrentCardId,
   editorHeight,
-  isAnserEditorBlur,
-  setIsAnserEditorBlur
+  // isAnserEditorBlur,
+  // setIsAnserEditorBlur,
+  bluredCards,
+  toggleBlur
 }) => {
   const diffEditorRef = useRef(null);
   const [userEditorContent,  setUserEditorContent]  = useState("");
   const prevCardIdRef = useRef(null);
   const userEditorContentMap = useRef(new Map());
-  const [activeTab, setActiveTab] = useState('editor')
-
+  const [activeTab, setActiveTab] = useState('editor')  
+  
   useEffect(() => {
     if (prevCardIdRef.current !== card?.id) {
       // カードが変更された場合
@@ -100,11 +102,16 @@ export const EditorAndAnswer = ({
         <div className="flex flex-wrap pb-2">
           <LanguageLabel language={card?.language} />
           <RunButton runCode={runAnswerCode} isLoading={answerIsLoading} />
-          <button role="button" className="border border-blue-950 bg-black hover:bg-orange-950 min-w-44 flex justify-center items-center font-bold min-h-0 h-8 px-2 rounded-md" onClick={() => {setIsAnserEditorBlur(!isAnserEditorBlur)}}>
-          {isAnserEditorBlur ? "解答例を表示する" : "解答例を隠す"}
+          <button role="button" className="border border-blue-950 bg-black hover:bg-orange-950 min-w-44 flex justify-center items-center font-bold min-h-0 h-8 px-2 rounded-md" 
+                  // onClick={() => {setIsAnserEditorBlur(!isAnserEditorBlur)}}
+                  onClick={() => toggleBlur(card?.id)}
+          >
+
+            {bluredCards && bluredCards[card?.id] ? "解答例を表示する" : "解答例を隠す"}
           </button>
+          {/* bluredCards && とすることで 初回レンダリングのエラーを防いでいるけど、きれいではない気はする */}
         </div>
-        <div className={`${isAnserEditorBlur ? "blur-lg" : ""}`}>
+        <div className={`${bluredCards && bluredCards[card?.id] ? "blur-lg" : ""}`}>
           <Editor
             height={editorHeight || "15vh"}
             theme="vs-dark"

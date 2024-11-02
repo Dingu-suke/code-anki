@@ -7,13 +7,35 @@ import { EditorAndAnswer } from "../card/EditorAndAnswer";
 
 export const DrillContennt = ({ previewCardList, card, setPreviewCard, moveToNextCard, moveToPreviousCard}) => {
   const [currentCardId, setCurrentCardId] = useState(card?.id)
-  const [isAnserEditorBlur, setIsAnserEditorBlur] = useState(true)
+  const [bluredCards, setBluredCards] = useState(() => {
+    if (!previewCardList) return {};
+    
+    // 全てのカードのIDに対して true を設定 (ぼかす)
+    return previewCardList.reduce((acc, card) => ({
+      ...acc,
+      [card.id]: true
+    }), {});
+  });
+
+
   const currentCard = card
 
   useEffect(() => {
-    setIsAnserEditorBlur(true)
-    console.log(currentCardId)
-  }, [card, previewCardList])
+    if (!previewCardList) return;
+    const initialState = previewCardList.reduce((acc, card) => ({
+      ...acc,
+      [card.id]: true
+    }), {});
+    setBluredCards(initialState);
+  }, [previewCardList]);
+
+  // カードごとにぼかしを制御する
+  const toggleBlur = (cardId) => {
+    setBluredCards(prev => ({
+      ...prev,
+      [cardId]: !prev[cardId]
+    }));
+  };
 
   const {
     runCode: runUserCode, 
@@ -108,8 +130,10 @@ export const DrillContennt = ({ previewCardList, card, setPreviewCard, moveToNex
               answerEditorRef={answerEditorRef}
               setCurrentCardId={setCurrentCardId}
               editorHeight={"25vh"}
-              isAnserEditorBlur={isAnserEditorBlur}
-              setIsAnserEditorBlur={setIsAnserEditorBlur}
+              // isAnserEditorBlur={isAnserEditorBlur}
+              // setIsAnserEditorBlur={setIsAnserEditorBlur}
+              bluredCards={bluredCards}
+              toggleBlur={toggleBlur}
             />
           </div>
         </div>
