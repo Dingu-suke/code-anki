@@ -33,7 +33,6 @@ export const DrillNavi = ({checkedCards, setCheckedCards, previewCard, setPrevie
         }
       }
     }
-    console.log("checkedCards", checkedCards)
 
     // 現在の値を保存して、次回の比較に使用
     prevCheckedCardsLengthRef.current = checkedCards?.length;

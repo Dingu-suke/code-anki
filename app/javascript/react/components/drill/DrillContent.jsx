@@ -7,7 +7,13 @@ import { EditorAndAnswer } from "../card/EditorAndAnswer";
 
 export const DrillContennt = ({ previewCardList, card, setPreviewCard, moveToNextCard, moveToPreviousCard}) => {
   const [currentCardId, setCurrentCardId] = useState(card?.id)
+  const [isAnserEditorBlur, setIsAnserEditorBlur] = useState(true)
   const currentCard = card
+
+  useEffect(() => {
+    setIsAnserEditorBlur(true)
+    console.log(currentCardId)
+  }, [card, previewCardList])
 
   const {
     runCode: runUserCode, 
@@ -101,6 +107,9 @@ export const DrillContennt = ({ previewCardList, card, setPreviewCard, moveToNex
               userEditorRef={userEditorRef}
               answerEditorRef={answerEditorRef}
               setCurrentCardId={setCurrentCardId}
+              editorHeight={"25vh"}
+              isAnserEditorBlur={isAnserEditorBlur}
+              setIsAnserEditorBlur={setIsAnserEditorBlur}
             />
           </div>
         </div>

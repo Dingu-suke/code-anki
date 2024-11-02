@@ -12,7 +12,10 @@ export const EditorAndAnswer = ({
   answerIsLoading,
   userEditorRef,
   answerEditorRef,
-  setCurrentCardId
+  setCurrentCardId,
+  editorHeight,
+  isAnserEditorBlur,
+  setIsAnserEditorBlur
 }) => {
   const diffEditorRef = useRef(null);
   const [userEditorContent,  setUserEditorContent]  = useState("");
@@ -81,7 +84,7 @@ export const EditorAndAnswer = ({
           <RunButton runCode={runUserCode} isLoading={userIsLoading} />
         </div>
         <Editor
-          height="15vh"
+          height={editorHeight || "15vh"}
           theme="vs-dark"
           language={card?.language}
           value={userEditorContent}
@@ -94,22 +97,27 @@ export const EditorAndAnswer = ({
         />
       </div>
       <div className="border border-purple-900 bg-slate-950 p-4 rounded-sm">
-        <div className="flex pb-2">
+        <div className="flex flex-wrap pb-2">
           <LanguageLabel language={card?.language} />
           <RunButton runCode={runAnswerCode} isLoading={answerIsLoading} />
+          <button role="button" className="border border-blue-950 bg-black hover:bg-orange-950 min-w-44 flex justify-center items-center font-bold min-h-0 h-8 px-2 rounded-md" onClick={() => {setIsAnserEditorBlur(!isAnserEditorBlur)}}>
+          {isAnserEditorBlur ? "解答例を表示する" : "解答例を隠す"}
+          </button>
         </div>
-        <Editor
-          height="15vh"
-          theme="vs-dark"
-          language={card?.language}
-          value={card?.answer}
-          defaultValue={card?.answer}
-          options={{
-            fontSize: 14,
-            readOnly: true
-          }}
-          onMount={handleAnswerEditorDidMount}
-        />
+        <div className={`${isAnserEditorBlur ? "blur-lg" : ""}`}>
+          <Editor
+            height={editorHeight || "15vh"}
+            theme="vs-dark"
+            language={card?.language}
+            value={card?.answer}
+            defaultValue={card?.answer}
+            options={{
+              fontSize: 14,
+              readOnly: true
+            }}
+            onMount={handleAnswerEditorDidMount}
+          />
+        </div>
       </div>
     </div>
   );
@@ -120,7 +128,7 @@ export const EditorAndAnswer = ({
         <LanguageLabel language={card?.language} />
       </div>
       <DiffEditor
-        height="15vh"
+        height={editorHeight || "15vh"}
         theme="vs-dark"
         language={card?.language}
         original=""

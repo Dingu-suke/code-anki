@@ -7,8 +7,9 @@ export const LanguageLabel = ({ language }) => {
   
   return (
     <div className="mr-2">
-      <div>
-        <button tabIndex={0} type="button" className="btn text-sm w-32 min-h-0 h-8 mx-3 border-purple-700 text-slate-200 bg-slate-800 font-courier hover:bg-slate-800 hover:border-purple-700 cursor-auto">{getLabelKey(language)}</button>
+      <div className="flex">
+        <button tabIndex={0} type="button" className="btn text-sm w-32 min-h-0 h-8 mx-3 border-purple-700 text-slate-200 bg-slate-800 font-courier hover:bg-slate-800 hover:border-purple-700 cursor-auto">{LANGUAGE_LABELS[language]}</button>
+        {LANGUAGE_LOGO[language]}
       </div>
     </div>
   );
