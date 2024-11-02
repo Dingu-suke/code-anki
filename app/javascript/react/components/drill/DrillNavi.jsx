@@ -33,13 +33,13 @@ export const DrillNavi = ({checkedCards, setCheckedCards, previewCard, setPrevie
         }
       }
     }
+    console.log("checkedCards", checkedCards)
 
     // 現在の値を保存して、次回の比較に使用
     prevCheckedCardsLengthRef.current = checkedCards?.length;
     prevSelectedDeckRef.current = selectedDeck;
   }, [checkedCards, selectedDeck]);
   
-  // カードを編集したときにDOMにも変更を反映
   useEffect(() => {
     if (selectedDeck && selectedDeck.cards) {
       setCheckedCards(selectedDeck?.cards);
@@ -108,9 +108,9 @@ export const DrillNavi = ({checkedCards, setCheckedCards, previewCard, setPrevie
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className="py-4 pl-2 pr-2">
+      <div className="py-2 pl-2 pr-2">
         <div className="border border-slate-600 bg-stone-950 text-cyan-50 rounded overflow-hidden">
-          <div className="h-[calc(18vh-2rem)]">
+          <div className="h-[calc(10vh-2rem)]">
             <div className="flex flex-col overflow-x-auto">
               <Droppable droppableId="checkedCards" direction="horizontal">
                 {(provided) => (
@@ -126,7 +126,7 @@ export const DrillNavi = ({checkedCards, setCheckedCards, previewCard, setPrevie
                           ref={scrollContainerRef}
                         >
                           <div className='flex flex-col'>
-                            <ul className="steps steps-horizontal flex w-max min-w-full">
+                            <ul className="flex w-max min-w-full">
                               {checkedCards.map((card, index) => (
                                 <Draggable key={card.id} draggableId={card.id.toString()} index={index}>
                                   {(provided, snapshot) => (
@@ -134,23 +134,22 @@ export const DrillNavi = ({checkedCards, setCheckedCards, previewCard, setPrevie
                                     ref={provided.innerRef}
                                     {...provided.draggableProps}
                                     key={card.id}
-                                    className={`step flex flex-col items-center flex-shrink-0 ${(index+1) % 5 === 0 ? "step-neutral" : "step-neutral"}`}
+                                    className={` flex flex-col items-center flex-shrink-0 ${(index+1) % 5 === 0 ? "" : ""}`}
                                     style={{
                                       ...provided.draggableProps.style,
                                       backgroundColor: (index+1) % 5 === 0 ? "#631166" : "#0f3c63"
                                     }}
-                                    data-content={`${index+1}`}
                                   >
-                                      <span className="step-number"></span>
+                                      
                                       <div
                                         {...provided.dragHandleProps}
-                                        className={`flex-shrink-0 w-48 border p-4 m-2 rounded shadow hover:bg-slate-950
+                                        className={`flex-shrink-0 w-32 border p-2 m-2 rounded shadow hover:bg-slate-950
                                           ${card === previewCard ? 'bg-slate-950 border-green-400 text-green-400 hover:text-green-400' : 'bg-slate-950 border-cyan-900 text-cyan-400 hover:text-green-400 hover:border-green-700'}
                                           ${snapshot.isDragging ? 'opacity-50' : ''}
                                         `}
                                         onClick={() => setPreviewCard(card)}
                                       >
-                                        <h2 className="text-xl text-center font-semibold truncate">
+                                        <h2 className="text-sm text-center font-semibold truncate">
                                           {card.title}
                                         </h2>
                                       </div>

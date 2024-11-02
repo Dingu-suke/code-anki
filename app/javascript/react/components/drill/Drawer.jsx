@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
-export const Drawer = ({ isOpen, onClose, onOpen, containerRef, children }) => {
+export const Drawer = ({ isOpen, onClose, onOpen, containerRef, drillName, children }) => {
   const drawerRef = useRef(null);
   const [drawerWidth, setDrawerWidth] = useState('800px');
   const previewWidth = '64px';  // ドロワープレビュー時の幅
@@ -93,7 +93,7 @@ export const Drawer = ({ isOpen, onClose, onOpen, containerRef, children }) => {
                             border-b border-cyan-700 bg-slate-900 
                             flex items-center justify-between">
               <h2 className="text-xl font-bold text-cyan-400 truncate">
-                詳細画面
+                {drillName}
               </h2>
               <button
                 onClick={onClose}
@@ -105,7 +105,7 @@ export const Drawer = ({ isOpen, onClose, onOpen, containerRef, children }) => {
 
             {/* コンテンツ */}
             <div className="h-full pt-16 overflow-y-auto">
-              <div className="p-6">
+              <div className="p-2">
                 {children}
               </div>
             </div>

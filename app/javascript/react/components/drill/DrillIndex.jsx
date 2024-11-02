@@ -87,6 +87,7 @@ export const DrillIndex = () => {
           onClose={handleCloseDrawer}
           onOpen={openDrawer}
           containerRef={containerRef}
+          drillName={selectedDrill?.name}
         >
         <DrillShow selectedDrill={selectedDrill} />
       </Drawer>
