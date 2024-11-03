@@ -1,46 +1,70 @@
-import React, { useState } from "react"
-import Markdown from "react-markdown"
-import { useRunCode } from "../../hooks/useRunCode"
-import '../../../../../app/assets/stylesheets/application.tailwind.css'
-// import '@/app/assets/stylesheets/application.tailwind.css'
-import Output from "../runCodeEditorDaisyUI/runButton&Output/Output"
-import { EditorAndAnswer } from "../card/EditorAndAnswer"
+import React, { useEffect, useState } from "react";
+import Markdown from "react-markdown";
+import { useRunCode } from "../../hooks/useRunCode";
+import Output from "../runCodeEditorDaisyUI/runButton&Output/Output";
+import { EditorAndAnswer } from "../card/EditorAndAnswer";
 
-const initialCards = [
-  {id: 1, title: 'カード1',
-    body: '# だまれ小僧。**お前にさんが救えるか**',
-    answer: `function greet(name) {\n\t//console.log("Hello, " + name + "!");\n}\n\ngreet("Javascript");\n`, 
-    language: 'javascript', 
-    remarks:'JSしか勝たん' 
-  },
 
-]
-export const Drill = () => {
-  const [cards, setCards] = useState(initialCards)
-  const [currentCardId, setCurrentCardId] = useState(cards[0].id)
-  const currentCard = cards.find(card => card.id === currentCardId)
-  
-  const { 
+export const DrillContennt = ({ previewCardList, card, setPreviewCard, moveToNextCard, moveToPreviousCard}) => {
+  const [currentCardId, setCurrentCardId] = useState(card?.id)
+  const [bluredCards, setBluredCards] = useState(() => {
+    if (!previewCardList) return {};
+    
+    // 全てのカードのIDに対して true を設定 (ぼかす)
+    return previewCardList.reduce((acc, card) => ({
+      ...acc,
+      [card.id]: true
+    }), {});
+  });
+
+
+  const currentCard = card
+
+  useEffect(() => {
+    if (!previewCardList) return;
+    const initialState = previewCardList.reduce((acc, card) => ({
+      ...acc,
+      [card.id]: true
+    }), {});
+    setBluredCards(initialState);
+  }, [previewCardList]);
+
+  // カードごとにぼかしを制御する
+  const toggleBlur = (cardId) => {
+    setBluredCards(prev => ({
+      ...prev,
+      [cardId]: !prev[cardId]
+    }));
+  };
+
+  const {
     runCode: runUserCode, 
     editorRef: userEditorRef, 
     language: userLanguage, 
     output: userOutput, 
-    setOutput: setUserOutput, 
+    setOutput: setUserOutput,
     isError: userIsError, 
-    isLoading: userIsLoading, 
+    isLoading: userIsLoading,
     setIsError: setUserIsError
-  } = useRunCode(currentCard.language);
+  } = useRunCode(currentCard?.language);
 
   const { 
-    runCode: runAnswerCode, 
-    editorRef: answerEditorRef, 
-    language: answerLanguage, 
-    output: answerOutput, 
-    setOutput: setAnswerOutput, 
-    isError: answerIsError, 
-    isLoading: answerIsLoading, 
+    runCode: runAnswerCode,
+    editorRef: answerEditorRef,
+    language: answerLanguage,
+    output: answerOutput,
+    setOutput: setAnswerOutput,
+    isError: answerIsError,
+    isLoading: answerIsLoading,
     setIsError: setAnswerIsError
-  } = useRunCode(currentCard.language);
+  } = useRunCode(currentCard?.language);
+
+  useEffect(() => {
+    if (previewCardList && previewCardList.length > 0)
+    {    
+      setCurrentCardId
+    }
+    }, [previewCardList])
 
   const [activeOutput, setActiveOutput] = useState('user');
   const [outputHeight, setOutputHeight] = useState('130px');  // 初期高さを130pxに設定
@@ -57,19 +81,17 @@ export const Drill = () => {
 
   return (
     <div className=" bg-gray-950">
-
-      {cards.map((card) => (
-        <div
-          key={card.id}
-          className="grid grid-cols-6 gap-4 mb-8"
+      <br />
+      <div
+          className="grid grid-cols-6 gap-4 mb-4"
         >
           <div className="col-span-4">
             <div className="border border-slate-600 bg-stone-950 text-cyan-50 rounded overflow-hidden">
               <div className="bg-slate-800 px-4 py-2 font-semibold">
-                {card.title}
+                問題文
               </div>
               <div className="p-4 h-[calc(30vh-2rem)] overflow-auto">
-                <Markdown>{card.body}</Markdown>
+                <Markdown>{card?.body}</Markdown>
               </div>
             </div>
           </div>
@@ -79,10 +101,9 @@ export const Drill = () => {
                 備考･メモ
               </div>
               <div className="px-4 py-4">
-                <Markdown>{card.remarks}</Markdown>
+                <Markdown>{card?.remarks}</Markdown>
               </div>
             </div>
-            {card.id === currentCardId && (
               <Output
                 editorRef={activeOutput === 'user' ? userEditorRef : answerEditorRef}
                 language={activeOutput === 'user' ? userLanguage : answerLanguage}
@@ -97,7 +118,6 @@ export const Drill = () => {
                 outputHeight={outputHeight}
                 setOutputHeight={setOutputHeight}
               />
-            )}
           </div>
           <div className="col-span-6">
             <EditorAndAnswer
@@ -109,10 +129,14 @@ export const Drill = () => {
               userEditorRef={userEditorRef}
               answerEditorRef={answerEditorRef}
               setCurrentCardId={setCurrentCardId}
+              editorHeight={"25vh"}
+              // isAnserEditorBlur={isAnserEditorBlur}
+              // setIsAnserEditorBlur={setIsAnserEditorBlur}
+              bluredCards={bluredCards}
+              toggleBlur={toggleBlur}
             />
           </div>
         </div>
-      ))}
     </div>
   );
 };

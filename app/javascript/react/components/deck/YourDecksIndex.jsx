@@ -89,10 +89,12 @@ export const YourDecksIndex = ({
           onChange={(event) => setSelectedCategory(event.target.value)}
         >
           <option value="">すべて</option>
-          <option value="methodLearning">{CATEGORY["methodLearning"]}</option>
-          <option value="algorithm">{CATEGORY["algorithm"]}</option>
-          <option value="refactoring">{CATEGORY["refactoring"]}</option>
-          <option value="tradeOff">{CATEGORY["tradeOff"]}</option>
+          {Object.entries(CATEGORY).map(([categoryKey, string]) => 
+            (
+              <option key={categoryKey} value={`${categoryKey}`}>
+                {string}
+              </option>              
+            ))}
         </select>
         <select
           id="status"

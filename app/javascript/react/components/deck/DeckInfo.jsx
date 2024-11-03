@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useCardNavigation } from '../../hooks/useCardNavigation';
 import { useCards } from '../../hooks/useCards';
-import { PreviewCard } from '../drill/PreviewCard';
+import { PreviewCard } from './PreviewCard';
 import { useYourDeckList } from '../../hooks/useYourDeckList';
 import { PreviewCardList } from './PreviewCardList';
 import { SaveButton } from './SaveButton';
@@ -14,6 +14,7 @@ export const DeckInfo = () => {
   const [isWindowOpen, setIsWindowOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const prevSelectedCardRef = useRef(null);
+  const [activeTab, setActiveTab] = useState('deckIndex')
   
   //  ▼--- カスタムフックス ---▼
   
@@ -85,8 +86,6 @@ export const DeckInfo = () => {
   const tabClass = "px-4 border-t border-x rounded-t-sm font-bold focus:outline-none relative";
   const activeTabClass = `bg-slate-950 ${borderCalss} border-b-0 after:absolute after:bottom-[-1px] after:left-0 after:right-0 after:h-[1px] after:bg-slate-950`;
   const inactiveTabClass = "bg-slate-900 text-emerald-700 border-transparent hover:text-green-600";
-  
-  const [activeTab, setActiveTab] = useState('deckIndex')
   
   const handleTabChange = (tabName) => {
     setActiveTab(tabName);

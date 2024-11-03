@@ -18,6 +18,12 @@ const deckCategoryCell = "px-4 py-3 min-w-32 max-w-40 truncate"
 const deckUpadateDateCell = "px-4 py-3 min-w-20 max-w-28 truncate text-center"
 const deckStatusCell = "px-4 py-3 min-w-28 max-w-40 truncate text-center"
 
+  
+const borderCalss = "border-teal-700 text-emerald-400 text-bold"
+const tabClass = "px-4 border-t border-x rounded-t-sm font-bold focus:outline-none relative";
+const activeTabClass = `bg-slate-950 ${borderCalss} border-b-0 after:absolute after:bottom-[-1px] after:left-0 after:right-0 after:h-[1px] after:bg-slate-950`;
+const inactiveTabClass = "bg-slate-900 text-emerald-700 border-transparent hover:text-green-600";
+
 export const DeckTable = (
     { 
       checkedCards,
@@ -126,7 +132,7 @@ export const DeckTable = (
                   <div>
                     {deck.category
                     ? 
-                    <div className={`inline-block text-xs font-medium rounded truncate
+                    <div className={`inline-block text-xs font-medium rounded truncate px-2
                         ${deck.category === "methodLearning" && methodLearningColor}
                         ${deck.category === "algorithm" && algorithmColor}
                         ${deck.category === "refactoring" && refactoringColor}

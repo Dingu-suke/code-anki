@@ -5,23 +5,28 @@ import RunButton from '../runCodeEditorDaisyUI/runButton&Output/RunButton';
 
 export const EditorAndAnswer = ({ 
   className = "", 
-  card, 
+  card,
   runUserCode,
   runAnswerCode,
   userIsLoading,
   answerIsLoading,
   userEditorRef,
   answerEditorRef,
-  setCurrentCardId
+  setCurrentCardId,
+  editorHeight,
+  // isAnserEditorBlur,
+  // setIsAnserEditorBlur,
+  bluredCards,
+  toggleBlur
 }) => {
   const diffEditorRef = useRef(null);
   const [userEditorContent,  setUserEditorContent]  = useState("");
   const prevCardIdRef = useRef(null);
   const userEditorContentMap = useRef(new Map());
-  const [activeTab, setActiveTab] = useState('editor')
-
+  const [activeTab, setActiveTab] = useState('editor')  
+  
   useEffect(() => {
-    if (prevCardIdRef.current !== card.id) {
+    if (prevCardIdRef.current !== card?.id) {
       // カードが変更された場合
       if (prevCardIdRef.current) {
         // 前のカードの内容を保存
@@ -29,16 +34,16 @@ export const EditorAndAnswer = ({
       }
       
       // 新しいカードの内容をロード（存在する場合）または空にする
-      const newContent = userEditorContentMap.current.get(card.id) || "";
+      const newContent = userEditorContentMap.current.get(card?.id) || "";
       setUserEditorContent(newContent);
       
-      prevCardIdRef.current = card.id;
+      prevCardIdRef.current = card?.id;
     }
-  }, [card.id, userEditorContent]);
+  }, [card?.id, userEditorContent]);
 
   const handleUserEditorDidMount = (editor) => {
     userEditorRef.current = editor;
-    setCurrentCardId(card.id);
+    setCurrentCardId(card?.id);
   };
 
   const handleAnswerEditorDidMount = (editor) => {
@@ -77,13 +82,13 @@ export const EditorAndAnswer = ({
     <div className={`grid grid-cols-2 gap-4 ${className}`}>
       <div className="border border-cyan-900 bg-slate-950 p-4 rounded-sm">
         <div className="flex pb-2">
-          <LanguageLabel language={card.language} />
+          <LanguageLabel language={card?.language} />
           <RunButton runCode={runUserCode} isLoading={userIsLoading} />
         </div>
         <Editor
-          height="15vh"
+          height={editorHeight || "15vh"}
           theme="vs-dark"
-          language={card.language}
+          language={card?.language}
           value={userEditorContent}
           defaultValue=""
           options={{
@@ -94,22 +99,32 @@ export const EditorAndAnswer = ({
         />
       </div>
       <div className="border border-purple-900 bg-slate-950 p-4 rounded-sm">
-        <div className="flex pb-2">
-          <LanguageLabel language={card.language} />
+        <div className="flex flex-wrap pb-2">
+          <LanguageLabel language={card?.language} />
           <RunButton runCode={runAnswerCode} isLoading={answerIsLoading} />
+          <button role="button" className="border border-blue-950 bg-black hover:bg-orange-950 min-w-44 flex justify-center items-center font-bold min-h-0 h-8 px-2 rounded-md" 
+                  // onClick={() => {setIsAnserEditorBlur(!isAnserEditorBlur)}}
+                  onClick={() => toggleBlur(card?.id)}
+          >
+
+            {bluredCards && bluredCards[card?.id] ? "解答例を表示する" : "解答例を隠す"}
+          </button>
+          {/* bluredCards && とすることで 初回レンダリングのエラーを防いでいるけど、きれいではない気はする */}
         </div>
-        <Editor
-          height="15vh"
-          theme="vs-dark"
-          language={card.language}
-          value={card.answer}
-          defaultValue={card.answer}
-          options={{
-            fontSize: 14,
-            readOnly: true
-          }}
-          onMount={handleAnswerEditorDidMount}
-        />
+        <div className={`${bluredCards && bluredCards[card?.id] ? "blur-lg" : ""}`}>
+          <Editor
+            height={editorHeight || "15vh"}
+            theme="vs-dark"
+            language={card?.language}
+            value={card?.answer}
+            defaultValue={card?.answer}
+            options={{
+              fontSize: 14,
+              readOnly: true
+            }}
+            onMount={handleAnswerEditorDidMount}
+          />
+        </div>
       </div>
     </div>
   );
@@ -117,14 +132,14 @@ export const EditorAndAnswer = ({
   const diffEditorContent = (
     <div className="border border-green-900 bg-slate-950 p-4 rounded-md">
       <div className="pb-2">
-        <LanguageLabel language={card.language} />
+        <LanguageLabel language={card?.language} />
       </div>
       <DiffEditor
-        height="15vh"
+        height={editorHeight || "15vh"}
         theme="vs-dark"
-        language={card.language}
+        language={card?.language}
         original=""
-        modified={card.answer}
+        modified={card?.answer}
         options={{
           fontSize: 14,
           renderSideBySide: true,
