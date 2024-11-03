@@ -81,7 +81,7 @@ export const DrillIndex = () => {
             ))}
           </select>
         </div>
-        <DrillTable filteredDrills={filteredDrills} selectedDrill={selectedDrill} handleSelectDrill={handleSelectDrill} />
+        <DrillTable filteredDrills={filteredDrills} selectedDrill={selectedDrill} isDrillLoading={isDrillLoading} handleSelectDrill={handleSelectDrill} />
         <Drawer
           isOpen={isDrawerOpen} 
           onClose={handleCloseDrawer}

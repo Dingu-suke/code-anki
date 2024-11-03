@@ -10,16 +10,16 @@ export const DrillContennt = ({ previewCardList, card, setPreviewCard, moveToNex
   const [bluredCards, setBluredCards] = useState(() => {
     if (!previewCardList) return {};
     
-    // 全てのカードのIDに対して true を設定 (ぼかす)
+    // 全てのカードのIDに対して 初期設定 true (ぼかす)
     return previewCardList.reduce((acc, card) => ({
       ...acc,
       [card.id]: true
     }), {});
   });
 
-
   const currentCard = card
 
+  // デッキ変更時に更新
   useEffect(() => {
     if (!previewCardList) return;
     const initialState = previewCardList.reduce((acc, card) => ({

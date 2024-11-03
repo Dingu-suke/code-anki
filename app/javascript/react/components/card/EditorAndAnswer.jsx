@@ -17,7 +17,9 @@ export const EditorAndAnswer = ({
   // isAnserEditorBlur,
   // setIsAnserEditorBlur,
   bluredCards,
-  toggleBlur
+  toggleBlur,
+  toggleBlur2,
+  isBlur
 }) => {
   const diffEditorRef = useRef(null);
   const [userEditorContent,  setUserEditorContent]  = useState("");
@@ -74,6 +76,13 @@ export const EditorAndAnswer = ({
     setUserEditorContent(value);
   };
 
+  const pointToggleBlur = (cardId) => {
+    if (toggleBlur) {
+      toggleBlur(cardId)
+    } else {
+      toggleBlur2(!isBlur)
+    }
+  }
   const tabClass = "px-4 border-t border-x rounded-t-sm font-bold focus:outline-none relative";
   const activeTabClass = "bg-slate-950 text-orange-500 border-yellow-800 border-b-0 after:absolute after:bottom-[-1px] after:left-0 after:right-0 after:h-[1px] after:bg-slate-950";
   const inactiveTabClass = "bg-slate-900 text-yellow-900 border-transparent hover:text-amber-700";
@@ -104,10 +113,12 @@ export const EditorAndAnswer = ({
           <RunButton runCode={runAnswerCode} isLoading={answerIsLoading} />
           <button role="button" className="border border-blue-950 bg-black hover:bg-orange-950 min-w-44 flex justify-center items-center font-bold min-h-0 h-8 px-2 rounded-md" 
                   // onClick={() => {setIsAnserEditorBlur(!isAnserEditorBlur)}}
-                  onClick={() => toggleBlur(card?.id)}
+                  onClick={() => pointToggleBlur(card?.id)}
           >
 
-            {bluredCards && bluredCards[card?.id] ? "解答例を表示する" : "解答例を隠す"}
+            {bluredCards 
+              ? (bluredCards[card?.id] ? "解答例を表示する" : "解答例を隠す")
+              : (isBlur ? "解答例を隠す" : "解答例を表示する")}
           </button>
           {/* bluredCards && とすることで 初回レンダリングのエラーを防いでいるけど、きれいではない気はする */}
         </div>

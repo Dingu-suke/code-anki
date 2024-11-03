@@ -15,7 +15,15 @@ const tradeOffColor = "bg-fuchsia-950 text-pink-200 bg-opacity-60"
 
 
 
-export const DrillTable = ({filteredDrills, selectedDrill, handleSelectDrill}) => {
+export const DrillTable = ({filteredDrills, selectedDrill, isDrillLoading, handleSelectDrill}) => {
+
+  if (isDrillLoading) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div className="text-white loading loading-ring loading-lg"></div>
+      </div>
+    );
+  }
   return (
     <div className="overflow-y-auto max-h-[500px] min-h-[750px] w-11/12 border border-cyan-900 rounded-md"> {/* スクロール可能な高さを設定 */}
         <table className="w-full text-sm text-left text-gray-300">
