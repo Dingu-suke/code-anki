@@ -9,11 +9,11 @@ Rails.application.config.middleware.use OmniAuth::Builder do
       request = Rack::Request.new(env)
       
       credentials = case request.host
-                  when ENV[HEROKU]
+                  when ENV['HEROKU']
                     Rails.application.credentials.github.heroku
-                  when ENV[WWWDOMAIN]
+                  when ENV['WWWDOMAIN']
                     Rails.application.credentials.github.www_domain
-                  when ENV[DOMAIN]
+                  when ENV['DOMAIN']
                     Rails.application.credentials.github.domain
                   end
 
