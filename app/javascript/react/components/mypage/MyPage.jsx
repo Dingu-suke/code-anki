@@ -25,7 +25,7 @@ export const MyPage = () => {
             aria-selected={activeTab === 'myDrill'}
             aria-controls="myDrill-panel"
             >
-            マイドリル
+            マイデッキ
           </button>
           <button
             role="tab"
@@ -34,7 +34,7 @@ export const MyPage = () => {
             aria-selected={activeTab === 'favorite'}
             aria-controls="favorite-panel"
             >
-            いいね
+            お気に入り
           </button>
           <button
             role="tab"
