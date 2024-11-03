@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   resources :decks, except: %i[show]
   resources :cards
   
+  get 'mypage', to: 'mypage#show', as: 'mypage'
+  
   root 'top#index'
   # root 'hello_console#index'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

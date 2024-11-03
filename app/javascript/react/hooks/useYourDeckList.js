@@ -11,7 +11,7 @@ const api = axios.create({
   },
 });
 
-export const useYourDeckList = () => {
+export const useYourDeckList = (url) => {
   const [decks, setDecks] = useState([]);
   
   // 絞り込み検索用
@@ -25,11 +25,11 @@ export const useYourDeckList = () => {
   const [isDeckLoading, setIsDeckLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchDecks = useCallback(async () => {
+  const fetchDecks = useCallback(async (url) => {
     setIsDeckLoading(true);
     setError(null);
     try {
-      const { data } = await api.get('/your_decks');
+      const { data } = await api.get(url);
       setDecks(data);
       // setFilteredDecks(data);
     } catch (error) {
@@ -41,11 +41,11 @@ export const useYourDeckList = () => {
   }, []);
 
   useEffect(() => {
-    fetchDecks()
+    fetchDecks(url)
   }, [fetchDecks])
 
   const reRenderDeckList = useCallback(() => {
-    fetchDecks()
+    fetchDecks(url)
   }, [fetchDecks, filteredDecks])
 
   // デッキを絞り込み検索

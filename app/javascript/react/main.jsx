@@ -8,7 +8,6 @@ import { Answer } from "./components/card/AnswerCard";
 import QuestionCard from "./components/card/QuiestionCard";
 import { DeckInfo } from "./components/deck/DeckInfo";
 import { YourDecksIndex } from "./components/deck/YourDecksIndex";
-import { Drill } from './components/drill/Drill';
 import CardForm from "./components/form/CardForm";
 import ParentComponent from "./components/PaarentComponent";
 import RunCodeEditor from './components/runCodeEditorDaisyUI/CodeEditor';
@@ -16,6 +15,7 @@ import TextBox from "./components/TextBox";
 import App from "./components/window/App";
 import { CardList } from "./components/card/CardIndex";
 import { DrillIndex } from "./components/drill/DrillIndex";
+import { MyPage } from "./components/mypage/MyPage";
 
 document.addEventListener("DOMContentLoaded", () => {
   const monacoModalRoot   = document.getElementById("monacoModal");
@@ -40,6 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const DeckCardsRoot     = document.getElementById("deckCards");
   const DeckFormRoot      = document.getElementById("deckForm");
   const DrillIndexRoot     = document.getElementById("drillIndex");
+  const MyPageRoot         = document.getElementById("myPage")
   // -------------------------------------------------------------------------
 
   monacoModalRoot   && createRoot(monacoModalRoot)  .render(<MonacoModal />);
@@ -58,8 +59,9 @@ document.addEventListener("DOMContentLoaded", () => {
   DrillIndexRoot     && createRoot(DrillIndexRoot)    .render(<DrillIndex />)
   DraggableModalRoot&& createRoot(DraggableModalRoot).render(<ParentComponent />)
   YourDeckIndex     && createRoot(YourDeckIndex)    .render(<YourDecksIndex />)   
-  DeckShowRoot      && createRoot(DeckShowRoot)     .render(<Drill />)
+
   DeckFormRoot      && createRoot(DeckFormRoot)     .render(<DeckInfo />)
+  MyPageRoot       && createRoot(MyPageRoot)        .render(<MyPage />)
   
   AppRoot && createRoot(AppRoot).render(<App />)  
 })

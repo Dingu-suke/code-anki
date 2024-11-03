@@ -18,7 +18,7 @@ export const DeckInfo = () => {
   
   //  ▼--- カスタムフックス ---▼
   
-  const { cards, setCards, 
+  const { cards, setCards,
           isLoading, setIsLoading, 
           searchCard, setSearchCard, 
           filteredCards } = useCards();
@@ -52,7 +52,7 @@ export const DeckInfo = () => {
     reRenderDeckList,    
     updateDeckAndCard
     
-  } = useYourDeckList()
+  } = useYourDeckList('/your_decks')
 
   //  ▲--- カスタムフックス ---▲
   

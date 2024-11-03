@@ -40,6 +40,7 @@ export const PreviewCard = ({ previewCardList, card, setPreviewCard, moveToNextC
 
   const [activeOutput, setActiveOutput] = useState('user');
   const [outputHeight, setOutputHeight] = useState('130px');  // 初期高さを130pxに設定
+  const [isBlur, setIsBlur] = useState(true);
 
   const handleRunUserCode = () => {
     runUserCode();
@@ -50,6 +51,10 @@ export const PreviewCard = ({ previewCardList, card, setPreviewCard, moveToNextC
     runAnswerCode();
     setActiveOutput('answer');
   };
+
+  const toggleBlur2 =() => {
+    setIsBlur(!isBlur);
+  }
 
   return (
     <div className=" bg-gray-950">
@@ -120,6 +125,8 @@ export const PreviewCard = ({ previewCardList, card, setPreviewCard, moveToNextC
               userEditorRef={userEditorRef}
               answerEditorRef={answerEditorRef}
               setCurrentCardId={setCurrentCardId}
+              toggleBlur2={toggleBlur2}
+              isBlur={isBlur}
             />
           </div>
         </div>

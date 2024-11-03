@@ -15,15 +15,9 @@ class DecksController < ApplicationController
     end
   end
 
-  # GET /decks/1 or /decks/1.json
-  def show
-    @deck = Deck.all
-  end
-
   # GET /decks/new
   def new
     @deck = Deck.new
-    @decks = Deck.all
   end
 
   # GET /decks/1/edit
@@ -43,13 +37,6 @@ class DecksController < ApplicationController
       render json: @deck.errors, status: :unprocessable_entity
     end
   end
-
-  #   respond_to do |format|
-  #     if @deck.save
-  #     else
-  #     end
-  #   end
-  # end
 
   # PATCH/PUT /decks/1 or /decks/1.json
   def update
