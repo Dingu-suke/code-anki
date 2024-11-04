@@ -1,35 +1,14 @@
 Rails.application.config.middleware.use OmniAuth::Builder do
+  
+  github_credentials = Rails.application.config.action_controller.github_credentials_for_current_host.call
+  
   if Rails.env.development? || Rails.env.test?
-    provider :github, ENV['GITHUB_ID'], ENV['GITHUB_SECRET'] # 1
+    provider :github, ENV['GITHUB_ID'], ENV['GITHUB_SECRET']   
+    
   else
     provider :github,
-      ->(env) { 
-        host = Rack::Request.new(env).host
-        key = case host
-              when 'code-anki-0ff3aa07f2cc.herokuapp.com'
-                :heroku
-              when 'www.code-anki.com'
-                :www_domain
-              when 'code-anki.com'
-                :domain
-              else
-                :heroku
-              end
-        Rails.application.credentials.github[key][:client_id]
-      },
-      ->(env) {
-        host = Rack::Request.new(env).host
-        key = case host
-              when 'code-anki-0ff3aa07f2cc.herokuapp.com'
-                :heroku
-              when 'www.code-anki.com'
-                :www_domain
-              when 'code-anki.com'
-                :domain
-              else
-                :heroku
-              end
-        Rails.application.credentials.github[key][:client_secret]
-      }
+    github_credentials[:client_id],
+    github_credentials[:client_secret],
+    scope: 'user:email',
+    callback_url: "#{Rails.application.config.action_controller.default_url_options[:protocol]}://#{request.host}/auth/github/callback"
   end
-end

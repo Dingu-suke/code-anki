@@ -33,4 +33,22 @@ class ApplicationController < ActionController::Base
       format.any { head :not_found }
     end
   end
+
+  def github_credentials_for_current_host
+    host = request.host
+    credentials = Rails.application.credentials[Rails.env.to_sym]
+
+    case host
+    when ENV['DOMAIN']
+      credentials[:github][:domain]
+    when ENV['WWWDOMAIN']
+      credentials[:github][:www_domain]
+    when ENV['HEROKU'] # HerokuのURL
+      credentials[:github][:heroku]
+    else
+      raise "Unsupported host: #{host}"
+    end
+  end
+
+  helper_method :github_credentials_for_current_host
 end
