@@ -27,4 +27,19 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
   resources :users
+
+  # config/routes.rb
+  get '/auth/test', to: proc { |env|
+  request = Rack::Request.new(env)
+  credentials = case request.host
+              when ENV['HEROKU']
+                Rails.application.credentials.dig(:github, :heroku)
+              when ENV['WWWDOMAIN']
+                Rails.application.credentials.dig(:github, :www_domain)
+              when ENV['DOMAIN']
+                Rails.application.credentials.dig(:github, :domain)
+              end
+
+  [200, {'Content-Type' => 'text/plain'}, ["Host: #{request.host}\nCredentials found: #{credentials.present?}"]]
+  }
 end
