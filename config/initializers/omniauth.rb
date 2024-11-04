@@ -3,25 +3,18 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   if Rails.env.development? || Rails.env.test?
     provider :github, ENV['GITHUB_ID'], ENV['GITHUB_SECRET']
   else
-    # procではなく、lambdaを直接渡す
-    provider :github, lambda { |env|
-    request = Rack::Request.new(env)
-    
-    credentials = case request.host
-                  when ENV['HEROKU']
-                    creds = Rails.application.credentials.github.heroku
-                    [creds.client_id, creds.client_secret]
-                  when ENV['WWWDOMAIN']
-                    creds = Rails.application.credentials.github.www_domain
-                    [creds.client_id, creds.client_secret]
-                  when ENV['DOMAIN']
-                    creds = Rails.application.credentials.github.domain
-                    [creds.client_id, creds.client_secret]
-                  end
-    
-    Rails.logger.info "Host: #{request.host}"
-    credentials || [nil, nil]
-  }
+    # request.hostに基づいて適切な認証情報を取得
+    creds = case request.host
+            when ENV['HEROKU']
+              Rails.application.credentials.github.heroku
+            when ENV['WWWDOMAIN']
+              Rails.application.credentials.github.www_domain
+            when ENV['DOMAIN']
+              Rails.application.credentials.github.domain
+            end
+
+    # 配列ではなく、直接2つの引数として渡す
+    provider :github, creds.client_id, creds.client_secret
   end
 end
 
