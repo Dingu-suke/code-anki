@@ -3,9 +3,8 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   if Rails.env.development? || Rails.env.test?
     provider :github, ENV['GITHUB_ID'], ENV['GITHUB_SECRET']
   else
-    # 環境変数で現在のドメインを指定
-    # ミドルウェア層( コントローラより前段階 )
-    proc = lambda do |env|
+    # procではなく、lambdaを直接渡す
+    provider :github, lambda { |env|
       request = Rack::Request.new(env)
       
       credentials = case request.host
@@ -17,9 +16,14 @@ Rails.application.config.middleware.use OmniAuth::Builder do
                     Rails.application.credentials.github.domain
                   end
 
-      [credentials[:client_id], credentials[:client_secret]]
-    end
+      # デバッグ用ログ出力
+      Rails.logger.info "Host: #{request.host}"
+      Rails.logger.info "Credentials: #{credentials.present? ? 'found' : 'not found'}"
 
-    provider :github, proc
+      [credentials[:client_id], credentials[:client_secret]]
+    }
   end
 end
+
+# CSRF対策の設定
+OmniAuth.config.allowed_request_methods = [:post, :get]
