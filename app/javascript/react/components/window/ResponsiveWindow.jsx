@@ -20,7 +20,6 @@ const ResponsiveWindow = ({ children, title, initialPosition, initialSize, onClo
       for (let entry of entries) {
         const { width } = entry.contentRect;
         setWindowWidth(width);
-        console.log('Window width:', width);
       }
     });
 

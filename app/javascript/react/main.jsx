@@ -5,17 +5,18 @@ import MonacoModal from "./components/editor/MonacoModal";
 import MarkdownView from "./components/editorView/MarkdownView";
 
 import { Answer } from "./components/card/AnswerCard";
+import { CardList } from "./components/card/CardIndex";
 import QuestionCard from "./components/card/QuiestionCard";
 import { DeckInfo } from "./components/deck/DeckInfo";
 import { YourDecksIndex } from "./components/deck/YourDecksIndex";
+import { DrillIndex } from "./components/drill/DrillIndex";
 import CardForm from "./components/form/CardForm";
+import { MyPage } from "./components/mypage/MyPage";
 import ParentComponent from "./components/PaarentComponent";
 import RunCodeEditor from './components/runCodeEditorDaisyUI/CodeEditor';
 import TextBox from "./components/TextBox";
+import { TopPage } from "./components/userGuide/TopPage";
 import App from "./components/window/App";
-import { CardList } from "./components/card/CardIndex";
-import { DrillIndex } from "./components/drill/DrillIndex";
-import { MyPage } from "./components/mypage/MyPage";
 
 document.addEventListener("DOMContentLoaded", () => {
   const monacoModalRoot   = document.getElementById("monacoModal");
@@ -41,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const DeckFormRoot      = document.getElementById("deckForm");
   const DrillIndexRoot     = document.getElementById("drillIndex");
   const MyPageRoot         = document.getElementById("myPage")
+  const TopPageRoot       = document.getElementById("topPage");
   // -------------------------------------------------------------------------
 
   monacoModalRoot   && createRoot(monacoModalRoot)  .render(<MonacoModal />);
@@ -62,6 +64,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   DeckFormRoot      && createRoot(DeckFormRoot)     .render(<DeckInfo />)
   MyPageRoot       && createRoot(MyPageRoot)        .render(<MyPage />)
+
+  TopPageRoot      && createRoot(TopPageRoot)       .render(<TopPage />)
   
   AppRoot && createRoot(AppRoot).render(<App />)  
 })
