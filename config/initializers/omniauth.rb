@@ -5,23 +5,23 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   else
     # procではなく、lambdaを直接渡す
     provider :github, lambda { |env|
-      request = Rack::Request.new(env)
-      
-      credentials = case request.host
+    request = Rack::Request.new(env)
+    
+    credentials = case request.host
                   when ENV['HEROKU']
-                    Rails.application.credentials.github.heroku
+                    creds = Rails.application.credentials.github.heroku
+                    [creds.client_id, creds.client_secret]
                   when ENV['WWWDOMAIN']
-                    Rails.application.credentials.github.www_domain
+                    creds = Rails.application.credentials.github.www_domain
+                    [creds.client_id, creds.client_secret]
                   when ENV['DOMAIN']
-                    Rails.application.credentials.github.domain
+                    creds = Rails.application.credentials.github.domain
+                    [creds.client_id, creds.client_secret]
                   end
-
-      # デバッグ用ログ出力
-      Rails.logger.info "Host: #{request.host}"
-      Rails.logger.info "Credentials: #{credentials.present? ? 'found' : 'not found'}"
-
-      [credentials[:client_id], credentials[:client_secret]]
-    }
+    
+    Rails.logger.info "Host: #{request.host}"
+    credentials || [nil, nil]
+  }
   end
 end
 
