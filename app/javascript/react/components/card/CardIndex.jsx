@@ -7,6 +7,7 @@ import { CheckCard } from './CheckCard';
 import { LanguageLabel, LanguageSelector } from '../runCodeEditorDaisyUI/LanguageController';
 import { NewResponsiveWindow } from '../window/NewResponsiveWindow';
 import CardForm from '../form/CardForm';
+import { Toast, useToast } from '../toast/Toust';
 
 const titleCell = "py-3 pr-4 pl-8 w-96 truncate text-start"
 const langCell = "py-3 px-2 w-28 truncate text-center"
@@ -30,6 +31,8 @@ export const CardList = () => {
     // 🍉
     prevSelectedCardRef.current = selectedCard
   }, [selectedCard])
+
+  const { toast, showToast } = useToast();
   
   const onSelect = (newLanguage) => {
     setLanguage(LANGUAGE_LABELS[newLanguage]);
@@ -72,6 +75,7 @@ export const CardList = () => {
 
   return (
     <div>
+      {toast.show && <Toast message={toast.message} type={toast.type} />}
       <div className="container p-4">
         <div className="p-5 border border-cyan-900 rounded max-w-[660px]">
         <div className="grid grid-cols-12">
@@ -157,6 +161,7 @@ export const CardList = () => {
                       setCards={setCards}
                       onUpdateSuccess={handleCardUpdate}
                       setIsEditWindowOpen={setIsEditWindowOpen}
+                      showToast={showToast}
                     />
                 </NewResponsiveWindow>
 
@@ -171,6 +176,7 @@ export const CardList = () => {
                       useInWindow={true}
                       filteredCards={filteredCards}
                       setFilteredCards={setFilteredCards}
+                      showToast={showToast}
                     />
                 </NewResponsiveWindow>
               </div>

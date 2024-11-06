@@ -1,45 +1,12 @@
 module ApplicationHelper
-  class CustomMarkdownRenderer < Redcarpet::Render::HTML
-    def block_code(code, language)
-      language = language.blank? ? :plaintext : language.split(':').first
-      highlighted_code = CodeRay.scan(code, language).div
-
-      # daisyUI の mockup-code コンポーネント形式でラップ
-      formatted_code = highlighted_code.lines.each_with_index.map do |line, index|
-        # "<pre data-prefix=\"#{index + 1}\"><code>#{line.chomp}</code></pre>"
-        "<pre><code>#{line.chomp}</code></pre>"
-      end.join
-
-      "<div class=\"mockup-code bg-base-200 text-base-content\">#{formatted_code}</div>"
+  def toast_class_for(flash_type)
+    case flash_type.to_sym
+    when :success
+      'bg-slate-950 border border-teal-700 text-emerald-400'
+    when :error
+      'bg-slate-950 border border-red-700 text-red-400'
+    else
+      'bg-slate-950 border border-blue-700 text-blue-400'
     end
   end
-
-  def markdown_to_html(text)
-    renderer = CustomMarkdownRenderer.new(with_toc_data: true)
-    extensions = {
-      autolink: true,
-      no_intra_emphasis: true,
-      fenced_code_blocks: true,
-      space_after_headers: true,
-      strikethrough: true
-    }
-    markdown = Redcarpet::Markdown.new(renderer, extensions)
-    markdown.render(text).html_safe
-  end
 end
-
-module ApplicationHelper
-  def language_logos_data
-    {
-      javascript: asset_path('javascript-logo.svg'),
-      typescript: asset_path('typescript-logo.svg'),
-      python: asset_path('python-logo.svg'),
-      java: asset_path('java-logo.svg'),
-      csharp: asset_path('csharp-logo.svg'),
-      php: asset_path('php-logo.svg'),
-      go: asset_path('go-logo.svg'),
-      ruby: asset_path('ruby-logo.svg')
-    }.to_json
-  end
-end
-

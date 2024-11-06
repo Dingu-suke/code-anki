@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { setupCSRFToken } from '../components/form/setupCSRFToken';
+import { useToast } from '../components/toast/Toust';
 
-// axiosのインスタンスを作成し、共通の設定を適用
 const api = axios.create({
-  baseURL: '/',  // ルートURLから始まるようにします
+  baseURL: '/',
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
@@ -13,32 +13,49 @@ const api = axios.create({
 
 export const useYourDeckList = (url) => {
   const [decks, setDecks] = useState([]);
-  
-  // 絞り込み検索用
   const [filteredDecks, setFilteredDecks] = useState([]);
-  const [selectedLanguage, setSelectedLanguage] = useState('')
+  const [selectedLanguage, setSelectedLanguage] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [status, setStatus] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  
   const [selectedDeck, setSelectedDeck] = useState(null);
   const [isDeckLoading, setIsDeckLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  // トースト機能をインポート
+  const { toast, showToast } = useToast();
 
-  const fetchDecks = useCallback(async (url) => {
+  // url が / で始まっていないときは 自動的に追加
+  const validateUrl = useCallback((urlToValidate) => {
+    if (!urlToValidate || typeof urlToValidate !== 'string') {
+      throw new Error('Invalid URL provided');
+    }
+    return urlToValidate.startsWith('/') ? urlToValidate : `/${urlToValidate}`;
+  }, []);  
+  
+  
+  const fetchDecks = useCallback(async () => {
     setIsDeckLoading(true);
     setError(null);
     try {
-      const { data } = await api.get(url);
+      const validatedUrl = validateUrl(url);
+      const { data } = await api.get(validatedUrl);
       setDecks(data);
-      // setFilteredDecks(data);
+      setFilteredDecks(data);
     } catch (error) {
-      setError('デッキの取得に失敗しました: ' + error.message);
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data?.message || error.message;
+        setError(`デッキの取得に失敗しました: ${errorMessage}`);
+        showToast(`デッキの取得に失敗しました: ${errorMessage}`, 'error');
+      } else {
+        setError('デッキの取得中に予期せぬエラーが発生しました');
+        showToast('デッキの取得中に予期せぬエラーが発生しました', 'error');
+      }
       console.error('Error fetching decks:', error);
     } finally {
       setIsDeckLoading(false);
     }
-  }, []);
+  }, [url, validateUrl]);
 
   useEffect(() => {
     fetchDecks(url)
@@ -47,6 +64,7 @@ export const useYourDeckList = (url) => {
   const reRenderDeckList = useCallback(() => {
     fetchDecks(url)
   }, [fetchDecks, filteredDecks])
+
 
   // デッキを絞り込み検索
   useEffect(() => {
@@ -67,6 +85,8 @@ export const useYourDeckList = (url) => {
     setFilteredDecks(filtered);
   }, [decks, searchTerm, selectedLanguage, selectedCategory, status]);
 
+
+
   const processApiResponse = (response) => {
     return {
       ...response,
@@ -85,11 +105,13 @@ export const useYourDeckList = (url) => {
       // 新しいデッキを既存のデッキリストに追加
       const newDeck = processApiResponse(response.data);
       setDecks(prevDecks => [...prevDecks, newDeck]);
+      showToast('デッキを作成しました');
       return newDeck;
   
     } catch (error) {
       console.error('デッキ作成失敗', error);
       setError('デッキの作成に失敗しました: ' + error.message);
+      showToast('デッキの作成に失敗しました: ' + error.message, 'error');
       return null; // エラー時にはnullを返す
     }
   }, [setDecks, setError]);
@@ -97,6 +119,13 @@ export const useYourDeckList = (url) => {
   const setSearchTermAndFilter = useCallback((term) => {
     setSearchTerm(term);
   }, []);
+
+  const updateDeckAndCard = (updatedDeck) => {
+    setDecks(prevDecks => prevDecks.map(deck => deck.id === updatedDeck.id ? updatedDeck : deck));
+    setFilteredDecks(prevFilteredDeck => prevFilteredDeck.map(deck => deck.id === updatedDeck.id ? editDeck : deck));
+    setSelectedDeck(updatedDeck)
+    // setDecks(prevDecks => prevDecks.cards.map(card => card.id === updatedDeck.card.id ? updatedDeck.card : card));
+}
 
   const editDeck = useCallback(async (selectedDeck, checkedCards) => {
     setError(null);
@@ -114,32 +143,29 @@ export const useYourDeckList = (url) => {
           'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         }}
       );
-      console.log('Response:', {
-        status: response.status,
-        headers: response.headers,
-        data: response.data
-      });
-
+  
       if (response.data) {
         updateDeckAndCard(response.data)
+        showToast('デッキを更新しました'); // 成功時のトースト
       }
       fetchDecks()
     } catch (error) {
       setError('デッキの更新に失敗しました: ' + error.message);
+      showToast('デッキの更新に失敗しました: ' + error.message, 'error');
       console.error('Error updating deck:', error);
     }
-  }, []);
-
-  const updateDeckInfo = useCallback( async(deckId, data) => {
+  }, [fetchDecks, updateDeckAndCard, showToast]);
+  
+  const updateDeckInfo = useCallback(async(deckId, data) => {
     try {
       const response = await axios.patch(`decks/${deckId}`, data);
       
       setDecks(prevDecks => {
         const newDecks = prevDecks.map(deck => deck.id === deckId 
                                         ? { 
-                                            id: deckId, // id
-                                            ...data, // name, caatgory, language
-                                            user_id:deck.user_id, // user_id
+                                            id: deckId,
+                                            ...data,
+                                            user_id:deck.user_id,
                                             cards: deck.cards,
                                             status: deck.status,
                                             created_at: deck.created_at,
@@ -148,19 +174,13 @@ export const useYourDeckList = (url) => {
                                         : deck );
         return newDecks;
       });
-      // カードのみ更新しないようにする
-
+      showToast('デッキ情報を更新しました'); // 成功時のトースト
+  
     } catch (error) {
       console.error('デッキ更新エラー:', error);
+      showToast('デッキ情報の更新に失敗しました', 'error');
     }
-  }, [setFilteredDecks]);
-
-  const updateDeckAndCard = (updatedDeck) => {
-        setDecks(prevDecks => prevDecks.map(deck => deck.id === updatedDeck.id ? updatedDeck : deck));
-        setFilteredDecks(prevFilteredDeck => prevFilteredDeck.map(deck => deck.id === updatedDeck.id ? editDeck : deck));
-        setSelectedDeck(updatedDeck)
-        // setDecks(prevDecks => prevDecks.cards.map(card => card.id === updatedDeck.card.id ? updatedDeck.card : card));
-  }
+  }, [setDecks, showToast]);
   
   const deleteDeck = async (deckId, windowOpenFalse, resetCheckedCards) => {
     setupCSRFToken();
@@ -174,9 +194,8 @@ export const useYourDeckList = (url) => {
       if (response.status === 204) {   
         setDecks(prevDecks => prevDecks.filter(deck => deck.id !== deckId));
         setSelectedDeck(prevSelectedDeck => prevSelectedDeck && prevSelectedDeck.id === deckId ? null : prevSelectedDeck);
-        console.log('デッキの削除成功')
+        showToast('デッキを削除しました'); // 成功時のトースト
         
-        // 成功時のみコールバックを実行
         if (windowOpenFalse && typeof windowOpenFalse === 'function') {
           windowOpenFalse();
         }
@@ -185,9 +204,10 @@ export const useYourDeckList = (url) => {
         }
       }
     } catch (error) {
-        console.error('デッキ削除失敗',error)
-      }
-  }
+      console.error('デッキ削除失敗',error);
+      showToast('デッキの削除に失敗しました', 'error');
+    }
+  };
 
   const selectDeck = useCallback((deck) => {
     setSelectedDeck(prevDeck => prevDeck?.id === deck?.id ? null : deck);
@@ -201,6 +221,7 @@ export const useYourDeckList = (url) => {
     searchTerm, setSearchTerm,
     error, setError
     ,
+    toast,
     addDeck,
     updateDeckInfo,
     editDeck,

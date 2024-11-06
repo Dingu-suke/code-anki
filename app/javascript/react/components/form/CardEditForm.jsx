@@ -5,8 +5,9 @@ import { Answer, Remarks } from '../card/AnswerCard';
 import QuestionCard from '../card/QuiestionCard';
 import { setupCSRFToken } from './setupCSRFToken';
 import { FaTrashCan } from "react-icons/fa6";
+import { Toast, useToast } from '../toast/Toust';
 
-export const CardEditForm = ({useInWindow, selectedCard, setSelectedCard, onUpdateSuccess, windowWidth, setIsEditWindowOpen, setCards}) => {
+export const CardEditForm = ({useInWindow, selectedCard, setSelectedCard, onUpdateSuccess, windowWidth, setIsEditWindowOpen, setCards, showToast}) => {
   // -----
   const questionEditorRef = useRef(null);
   const remarksEditorRef = useRef(null);  
@@ -53,7 +54,7 @@ export const CardEditForm = ({useInWindow, selectedCard, setSelectedCard, onUpda
       }
     }
   }, [selectedCard])
-  
+
   const handleQuestionBlur = useCallback((value) => {
     setValue('body', value);    
   }, [setValue]);
@@ -71,14 +72,14 @@ export const CardEditForm = ({useInWindow, selectedCard, setSelectedCard, onUpda
     let res;
       if (selectedCard) {
         let res = await axios.patch(`/cards/${selectedCard.id}`, { card: formData });
-        console.log('カードが更新されました', res.data);
+        showToast('カードを更新しました', 'success')
         onUpdateSuccess(res.data.card)
       } else {
         res = await axios.post('/cards', { card: formData });
-        console.log('カードが作成されました', res.data);
+        showToast('カードを作成しました', 'success')      
       }
     } catch(error) {
-      console.error('エラーが発生しました', error.response?.data);
+      showToast(`エラーが発生しました ${error.response?.data}`, 'error')
     }
   }, [selectedCard, watch, onUpdateSuccess]);
 
@@ -93,13 +94,20 @@ export const CardEditForm = ({useInWindow, selectedCard, setSelectedCard, onUpda
       });
       
       if (response.status === 204) {   
-        setCards(prevCards => prevCards.filter(card => card.id !== cardId))
-        setIsEditWindowOpen(false)
+        // まずトーストを表示
+        showToast('カードを削除しました', 'success');
+        
+        // わずかな遅延後に状態を更新
+        setTimeout(() => {
+          setCards(prevCards => prevCards.filter(card => card.id !== cardId));
+          setIsEditWindowOpen(false);
+        }, 100);
       }
     } catch (error) {
-        console.error('カード削除失敗',error)
-      }
-  }
+      showToast(`カードの削除に失敗しました: ${error.message}`, 'error');
+      console.error('カード削除失敗', error);
+    }
+  };
 
   const buttonText = useInWindow ? "カードを更新する" : "カードを保存する";
   const buttonTextLocation = () => {
@@ -142,7 +150,7 @@ export const CardEditForm = ({useInWindow, selectedCard, setSelectedCard, onUpda
     : "col-start-1 col-end-2";
       
   return (
-    <div className="card shadow-xl min-w-0 m-[30px] bg-gray-800">      
+    <div className="card shadow-xl min-w-0 m-[30px] bg-gray-800">
       <div className="card-body">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col">

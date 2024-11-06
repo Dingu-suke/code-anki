@@ -8,6 +8,7 @@ import { SaveButton } from './SaveButton';
 import { SelectCardIndex } from './SelectCardIndex';
 import { SelectedDeckDisplay } from './SelectedDeckDisplay';
 import { YourDecksIndex } from './YourDecksIndex';
+import { Toast } from '../toast/Toust';
 
 export const DeckInfo = () => {
   
@@ -40,6 +41,7 @@ export const DeckInfo = () => {
     searchTerm, setSearchTerm,
     error, setError
     ,
+    toast,
     addDeck,
     updateDeckInfo,
     fetchDecks,
@@ -130,6 +132,7 @@ export const DeckInfo = () => {
 
   return (
     <div>
+      {toast.show && <Toast message={toast.message} type={toast.type} />}
       <div className="grid grid-cols-6">
         <div className="tooltip tooltip-right" data-tip="デッキ選択後、カードを選択し編成しましょう">
           <div className="col-start-1 col-span-1 py-4 pl-4 pr-2">
