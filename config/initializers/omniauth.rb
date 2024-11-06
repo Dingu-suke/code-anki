@@ -3,7 +3,7 @@ Rails.application.config.middleware.use OmniAuth::Builder do
     provider :github, ENV['GITHUB_ID'], ENV['GITHUB_SECRET'] # 1
   else
     provider :github, # 2
-      Rails.application.credentials.github[:client_id],
-      Rails.application.credentials.github[:client_secret]
+      Rails.application.credentials.github.domain[:client_id],
+      Rails.application.credentials.github.domain[:client_secret]
   end 
 end

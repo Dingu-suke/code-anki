@@ -1,6 +1,6 @@
 <header class="navbar bg-base-10 bg-blue-100">
   <% if logged_in? %>
-    <%= link_to "共有デッキ", decks_path, class:"btn btn-ghost"%>
+    <%= link_to "みんなのデッキ", decks_path, class:"btn btn-ghost"%>
     <%= link_to "マイページ", your_decks_path, class:"btn btn-ghost"%>
     <%= link_to "プロフィール","", class:"btn btn-ghost"%>
     <%= button_to "ログアウト", logout_path, method: :delete, data: { turbo: false }, class:"btn btn-ghost"%>

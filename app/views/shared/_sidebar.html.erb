@@ -1,7 +1,8 @@
 <div class="text-gray-100 text-xl">
   <div class="p-2.5 mt-1 flex items-center">
     <i class="bi bi-app-indicator px-2 py-1 rounded-md bg-blue-600"></i>
-    <h1 class="font-bold text-gray-200 text-[15px] ml-3">Code Anki</h1>
+    <%= link_to root_path,  
+    class: "font-bold text-gray-200 text-[15px] ml-3" do %>Code Anki<% end %>
   </div>
   <div class="my-2 bg-gray-600 h-[1px]"></div>
 </div>
@@ -9,7 +10,7 @@
 <% if logged_in? %>
   <%= link_to decks_path, class: "p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white" do %>
     <i class="bi bi-house-door-fill"></i>
-    <span class="text-[15px] ml-4 text-gray-200 font-bold">共有デッキ</span>
+    <span class="text-[15p4x] ml-4 text-gray-200 font-bold">みんなのデッキ</span>
   <% end %>
 
   <%= link_to mypage_path, class: "p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white" do %>
@@ -37,7 +38,7 @@
 <% else %>
   <%= link_to decks_path, class: "p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white" do %>
     <i class="bi bi-house-door-fill"></i>
-    <span class="text-[15px] ml-4 text-gray-200 font-bold">共有デッキ</span>
+    <span class="text-[15px] ml-4 text-gray-200 font-bold">みんなのデッキ</span>
   <% end %>
 
   <%= button_to "/auth/github", method: :post, data: { turbo: false }, class: "w-full p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white" do %>

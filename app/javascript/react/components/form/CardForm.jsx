@@ -11,7 +11,6 @@ const CardForm = ({useInWindow, windowWidth, setFilteredCards, filteredCards}) =
   // -----
   const questionEditorRef = useRef(null);
   const remarksEditorRef = useRef(null);
-  console.log(useInWindow)
 
   
   const { register, handleSubmit, control, watch, setValue, formState: { errors } } = useForm({

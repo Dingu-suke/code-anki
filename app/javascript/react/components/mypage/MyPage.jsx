@@ -27,7 +27,7 @@ export const MyPage = () => {
             >
             マイデッキ
           </button>
-          <button
+          {/* <button
             role="tab"
             className={`${tabClass} ${activeTab === 'favorite' ? activeTabClass : inactiveTabClass} cursor-auto h-7 text-sm`}
             onClick={() => handleTabChange('favorite')}
@@ -44,7 +44,7 @@ export const MyPage = () => {
             aria-controls="ogher-panel"
             >
             その他
-          </button>
+          </button> */}
         </div>
         <div className={`bg-slate-950 border-x border-b rounded-b-md ${borderCalss}`}>
           <div
@@ -52,17 +52,16 @@ export const MyPage = () => {
             id="myDrill-panel"
             className={`${activeTab === 'myDrill' ? '' : 'hidden'} text-white`}
           >
-            {/* ドリル選択 */}
             <div className="p-6">
               <MyDrill />
             </div>
           </div>
-          <div
+          {/* <div
             role="tabpanel"
             id="favorite-panel"
             className={`p-6 ${activeTab === 'favorite' ? '' : 'hidden'} text-white`}
           >
-            {/* カード選択 */}
+            
           いいいいいい
           </div>
           <div
@@ -70,9 +69,9 @@ export const MyPage = () => {
             id="ogher-panel"
             className={`px-6 pt-6 ${activeTab === 'ogher' ? '' : 'hidden'} text-white`}
           >
-            {/* プレビュー */}
+            
             ううううううう
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

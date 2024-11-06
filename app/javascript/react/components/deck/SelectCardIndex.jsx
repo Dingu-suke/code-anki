@@ -166,7 +166,7 @@ export const SelectCardIndex = (
             <NewResponsiveWindow
               isOpen={isWindowOpen}
               title={`${selectedCard?.title}`}
-              initialPosition={{ x: 100, y: 500 }}
+              initialPosition={{ x: 800, y: 300 }}
               initialSize={{ width: 600, height: 450 }}
               onClose={closeWindow}
             >
