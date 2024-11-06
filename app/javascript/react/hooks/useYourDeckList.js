@@ -25,20 +25,35 @@ export const useYourDeckList = (url) => {
   const [isDeckLoading, setIsDeckLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchDecks = useCallback(async (url) => {
+  // url が / で始まっていないときは 自動的に追加
+  const validateUrl = useCallback((urlToValidate) => {
+    if (!urlToValidate || typeof urlToValidate !== 'string') {
+      throw new Error('Invalid URL provided');
+    }
+    return urlToValidate.startsWith('/') ? urlToValidate : `/${urlToValidate}`;
+  }, []);  
+  
+  
+  const fetchDecks = useCallback(async () => {
     setIsDeckLoading(true);
     setError(null);
     try {
-      const { data } = await api.get(url);
+      const validatedUrl = validateUrl(url);
+      const { data } = await api.get(validatedUrl);
       setDecks(data);
-      // setFilteredDecks(data);
+      setFilteredDecks(data);
     } catch (error) {
-      setError('デッキの取得に失敗しました: ' + error.message);
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data?.message || error.message;
+        setError(`デッキの取得に失敗しました: ${errorMessage}`);
+      } else {
+        setError('デッキの取得中に予期せぬエラーが発生しました');
+      }
       console.error('Error fetching decks:', error);
     } finally {
       setIsDeckLoading(false);
     }
-  }, []);
+  }, [url, validateUrl]);
 
   useEffect(() => {
     fetchDecks(url)
