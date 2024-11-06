@@ -1,0 +1,34 @@
+<% if flash.any? %>
+  <div id="toast-container" class="toast toast-top toast-end">
+    <% flash.each do |type, message| %>
+      <div class="alert shadow-lg <%= toast_class_for(type) %>">
+        <span><%= message %></span>
+      </div>
+    <% end %>
+  </div>
+  </div>
+
+  <%# トースト表示を制御するJavaScript %>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const toastContainer = document.getElementById('toast-container');
+      if (toastContainer) {
+        // 3秒後にトーストを非表示にする
+        setTimeout(() => {
+          toastContainer.style.opacity = '0';
+          setTimeout(() => {
+            toastContainer.remove();
+          }, 300); // フェードアウト後に要素を削除
+        }, 3000);
+      }
+    });
+  </script>
+
+  <%# アニメーション用のCSS %>
+  <style>
+    #toast-container {
+      transition: opacity 0.3s ease-in-out;
+    }
+  </style>
+<% end %>
+

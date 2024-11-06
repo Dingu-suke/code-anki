@@ -7,11 +7,10 @@ import QuestionCard from '../card/QuiestionCard';
 import { CODE_SNIPPETS } from '../runCodeEditorDaisyUI/constants';
 import { setupCSRFToken } from './setupCSRFToken';
 
-const CardForm = ({useInWindow, windowWidth, setFilteredCards, filteredCards}) => {
+const CardForm = ({useInWindow, windowWidth, setFilteredCards, filteredCards, showToast}) => {
   // -----
   const questionEditorRef = useRef(null);
   const remarksEditorRef = useRef(null);
-
   
   const { register, handleSubmit, control, watch, setValue, formState: { errors } } = useForm({
     defaultValues: {
@@ -50,18 +49,16 @@ const CardForm = ({useInWindow, windowWidth, setFilteredCards, filteredCards}) =
         ...data,
         language: watch('language')
       };
-      console.log("data", data)
       const res = await axios.post('/cards', { card: formData });
       // ✨️
-      console.log('サーバーレスポンス:', res.data);
       const newCard = res.data
-      console.log("newCard", newCard)
+
       setFilteredCards(prevCards => [...prevCards, newCard])
       // ✨️
 
-      console.log('カードが作成されました', res.data);
+      showToast('カードを作成しました');
     } catch(error) {
-      console.error('エラーが発生しました', error.response?.data);
+      showToast(`エラーが発生しました ${error.response?.data}`)
     }
   }, [watch]);
   

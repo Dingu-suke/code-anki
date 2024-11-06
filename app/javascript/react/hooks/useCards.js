@@ -55,8 +55,6 @@ export const useCards = (language) => {
       setFilteredCards(filtered);
       }}, [cards, searchCard, selectedLanguage]);
 
-  
-
   return { 
             cards, setCards,
             isLoading, setIsLoading,
