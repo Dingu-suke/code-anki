@@ -7,7 +7,10 @@ module.exports = {
     './app/javascript/**/**/*.{js,jsx,ts,tsx}',
     './app/javascript/**/**/**/*.{js,jsx,ts,tsx}'
   ],
-  plugins: [require("daisyui")],
+  plugins: [
+    require("daisyui"),
+    require('@tailwindcss/typography')
+  ],
   theme: {
     fontSize: {
       'xs': '0.75rem', // 12px

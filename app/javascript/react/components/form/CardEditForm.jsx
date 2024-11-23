@@ -14,11 +14,11 @@ export const CardEditForm = ({useInWindow, selectedCard, setSelectedCard, onUpda
   
   const { register, handleSubmit, control, watch, setValue, formState: { errors } } = useForm({
     defaultValues: {
-      title: selectedCard.title,
-      body: selectedCard.body,
-      answer: selectedCard.answer,
-      remarks: selectedCard.remarks,
-      language: selectedCard.language
+      title: selectedCard?.title,
+      body: selectedCard?.body,
+      answer: selectedCard?.answer,
+      remarks: selectedCard?.remarks,
+      language: selectedCard?.language
     }
   });
 
@@ -180,10 +180,10 @@ export const CardEditForm = ({useInWindow, selectedCard, setSelectedCard, onUpda
               <div className={questionClasses}>
                 <QuestionCard
                   editorRef={questionEditorRef}
-                  defaultValue={selectedCard.body}
+                  defaultValue={selectedCard?.body}
                   onBlur={handleQuestionBlur}
                   remarksEditorRef={remarksEditorRef}
-                  remarksDefaultValue={selectedCard.remarks}
+                  remarksDefaultValue={selectedCard?.remarks}
                   remarksOnBlur={handleRemarksBlur}
                 />
               </div>

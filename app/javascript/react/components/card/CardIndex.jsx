@@ -8,6 +8,7 @@ import { LanguageLabel, LanguageSelector } from '../runCodeEditorDaisyUI/Languag
 import { NewResponsiveWindow } from '../window/NewResponsiveWindow';
 import CardForm from '../form/CardForm';
 import { Toast, useToast } from '../toast/Toust';
+import { Drawer } from '../drill/Drawer';
 
 const titleCell = "py-3 pr-4 pl-8 w-96 truncate text-start"
 const langCell = "py-3 px-2 w-28 truncate text-center"
@@ -15,9 +16,10 @@ const dateCell = "py-3 px-2 w-48 truncate text-center"
 
 export const CardList = () => {
   const [language, setLanguage] = useState('')
-  const [isNewWindowOpen, setIsNewWindowOpen] = useState(false);
-  const [isEditWindowOpen, setIsEditWindowOpen] = useState(false);
+  const [isNewCardDrawerOpen, setIsNewCardDrawerOpen] = useState(false);
+  const [isEditCardDrawerOpen, setIsEditCardDrawerOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
+  const containerRef = useRef(null); 
 
   const prevSelectedCardRef = useRef(null)
   
@@ -39,20 +41,22 @@ export const CardList = () => {
   };
   
   const openNewWindow = () => {
-    setIsNewWindowOpen(true)
-    setIsEditWindowOpen(false)
+    // setIsNewDrawerOpen(true)
+    setIsEditCardDrawerOpen(false)
     setSelectedCard(null)
   }
-  const openEditWindow = (card) => {
-    setIsNewWindowOpen(false)
-    const currentlySelectedState = selectedCard && selectedCard.id === card.id // boolean
-    setSelectedCard(currentlySelectedState ? null : card)
-    setIsEditWindowOpen(!currentlySelectedState)
+
+  const openEditDrawer = (card) => {
+    setIsNewCardDrawerOpen(false)
+    setIsEditCardDrawerOpen(true)
+    setSelectedCard(card)
     // 🍉 useEffect で更新
   }
+
   const closeNewWindow = () => {  
     setIsNewWindowOpen(false);
   }
+
   const closeEditWindow = () => {
     setSelectedCard(null)
     setIsEditWindowOpen(false)
@@ -73,8 +77,26 @@ export const CardList = () => {
     return <div>Loading...</div>
   }
 
+  const handleSelectCard = () => {
+    setIsNewCardDrawerOpen(true);  // ドロワーを開く
+    setSelectedCard(null)
+  };
+
+  const openNewDrawer = () => {
+    if (selectedDrill) {
+      setIsDrawerOpen(true);
+    }
+  }
+
+  const handleCloseDrawer = () => {
+    setIsNewCardDrawerOpen(false);
+    setIsEditCardDrawerOpen(false)
+  };
+  
+  const isDrawerOpen = isNewCardDrawerOpen || isEditCardDrawerOpen
+
   return (
-    <div>
+    <div ref={containerRef}>
       {toast.show && <Toast message={toast.message} type={toast.type} />}
       <div className="container p-4">
         <div className="p-5 border border-cyan-900 rounded max-w-[660px]">
@@ -95,7 +117,7 @@ export const CardList = () => {
           </div>
             <button
               className="col-span-3 max-w-32 p-2 rounded-md bg-slate-900 border border-pink-500 text-pink-500 hover:bg-slate-800 truncate mb-4"
-              onClick={() => openNewWindow()}
+              onClick={() => handleSelectCard()}
               >
               + New Card
             </button>
@@ -117,7 +139,7 @@ export const CardList = () => {
                     <tr
                     key={card.id}
                     className={`border-b bg-gray-800 border-gray-700 ${selectedCard && selectedCard.id === card.id ? 'bg-indigo-900 hover:bg-blue-900' : 'hover:bg-cyan-900'}`}
-                    onClick={() => { openEditWindow(card);}}
+                    onClick={() => { openEditDrawer(card);}}
                   >
                       <td className={`${titleCell} font-medium text-cyan-400`}>
                         <div>
@@ -147,38 +169,33 @@ export const CardList = () => {
                 <br/><br/><br/><br/>
                 
                 </div>
-                <NewResponsiveWindow
-                  isOpen={isEditWindowOpen}
-                  title={selectedCard?.title}
-                  initialPosition={{ x: 900, y: 500 }}
-                  initialSize={{ width: 740, height: 700 }}
-                  onClose={closeEditWindow}
-                >
-                  <CardEditForm
-                      useInWindow={true}
-                      selectedCard={selectedCard}
-                      setSelectedCard={setSelectedCard}
-                      setCards={setCards}
-                      onUpdateSuccess={handleCardUpdate}
-                      setIsEditWindowOpen={setIsEditWindowOpen}
-                      showToast={showToast}
-                    />
-                </NewResponsiveWindow>
-
-                <NewResponsiveWindow
-                  isOpen={isNewWindowOpen}
-                  title={"New Card"}
-                  initialPosition={{ x: 900, y: 500 }}
-                  initialSize={{ width: 740, height: 700 }}
-                  onClose={closeNewWindow}
-                >
-                  <CardForm 
-                      useInWindow={true}
-                      filteredCards={filteredCards}
-                      setFilteredCards={setFilteredCards}
-                      showToast={showToast}
-                    />
-                </NewResponsiveWindow>
+                
+                <Drawer
+                  isOpen={isDrawerOpen} 
+                  onClose={handleCloseDrawer}
+                  onOpen={openNewDrawer}
+                  containerRef={containerRef}
+                  displayName={selectedCard?.name}
+                  >
+                    {isDrawerOpen === isEditCardDrawerOpen ? (
+                      <CardEditForm
+                        useInWindow={true}
+                        selectedCard={selectedCard}
+                        setSelectedCard={setSelectedCard}
+                        setCards={setCards}
+                        onUpdateSuccess={handleCardUpdate}
+                        setIsEditWindowOpen={setIsEditCardDrawerOpen}
+                        showToast={showToast}
+                      />
+                    ) : (
+                      <CardForm 
+                          useInWindow={true}
+                          filteredCards={filteredCards}
+                          setFilteredCards={setFilteredCards}
+                          showToast={showToast}
+                      />
+                    ) }
+                </Drawer>
               </div>
             </div>
           </div>
