@@ -6,20 +6,24 @@ import { Answer, Remarks } from '../card/AnswerCard';
 import QuestionCard from '../card/QuiestionCard';
 import { CODE_SNIPPETS } from '../runCodeEditorDaisyUI/constants';
 import { setupCSRFToken } from './setupCSRFToken';
+import { MarkdownEditor2 } from '../editor/MarkdownEditor2';
+import { ErrorMessage } from '@hookform/error-message';
 
 const CardForm = ({useInWindow, windowWidth, setFilteredCards, filteredCards, showToast}) => {
   // -----
   const questionEditorRef = useRef(null);
   const remarksEditorRef = useRef(null);
   
-  const { register, handleSubmit, control, watch, setValue, formState: { errors } } = useForm({
+  const { register, handleSubmit, control, watch, setValue, formState: { errors }, trigger } = useForm({
     defaultValues: {
       title: '',
       body: '',
       answer: CODE_SNIPPETS['javascript'],
       remarks: '',
       language: `javascript`
-    }
+    }, 
+    mode: 'onChange',
+    reValidateMode: 'onChange'
   });
   
   useEffect(() => {
@@ -29,6 +33,11 @@ const CardForm = ({useInWindow, windowWidth, setFilteredCards, filteredCards, sh
     register('language');
     register('title')
   }, [register]);
+
+  // 初期レンダリング時にバリデーションを実行
+  useEffect(() => {
+    trigger(); // 全てのフィールドを検証
+  }, [trigger]);
   
   useEffect(() => {
     setupCSRFToken();
@@ -103,7 +112,7 @@ const CardForm = ({useInWindow, windowWidth, setFilteredCards, filteredCards, sh
     : "col-start-1 col-end-2";
       
   return (
-    <div className="card shadow-xl min-w-0 m-[30px] bg-gray-800">
+    <div className="card shadow-xl min-w-0 m-[30px] h-[800px] bg-gray-800">
       <div className="card-body">
         <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col">
@@ -112,24 +121,23 @@ const CardForm = ({useInWindow, windowWidth, setFilteredCards, filteredCards, sh
                 type="text"
                 placeholder='タイトル'
                 id="title"
-                {...register("title")}
+                {...register("title",{ required: "タイトルを入力してください" })}
                 className='bg-gray-700 text-green-100 text-2xl font-courier px-6 py-2 w-full sm:w-1/2 focus:outline-none focus:border-2 focus:border-blue-800 border border-blue-900 mb-4 sm:mb-0'
-              />
-              <div >
-              <button
-                type="submit"
-                className={topButtonClasses}>
-                {buttonText}
-              </button>
+                />
+              <div>
+                {Object.entries(errors).map(([field, error]) => (
+                  <div className="text-red-400" key={field}>{error.message}</div>
+                ))}
               </div>
             </div>
               <div className={containerClasses}>
                 <div className={questionClasses}>
-                  <QuestionCard
+                  {/* <QuestionCard
                     editorRef={questionEditorRef}
                     defaultValue=""
                     onBlur={handleQuestionBlur}
-                  />
+                  /> */}
+                  <MarkdownEditor2 register={register} watch={watch} setValue={setValue}/>
                 </div>
                 <div className={answerClasses}>
                   <Controller
@@ -149,9 +157,17 @@ const CardForm = ({useInWindow, windowWidth, setFilteredCards, filteredCards, sh
                 </div>
               </div>
             </div>
-            <div className="pt-6 flex justify-center">
-              <button type="submit" className={bottomButtonClasses}>{buttonText}</button>
-            </div>
+            {Object.keys(errors).length === 0
+            ? (
+              <div className="pt-6 flex justify-center">
+                <button type="submit" className={bottomButtonClasses}>{buttonText}</button>
+              </div>
+            )
+            : (
+              <div className="pt-6 flex justify-center">
+                <div className={"btn disabled text-gray-400 bg-gray-800 border border-gray-600 hover:bg-gray-800 hover:border-gray-600 hover:text-transparent font-courier w-full"}>{buttonText}</div>
+              </div>
+            )}
         </form>
       </div>
     </div>

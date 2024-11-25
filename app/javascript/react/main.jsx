@@ -18,6 +18,7 @@ import TextBox from "./components/TextBox";
 import { TopPage } from "./components/userGuide/TopPage";
 import App from "./components/window/App";
 import Test from "./Test";
+import { MarkdownEditor2 } from "./components/editor/MarkdownEditor2";
 
 document.addEventListener("DOMContentLoaded", () => {
   const monacoModalRoot   = document.getElementById("monacoModal");
@@ -70,5 +71,5 @@ document.addEventListener("DOMContentLoaded", () => {
   TopPageRoot      && createRoot(TopPageRoot)       .render(<TopPage />)
   
   AppRoot && createRoot(AppRoot).render(<App />)  
-  TestRoot && createRoot(TestRoot).render(<Test />)
+  TestRoot && createRoot(TestRoot).render(<MarkdownEditor2 />)
 })
