@@ -8,6 +8,7 @@ import { CODE_SNIPPETS } from '../runCodeEditorDaisyUI/constants';
 import { setupCSRFToken } from './setupCSRFToken';
 import { MarkdownEditor2 } from '../editor/MarkdownEditor2';
 import { ErrorMessage } from '@hookform/error-message';
+import { ErrorMessages } from './errorMessages';
 
 const CardForm = ({useInWindow, windowWidth, setFilteredCards, filteredCards, showToast}) => {
   // -----
@@ -33,6 +34,8 @@ const CardForm = ({useInWindow, windowWidth, setFilteredCards, filteredCards, sh
     register('language');
     register('title')
   }, [register]);
+
+  const { formatErrors } = ErrorMessages()
 
   // 初期レンダリング時にバリデーションを実行
   useEffect(() => {
@@ -112,8 +115,8 @@ const CardForm = ({useInWindow, windowWidth, setFilteredCards, filteredCards, sh
     : "col-start-1 col-end-2";
       
   return (
-    <div className="card shadow-xl min-w-0 m-[30px] h-[800px] bg-gray-800">
-      <div className="card-body">
+    <div className="rounded-md p-7 shadow-xl min-w-0 m-[30px] h-[800px] bg-gray-800">
+      <div className="">
         <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col">
             <div className="pb-5 flex flex-col sm:flex-row sm:items-center sm:justify-between">
@@ -121,29 +124,33 @@ const CardForm = ({useInWindow, windowWidth, setFilteredCards, filteredCards, sh
                 type="text"
                 placeholder='タイトル'
                 id="title"
-                {...register("title",{ required: "タイトルを入力してください" })}
+                {...register("title",{ required: "タイトルをが未入力です" })}
                 className='bg-gray-700 text-green-100 text-2xl font-courier px-6 py-2 w-full sm:w-1/2 focus:outline-none focus:border-2 focus:border-blue-800 border border-blue-900 mb-4 sm:mb-0'
                 />
               <div>
-                {Object.entries(errors).map(([field, error]) => (
-                  <div className="text-red-400" key={field}>{error.message}</div>
-                ))}
+                {formatErrors(errors) && (
+                  <div className="text-red-400">{formatErrors(errors)}</div>
+                )}
               </div>
             </div>
               <div className={containerClasses}>
                 <div className={questionClasses}>
-                  {/* <QuestionCard
-                    editorRef={questionEditorRef}
-                    defaultValue=""
-                    onBlur={handleQuestionBlur}
-                  /> */}
                   <MarkdownEditor2 register={register} watch={watch} setValue={setValue}/>
                 </div>
                 <div className={answerClasses}>
                   <Controller
                     name='answer'
                     control={control}
-                    render={({ field }) => (
+                    rules={{
+                      required: "解答コードが未入力です",
+                      validate: value => {
+                        if (!value || value.trim() === '') {
+                          return "解答コードが未入力です";
+                        }
+                        return true;
+                      }
+                    }}
+                    render={({ field, fieldState: {error} }) => (
                       <Answer
                         value={field.value}
                         onChange={field.onChange}
@@ -151,12 +158,14 @@ const CardForm = ({useInWindow, windowWidth, setFilteredCards, filteredCards, sh
                         onLanguageChange={(lang) => {
                           setValue('language', lang)
                         }}
+                        error={error?.message}
                       />
                     )}
                   />
                 </div>
               </div>
             </div>
+            {/* エラーの有無でボタンの表示を変更 */}
             {Object.keys(errors).length === 0
             ? (
               <div className="pt-6 flex justify-center">

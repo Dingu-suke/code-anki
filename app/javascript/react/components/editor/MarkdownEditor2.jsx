@@ -164,7 +164,7 @@ return (
           className="w-full h-[480px] p-4 rounded font-mono border-2 placeholder-slate-500 border-cyan-950 text-gray-300 bg-slate-900
           focus:border-cyan-950 focus:ring-cyan-950 focus:outline-none "
           placeholder="(マークダウンがサポートされています)"
-          {...register("body", { required: "問題文を入力してください" })}
+          {...register("body", { required: "問題文が未入力です" })}
         />
     ) : (
       <div className="border-2 border-blue-950 rounded p-4 overflow-y-scroll h-[480px] text-gray-400">

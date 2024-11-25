@@ -8,7 +8,7 @@ import Output from '../runCodeEditorDaisyUI/runButton&Output/Output';
 import RunButton from '../runCodeEditorDaisyUI/runButton&Output/RunButton';
 
 
-export const Answer = ({ value, onChange, language, onLanguageChange, selectedCard }) => {  
+export const Answer = ({ value, onChange, language, onLanguageChange, selectedCard, error }) => {  
   const [lang, setLang] = useState(LANGUAGE_LABELS[language || null]);
   
   const onSelect = (newLanguage) => {
@@ -40,6 +40,7 @@ export const Answer = ({ value, onChange, language, onLanguageChange, selectedCa
             language={language}
             onLanguageChange={onLanguageChange}
             editorRef={editorRef}
+            error={error}
           />
           <h2 className="card-title text-fuchsia-400 font-courier mr-8"></h2>
           <Output editorRef={editorRef} language={language} output={output} setOutput={setOutput} isError={isError} setIsError={setIsError} height="172px"/>

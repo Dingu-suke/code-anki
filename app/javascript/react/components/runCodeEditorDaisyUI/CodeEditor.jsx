@@ -1,7 +1,7 @@
 import { Editor } from '@monaco-editor/react';
 import React from 'react';
 
-const RunCodeEditor = ({ value, onChange, language, onLanguageChange, editorRef }) => {
+const RunCodeEditor = ({ value, onChange, language, onLanguageChange, editorRef}) => {
   
   const onMount = (editor) => {
     editorRef.current = editor;
