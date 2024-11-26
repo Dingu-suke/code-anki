@@ -11,7 +11,7 @@ export const Toast = ({ message, type }) => {
   };
   
   return (
-    <div className="toast toast-top toast-end fixed top-4 right-4 z-50 font-bold">
+    <div className="toast toast-top toast-end fixed top-4 right-4 z-[100] font-bold">
       <div className={`alert shadow-lg ${typeStyles[type]} ${baseStyle}`}>
         <span>{message}</span>
       </div>

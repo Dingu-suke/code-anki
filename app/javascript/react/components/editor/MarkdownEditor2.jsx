@@ -78,7 +78,7 @@ const toolbarItems = [
   }
 ];
 
-export const MarkdownEditor2 = React.forwardRef(({ register, watch, setValue }) => {
+export const MarkdownEditor2 = React.forwardRef(({ register, watch, setValue, name, defaultValue }) => {
   // テスト用のマークダウンテキスト
   const [activeTab, setActiveTab] = useState('write');
   const bodyValue = watch("body");  
@@ -86,7 +86,7 @@ export const MarkdownEditor2 = React.forwardRef(({ register, watch, setValue }) 
 const insertText = (before, after = '') => {
   const textarea = document.querySelector('textarea');
   const start = textarea.selectionStart;
-  const end = textarea.selectionEnd;
+  const end = textarea.selectionEnd;6
   const text = textarea.value;
   const selectedText = text.substring(start, end);
   
@@ -120,18 +120,21 @@ const insertText = (before, after = '') => {
 
 return (
   <div className="container mx-auto bg-slate-900 border-2 border-gray-600 rounded-2xl p-4 h-[595px]">
+    <div className="text-cyan-600 pt-6 pl-5 text-xl font-bold pb-3">
+      {name}
+    </div>
     {/* タブ */}
     <div className="flex mb-4 border-b border border-b-slate-500 border-gray-800 overflow-x-scroll">
       <button
         type="button"
-        className={`px-4 py-2 ${activeTab === 'write' ? 'border-b-2 border-blue-500' : ''} text-gray-400`}
+        className={`px-4 py-2 ${activeTab === 'write' ? 'border-b-2 border-blue-500' : ''} text-gray-400 hover:text-cyan-600`}
         onClick={() => setActiveTab('write')}
       >
         Write
       </button>
       <button
         type="button"
-        className={`px-4 py-2 ${activeTab === 'preview' ? 'border-b-2 border-blue-500' : ''} text-gray-400`}
+        className={`px-4 py-2 ${activeTab === 'preview' ? 'border-b-2 border-blue-500' : ''} text-gray-400 hover:text-cyan-600`}
         onClick={() => setActiveTab('preview')}
       >
         Preview
@@ -145,7 +148,7 @@ return (
                 key={index}
                 className="p-2 hover:bg-gray-700 rounded text-gray-200 hover:text-gray-200"
                 onClick={() => insertText(item.before, item.after)}
-                tyoe="button"
+                type="button"
                 title={item.title}
               >
                 {item.svg}
@@ -161,13 +164,13 @@ return (
           name={name}
           value={bodyValue}
           onChange={(e) => setValue(e.target.value)}
-          className="w-full h-[480px] p-4 rounded font-mono border-2 placeholder-slate-500 border-cyan-950 text-gray-300 bg-slate-900
-          focus:border-cyan-950 focus:ring-cyan-950 focus:outline-none "
+          className="w-full h-[420px] p-4 rounded font-mono border-2 placeholder-slate-500 border-cyan-950 text-gray-300 bg-slate-900
+          focus:border-cyan-950 focus:ring-cyan-950 focus:outline-none resize-none"
           placeholder="(マークダウンがサポートされています)"
           {...register("body", { required: "問題文が未入力です" })}
         />
     ) : (
-      <div className="border-2 border-blue-950 rounded p-4 overflow-y-scroll h-[480px] text-gray-400">
+      <div className="border-2 border-blue-950 rounded p-4 overflow-y-scroll h-[420px] text-gray-400">
         <ReactMarkdown 
           className="markdown-body prose p-4 max-w-none text-gray-400"
           remarkPlugins={[remarkGfm]}

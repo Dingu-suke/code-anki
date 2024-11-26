@@ -118,7 +118,7 @@ const CardForm = ({useInWindow, windowWidth, setFilteredCards, filteredCards, sh
     <div className="rounded-md p-7 shadow-xl min-w-0 m-[30px] h-[800px] bg-gray-800">
       <div className="">
         <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-col">
+          <div className="flex flex-col">
             <div className="pb-5 flex flex-col sm:flex-row sm:items-center sm:justify-between">
               <input
                 type="text"
@@ -135,7 +135,9 @@ const CardForm = ({useInWindow, windowWidth, setFilteredCards, filteredCards, sh
             </div>
               <div className={containerClasses}>
                 <div className={questionClasses}>
-                  <MarkdownEditor2 register={register} watch={watch} setValue={setValue}/>
+                  <div className="">
+                    <MarkdownEditor2 register={register} watch={watch} setValue={setValue} name={'問題文'}/>
+                  </div>
                 </div>
                 <div className={answerClasses}>
                   <Controller

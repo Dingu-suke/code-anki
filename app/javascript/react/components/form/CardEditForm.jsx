@@ -6,20 +6,23 @@ import QuestionCard from '../card/QuiestionCard';
 import { setupCSRFToken } from './setupCSRFToken';
 import { FaTrashCan } from "react-icons/fa6";
 import { Toast, useToast } from '../toast/Toust';
+import { MarkdownEditor2 } from '../editor/MarkdownEditor2';
+import { ErrorMessages } from './errorMessages';
 
 export const CardEditForm = ({useInWindow, selectedCard, setSelectedCard, onUpdateSuccess, windowWidth, setIsEditWindowOpen, setCards, showToast}) => {
   // -----
   const questionEditorRef = useRef(null);
   const remarksEditorRef = useRef(null);  
   
-  const { register, handleSubmit, control, watch, setValue, formState: { errors } } = useForm({
+  const { register, handleSubmit, control, watch, setValue, formState: { errors }, trigger } = useForm({
     defaultValues: {
       title: selectedCard?.title,
       body: selectedCard?.body,
       answer: selectedCard?.answer,
       remarks: selectedCard?.remarks,
       language: selectedCard?.language
-    }
+    },mode: 'onChange',
+    reValidateMode: 'onChange'
   });
 
   useEffect(() => {
@@ -39,6 +42,8 @@ export const CardEditForm = ({useInWindow, selectedCard, setSelectedCard, onUpda
     register('language');
     register('title')
   }, [register]);
+
+  const { formatErrors } = ErrorMessages()
   
   useEffect(() => {
     setupCSRFToken();
@@ -130,7 +135,7 @@ export const CardEditForm = ({useInWindow, selectedCard, setSelectedCard, onUpda
     : "btn text-sky-400 bg-cyan-950 hover:text-sky-300 hover:bg-blue-950 border border-sky-800 hover:border-cyan-500 font-courier xl:w-auto hidden xl:inline-block w-min-96";
 
   const bottomButtonClasses = useInWindow
-    ? "btn text-sky-400 bg-cyan-950 hover:text-sky-300 hover:bg-blue-950 border border-sky-800 hover:border-cyan-500 font-courier w-min-96"
+    ? "btn text-sky-400 bg-cyan-950 hover:text-sky-300 hover:bg-blue-950 border border-sky-800 hover:border-cyan-500 font-courier w-full"
     : "btn text-sky-400 bg-cyan-950 hover:text-sky-300 hover:bg-blue-950 border border-sky-800 hover:border-cyan-500 font-courier w-1/2 xl:hidden";
 
     const containerClasses = useInWindow
@@ -154,21 +159,18 @@ export const CardEditForm = ({useInWindow, selectedCard, setSelectedCard, onUpda
       <div className="card-body">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col">
-            <div className="pb-5 grid grid-cols-12">
+          <div className="pb-5 flex flex-col sm:flex-row sm:items-center sm:justify-between">
               <input
                 type="text"
                 placeholder='タイトル'
                 id="title"
-                {...register("title")}
-                className='col-start-1 col-span-6 bg-gray-700 text-green-100 text-2xl font-courier px-6 py-2 focus:outline-none focus:border-2 focus:border-blue-800 border border-blue-900 mb-4 sm:mb-0'
-              />
-              <button type="button" className="col-start-11 col-span-1 font-bold text-lg min-w-12 max-w-12 p-3 rounded-md text-gray-400 bg-cyan-950 hover:text-red-500 hover:bg-blue-950 border border-red-800 hover:border-red-500 font-courier xl:w-auto xl:inline-block cursor-default px-1" 
-                    onClick={() => deleteCard(selectedCard.id)}>
-              <div className="flex items-center justify-center">
-                <FaTrashCan />
-              </div>
-            </button>
+                {...register("title",{ required: "タイトルをが未入力です" })}
+                className='bg-gray-700 text-green-100 text-2xl font-courier px-6 py-2 w-full sm:w-1/2 focus:outline-none focus:border-2 focus:border-blue-800 border border-blue-900 mb-4 sm:mb-0'
+                />
               <div>
+                {formatErrors(errors) && (
+                  <div className="text-red-400">{formatErrors(errors)}</div>
+                )}            
                 <button
                   type="submit"
                   className={topButtonClasses}>
@@ -178,20 +180,30 @@ export const CardEditForm = ({useInWindow, selectedCard, setSelectedCard, onUpda
             </div>
             <div className={containerClasses}>
               <div className={questionClasses}>
-                <QuestionCard
+                {/* <QuestionCard
                   editorRef={questionEditorRef}
                   defaultValue={selectedCard?.body}
                   onBlur={handleQuestionBlur}
                   remarksEditorRef={remarksEditorRef}
                   remarksDefaultValue={selectedCard?.remarks}
                   remarksOnBlur={handleRemarksBlur}
-                />
+                /> */}
+                <MarkdownEditor2 defaultValue={selectedCard?.body} register={register} watch={watch} setValue={setValue} name={'問題文'}/>
               </div>
               <div className={answerClasses}>
-                <Controller
-                  name='answer'
-                  control={control}
-                  render={({ field }) => (
+              <Controller
+                    name='answer'
+                    control={control}
+                    rules={{
+                      required: "解答コードが未入力です",
+                      validate: value => {
+                        if (!value || value.trim() === '') {
+                          return "解答コードが未入力です";
+                        }
+                        return true;
+                      }
+                    }}
+                    render={({ field, fieldState: {error} }) => (
                     <Answer
                       value={field.value}
                       onChange={field.onChange}
@@ -200,14 +212,33 @@ export const CardEditForm = ({useInWindow, selectedCard, setSelectedCard, onUpda
                       onLanguageChange={(lang) => {
                         setValue('language', lang)
                       }}
+                      error={error?.message}
                     />
                   )}
                 />
               </div>
             </div>
           </div>
-          <div className="pt-6 flex justify-center">
-            <button type="submit" className={bottomButtonClasses}>{buttonText}</button>
+          <div className="grid grid-cols-12 pt-6">
+            <div className="col-span-8">
+              {Object.keys(errors).length === 0
+                ? (
+                  <div className="flex justify-center">
+                    <button type="submit" className={bottomButtonClasses}>{buttonText}</button>
+                  </div>
+                )
+                : (
+                  <div className="flex justify-center">
+                    <div className={"btn disabled text-gray-400 bg-gray-800 border border-gray-600 hover:bg-gray-800 hover:border-gray-600 hover:text-transparent font-courier w-full"}>{buttonText}</div>
+                  </div>
+                )}
+            </div>
+              <button type="button" className="col-start-11 col-span-1 font-bold text-lg min-w-12 max-w-12 p-3 rounded-md text-gray-400 bg-cyan-950 hover:text-red-500 hover:bg-blue-950 border border-red-800 hover:border-red-500 font-courier xl:w-auto xl:inline-block cursor-default px-1" 
+                      onClick={() => deleteCard(selectedCard.id)}>
+                <div className="col-start-9 col-span-3 flex items-center justify-center w-full">
+                  <FaTrashCan />
+                </div>
+              </button>
           </div>
         </form>
       </div>

@@ -25,7 +25,7 @@ export const Answer = ({ value, onChange, language, onLanguageChange, selectedCa
 
   return(
     <>
-      <div className="card shadow-xl bg-purple-950 card-bordered border-fuchsia-400">
+      <div className="card shadow-xl bg-gray-900 card-bordered border-fuchsia-800">
         <div className="card-body">
           <div className="flex flex-col sm:flex-row">
             <h2 className="card-title text-fuchsia-400 font-courier mr-8">解答コード</h2>
@@ -34,14 +34,16 @@ export const Answer = ({ value, onChange, language, onLanguageChange, selectedCa
               <RunButton runCode={runCode} isLoading={isLoading} />
             </div>
           </div>
-          <RunCodeEditor
-            value={value}
-            onChange={onChange}
-            language={language}
-            onLanguageChange={onLanguageChange}
-            editorRef={editorRef}
-            error={error}
-          />
+          <div className="border border-gray-700">
+            <RunCodeEditor
+              value={value}
+              onChange={onChange}
+              language={language}
+              onLanguageChange={onLanguageChange}
+              editorRef={editorRef}
+              error={error}
+            />
+          </div>
           <h2 className="card-title text-fuchsia-400 font-courier mr-8"></h2>
           <Output editorRef={editorRef} language={language} output={output} setOutput={setOutput} isError={isError} setIsError={setIsError} height="172px"/>
         </div>

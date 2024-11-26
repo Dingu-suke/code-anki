@@ -97,7 +97,9 @@ export const CardList = () => {
 
   return (
     <div ref={containerRef}>
-      {toast.show && <Toast message={toast.message} type={toast.type} />}
+      <div className="z-[1000]">
+        {toast.show && <Toast message={toast.message} type={toast.type} />}
+      </div>
       <div className="container p-4">
         <div className="p-5 border border-cyan-900 rounded max-w-[660px]">
         <div className="grid grid-cols-12">
