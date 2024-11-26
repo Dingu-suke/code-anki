@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import 'github-markdown-css/github-markdown.css'
@@ -81,32 +81,49 @@ const toolbarItems = [
 export const MarkdownEditor2 = React.forwardRef(({ register, watch, setValue, name, defaultValue }) => {
   // テスト用のマークダウンテキスト
   const [activeTab, setActiveTab] = useState('write');
-  const bodyValue = watch("body");  
+  const textareaRef = useRef(null);
+  const bodyValue = watch("body");
 
-const insertText = (before, after = '') => {
-  const textarea = document.querySelector('textarea');
-  const start = textarea.selectionStart;
-  const end = textarea.selectionEnd;6
-  const text = textarea.value;
-  const selectedText = text.substring(start, end);
-  
-  setValue(
-    text.substring(0, start) +
-    before +
-    selectedText +
-    after +
-    text.substring(end)
-  );
-  
-  // カーソル位置を選択テキストの後ろに移動
-  setTimeout(() => {
-    textarea.focus();
-    textarea.setSelectionRange(
-      start + before.length + selectedText.length + after.length,
-      start + before.length + selectedText.length + after.length
+  // useForm の ref を分ける (競合回避)
+  const { ref: registerRef, ...registerRest } = register("body", {
+    required: "問題文が未入力です"
+  });
+
+  // 両方の ref を設定する関数
+  const setRefs = (element) => {
+    textareaRef.current = element;
+    registerRef(element);
+    // DOMから直接受け取ったものが仮引数elementに入る
+  };
+
+  const insertText = (before, after = '') => {
+    const textarea = textareaRef.current;
+    if (!textarea) {
+      return;
+    }
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = bodyValue || '';
+    const selectedText = text.substring(start, end);
+    
+    setValue("body", 
+      text.substring(0, start) +
+      before +
+      selectedText +
+      after +
+      text.substring(end),
+      { shouldValidate: true }
     );
-  }, 0);
-};
+
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(
+        start + before.length + selectedText.length + after.length,
+        start + before.length + selectedText.length + after.length
+      );
+    }, 0);
+  };
 
   const handleChange = (e) => {
     const newValue = e.target.value;
@@ -119,7 +136,7 @@ const insertText = (before, after = '') => {
   };
 
 return (
-  <div className="container mx-auto bg-slate-900 border-2 border-gray-600 rounded-2xl p-4 h-[595px]">
+  <div className="container mx-auto bg-slate-900 border-2 border-gray-600 rounded-2xl px-4 h-[595px]">
     <div className="text-cyan-600 pt-6 pl-5 text-xl font-bold pb-3">
       {name}
     </div>
@@ -142,19 +159,19 @@ return (
       <div className="flex-grow" />
       {activeTab === 'write' &&
         (
-            <div className="flex gap-1 bg-gray-800 justify-end">
-            {toolbarItems.map((item, index) => (
-              <button
-                key={index}
-                className="p-2 hover:bg-gray-700 rounded text-gray-200 hover:text-gray-200"
-                onClick={() => insertText(item.before, item.after)}
-                type="button"
-                title={item.title}
-              >
-                {item.svg}
-              </button>
-              ))}
-            </div>
+          <div className="flex gap-1 bg-gray-800 justify-end">
+          {toolbarItems.map((item, index) => (
+            <button
+              key={index}
+              className="p-2 hover:bg-gray-700 rounded text-gray-200 hover:text-gray-200"
+              onClick={() => insertText(item.before, item.after)}
+              type="button"
+              title={item.title}
+            >
+              {item.svg}
+            </button>
+            ))}
+          </div>
         )}
     </div>
 
@@ -163,14 +180,15 @@ return (
         <textarea
           name={name}
           value={bodyValue}
-          onChange={(e) => setValue(e.target.value)}
-          className="w-full h-[420px] p-4 rounded font-mono border-2 placeholder-slate-500 border-cyan-950 text-gray-300 bg-slate-900
+          onChange={(e) => setValue("body", e.target.value)}  // フィールド名を指定
+          ref={setRefs}
+          className="w-full h-[428px] p-4 rounded font-mono border-2 placeholder-slate-500 border-cyan-950 text-gray-300 bg-slate-900
           focus:border-cyan-950 focus:ring-cyan-950 focus:outline-none resize-none"
           placeholder="(マークダウンがサポートされています)"
-          {...register("body", { required: "問題文が未入力です" })}
+          {...registerRest} 
         />
     ) : (
-      <div className="border-2 border-blue-950 rounded p-4 overflow-y-scroll h-[420px] text-gray-400">
+      <div className="border-2 border-blue-950 rounded p-4 overflow-y-scroll h-[428px] text-gray-400">
         <ReactMarkdown 
           className="markdown-body prose p-4 max-w-none text-gray-400"
           remarkPlugins={[remarkGfm]}

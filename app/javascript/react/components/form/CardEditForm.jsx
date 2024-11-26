@@ -180,14 +180,6 @@ export const CardEditForm = ({useInWindow, selectedCard, setSelectedCard, onUpda
             </div>
             <div className={containerClasses}>
               <div className={questionClasses}>
-                {/* <QuestionCard
-                  editorRef={questionEditorRef}
-                  defaultValue={selectedCard?.body}
-                  onBlur={handleQuestionBlur}
-                  remarksEditorRef={remarksEditorRef}
-                  remarksDefaultValue={selectedCard?.remarks}
-                  remarksOnBlur={handleRemarksBlur}
-                /> */}
                 <MarkdownEditor2 defaultValue={selectedCard?.body} register={register} watch={watch} setValue={setValue} name={'問題文'}/>
               </div>
               <div className={answerClasses}>

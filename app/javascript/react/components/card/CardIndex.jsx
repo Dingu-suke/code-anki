@@ -83,9 +83,15 @@ export const CardList = () => {
   };
 
   const openNewDrawer = () => {
-    if (selectedDrill) {
-      setIsDrawerOpen(true);
+    if (selectedCard) {
+      setIsEditCardDrawerOpen(true);
+    } else {
+      setIsNewCardDrawerOpen(true);
     }
+  }
+
+  const openCardEditDrawer = () => {
+    isEditCardDrawerOpen
   }
 
   const handleCloseDrawer = () => {
@@ -177,9 +183,11 @@ export const CardList = () => {
                   onClose={handleCloseDrawer}
                   onOpen={openNewDrawer}
                   containerRef={containerRef}
-                  displayName={selectedCard?.name}
+                  // displayName={selectedCard?.name}
+                  displayName={selectedCard ? `カード編集 / 削除` : 'カード新規作成'}
+                  className="z-[60]"
                   >
-                    {isDrawerOpen === isEditCardDrawerOpen ? (
+                    {isDrawerOpen == isEditCardDrawerOpen ? (
                       <CardEditForm
                         useInWindow={true}
                         selectedCard={selectedCard}

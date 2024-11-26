@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
-export const Drawer = ({ isOpen, onClose, onOpen, containerRef, dispalayName, children }) => {
+export const Drawer = ({ isOpen, onClose, onOpen, containerRef, displayName, children }) => {
   const drawerRef = useRef(null);
   const [drawerWidth, setDrawerWidth] = useState('800px');
   const previewWidth = '64px';  // ドロワープレビュー時の幅
@@ -9,6 +9,7 @@ export const Drawer = ({ isOpen, onClose, onOpen, containerRef, dispalayName, ch
   useEffect(() => {
     const updateDrawerWidth = () => {
       const element = containerRef?.current;
+      console.log("dispalyName", displayName)
 
       try {
         const containerWidth = element.offsetWidth;
@@ -93,7 +94,7 @@ export const Drawer = ({ isOpen, onClose, onOpen, containerRef, dispalayName, ch
                             border-b border-cyan-700 bg-slate-900 
                             flex items-center justify-between">
               <h2 className="text-xl font-bold text-cyan-400 truncate">
-                {dispalayName}
+                {displayName}
               </h2>
               <button
                 onClick={onClose}

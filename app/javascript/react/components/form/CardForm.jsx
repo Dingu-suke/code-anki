@@ -11,9 +11,6 @@ import { ErrorMessage } from '@hookform/error-message';
 import { ErrorMessages } from './errorMessages';
 
 const CardForm = ({useInWindow, windowWidth, setFilteredCards, filteredCards, showToast}) => {
-  // -----
-  const questionEditorRef = useRef(null);
-  const remarksEditorRef = useRef(null);
   
   const { register, handleSubmit, control, watch, setValue, formState: { errors }, trigger } = useForm({
     defaultValues: {

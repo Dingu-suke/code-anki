@@ -10,7 +10,7 @@ const RunCodeEditor = ({ value, onChange, language, onLanguageChange, editorRef}
   return (
     <>
       <Editor
-        height="30vh"
+        height="34vh"
         theme="vs-dark"
         language={language}
         value={value}
