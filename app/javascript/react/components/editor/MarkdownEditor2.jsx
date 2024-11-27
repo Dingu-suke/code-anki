@@ -146,6 +146,34 @@ const markdownStyles = `
   .markdown-body a:hover {
     text-decoration: underline;
   }
+
+    /* タスクリストのスタイリング */
+  .markdown-body ul li.task-list-item {
+    list-style-type: none;  /* リストの・を非表示 */
+    padding-left: 0;        /* 左のパディングをリセット */
+    margin-left: 0;         /* 左のマージンをリセット */
+  }
+    
+    /* チェックボックスのスタイリング */
+  .markdown-body ul li.task-list-item input[type="checkbox"] {
+    margin-right: 0.5em;    /* チェックボックスの右側の間隔 */
+    appearance: none;       /* デフォルトのスタイルを削除 */
+    width: 1rem;           /* 幅 */
+    height: 1rem;          /* 高さ */
+    border: 1px solid #6B7280;  /* ボーダー色 */
+    border-radius: 0.25rem;     /* 角を丸く */
+    background-color: #374151;  /* 背景色（明るいグレー） */
+  }
+
+  /* チェック時のスタイル */
+  .markdown-body ul li.task-list-item input[type="checkbox"]:checked {
+    background-color: #374151;  /* チェック時の背景色（暗いグレー） */
+    border-color: #374151;      /* チェック時のボーダー色 */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="white"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>');
+    background-size: 75%;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
 `;
 
 export const MarkdownEditor2 = React.forwardRef(({ register, watch, setValue, name, defaultValue }) => {
@@ -284,7 +312,6 @@ return (
                 // テキストとURLが異なる場合はMarkdown記法とみなす
                 const linkText = Array.isArray(children) ? children.join('') : children;
                 const isMarkdownLink = href !== linkText;
-            
                 return (
                   <a
                     href={href}
@@ -296,6 +323,17 @@ return (
                     {children}
                   </a>
                 );
+              },
+              input: ({node, type, checked, ...props}) => {
+                if (type === 'checkbox') {
+                  return (
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      {...props}
+                    />
+                  );
+                }
               },
               // コードのスタイリング
               code({ node, inline, className, children, ...props }) {
