@@ -78,6 +78,76 @@ const toolbarItems = [
   }
 ];
 
+const markdownStyles = `
+  /* リストマーカーの色 */
+  .markdown-body ul li::marker {
+    color: rgb(209 213 219); /* text-gray-300 相当 */
+  }
+  
+  .markdown-body ol li::marker {
+    color: rgb(209 213 219);
+  }
+
+  /* テーブルのスタイリング */
+  .markdown-body table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1rem 0;
+  }
+
+  .markdown-body table th,
+  .markdown-body table td {
+    border: 1px solid rgb(75 85 99); /* gray-600 相当 */
+    padding: 0.5rem;
+  }
+
+  .markdown-body table th {
+    background-color: rgb(31 41 55); /* gray-800 相当 */
+    color: rgb(209 213 219);
+    font-weight: 600;
+  }
+
+  .markdown-body table td {
+    color: rgb(209 213 219);
+  }
+
+  /* ネストされたリストのスタイリング */
+  .markdown-body ul ul,
+  .markdown-body ol ol,
+  .markdown-body ul ol,
+  .markdown-body ol ul {
+    margin-left: 1.5rem;
+  }
+
+  /* チェックボックスのスタイリング */
+  .markdown-body input[type="checkbox"] {
+    margin-right: 0.5rem;
+  }
+
+  /* 水平線のスタイリング */
+  .markdown-body hr {
+    border-color: rgb(75 85 99);
+    margin: 1rem 0;
+  }
+
+  /* ブロッククォートのスタイリング */
+  .markdown-body blockquote {
+    border-left: 4px solid rgb(75 85 99);
+    padding-left: 1rem;
+    margin: 1rem 0;
+    color: rgb(209 213 219);
+  }
+
+  /* ベーススタイル（両方のリンクタイプに適用） */
+  .markdown-body a {
+    text-decoration: none;
+  }
+
+  .markdown-body a:hover {
+    text-decoration: underline;
+  }
+`;
+
 export const MarkdownEditor2 = React.forwardRef(({ register, watch, setValue, name, defaultValue }) => {
   // テスト用のマークダウンテキスト
   const [activeTab, setActiveTab] = useState('write');
@@ -137,21 +207,21 @@ export const MarkdownEditor2 = React.forwardRef(({ register, watch, setValue, na
 
 return (
   <div className="container mx-auto bg-slate-900 border-2 border-gray-600 rounded-2xl px-4 h-[595px]">
-    <div className="text-cyan-600 pt-6 pl-5 text-xl font-bold pb-3">
+    <div className="text-cyan-500 pt-6 pl-5 text-xl font-bold pb-3">
       {name}
     </div>
     {/* タブ */}
     <div className="flex mb-4 border-b border border-b-slate-500 border-gray-800 overflow-x-scroll">
       <button
         type="button"
-        className={`px-4 py-2 ${activeTab === 'write' ? 'border-b-2 border-blue-500' : ''} text-gray-400 hover:text-cyan-600`}
+        className={`px-4 py-2 ${activeTab === 'write' ? 'border-b-2 border-sky-400' : ''} text-gray-400 hover:text-cyan-400`}
         onClick={() => setActiveTab('write')}
       >
         Write
       </button>
       <button
         type="button"
-        className={`px-4 py-2 ${activeTab === 'preview' ? 'border-b-2 border-blue-500' : ''} text-gray-400 hover:text-cyan-600`}
+        className={`px-4 py-2 ${activeTab === 'preview' ? 'border-b-2 border-sky-400' : ''} text-gray-400 hover:text-cyan-400`}
         onClick={() => setActiveTab('preview')}
       >
         Preview
@@ -188,70 +258,92 @@ return (
           {...registerRest} 
         />
     ) : (
-      <div className="border-2 border-blue-950 rounded p-4 overflow-y-scroll h-[428px] text-gray-400">
-        <ReactMarkdown 
-          className="markdown-body prose p-4 max-w-none text-gray-400"
-          remarkPlugins={[remarkGfm]}
-          components={{
-            // 見出しのスタイリング
-            h1: ({node, ...props}) => <h1 className="text-3xl font-bold my-4 text-gray-300" {...props} />,
-            h2: ({node, ...props}) => <h2 className="text-2xl font-bold my-3 text-gray-300" {...props} />,
-            h3: ({node, ...props}) => <h3 className="text-xl font-bold my-2 text-gray-300" {...props} />,
-            // 段落の改行設定
-            p: ({node, ...props}) => <p className="my-2 whitespace-pre-line text-gray-300" {...props} />,
-            strong: ({node, ...props}) => (
-              <strong className="font-bold text-gray-300" {...props} />
-            ),
-            // イタリックのスタイリング
-            em: ({node, ...props}) => (
-              <em className="italic text-gray-300" {...props} />
-            ),
-            // コードのスタイリング
-            code({node, inline, className, children, ...props}) {
-              // 言語の判定
-              const match = /language-(\w+)/.exec(className || '');
-              const language = match ? match[1] : '';
-              
-              return !inline ? (
-                <div className="relative group">
-                  {language && (
-                    <div className="500 py-1 px-2 flex-grow">
-                      <span className="text-sm font-mono border py-2 px-3 border-slate-700 border-bg-500 bg-slate-900 text-gray-300 font-bold rounded-md">
-                        {`${language}`}
-                      </span>
-                    </div>
-                  )}
-                  <SyntaxHighlighter
-                    style={oneDark} // (もしくは oneLight)
-                    language={language}
-                    PreTag="div"
-                    className="rounded-md bg-black"
-                    showLineNumbers={true} // 行番号を表示
-                    wrapLines={true}      // 長い行を折り返す                
-                    customStyle={{
-                      background: '#000000', // コードブロックの背景の色
-                    }}
-                    lineProps={{
-                      style: {
-                        background: '#000000',
-                        borderLeft: '4px solid transparent'
-                      }}}
+        <><style>{markdownStyles}</style>
+        <div className="border-2 border-blue-950 rounded p-4 overflow-y-scroll h-[428px] text-gray-400">
+          <ReactMarkdown
+            className="markdown-body prose p-2 max-w-none text-gray-400"
+            remarkPlugins={[remarkGfm]}
+            components={{
+              // 見出しのスタイリング
+              h1: ({ node, ...props }) => <h1 className="text-3xl font-bold my-4 text-gray-300" {...props} />,
+              h2: ({ node, ...props }) => <h2 className="text-2xl font-bold my-3 text-gray-300" {...props} />,
+              h3: ({ node, ...props }) => <h3 className="text-xl font-bold my-2 text-gray-300" {...props} />,
+              // 段落の改行設定
+              p: ({ node, ...props }) => <p className="my-2 whitespace-pre-line text-gray-300" {...props} />,
+              strong: ({ node, ...props }) => (
+                <strong className="font-bold text-gray-300" {...props} />
+              ),
+              ul: ({ node, ...props }) => <ul className="list-disc text-gray-300" {...props} />,
+              ol: ({ node, ...props }) => <ol className="list-decimal text-gray-300" {...props} />,
+              li: ({ node, ordered, ...props }) => <li className="text-gray-300" {...props} />,
+              // イタリックのスタイリング
+              em: ({ node, ...props }) => (
+                <em className="italic text-gray-300" {...props} />
+              ),
+              a: ({node, href, children, ...props}) => {
+                // テキストとURLが異なる場合はMarkdown記法とみなす
+                const linkText = Array.isArray(children) ? children.join('') : children;
+                const isMarkdownLink = href !== linkText;
+            
+                return (
+                  <a
+                    href={href}
+                    className={`${isMarkdownLink ? 'text-orange-400' : 'text-blue-400'} no-underline hover:underline`}
                     {...props}
+                    target="_blank"           // 新しいタブで開く
+                    rel="noopener noreferrer" // セキュリティ対策
                   >
-                    {String(children).replace(/\n$/, '')}
-                  </SyntaxHighlighter>
-                </div>
-              ) : (
-                <code className="" {...props}>
-                  {children}
-                </code>
-              );
-            }
-          }}
-        >
-          {bodyValue}
-        </ReactMarkdown>
-      </div>
+                    {children}
+                  </a>
+                );
+              },
+              // コードのスタイリング
+              code({ node, inline, className, children, ...props }) {
+                // 言語の判定
+                const match = /language-(\w+)/.exec(className || '')
+                const language = match ? match[1] : ''
+
+                return !inline ? (
+                  <div className="relative group">
+                    {language && (
+                      <div className="500 py-1 px-2 flex-grow">
+                        <span className="text-sm font-mono border py-2 px-3 border-slate-700 border-bg-500 bg-slate-900 text-gray-300 font-bold rounded-md">
+                          {`${language}`}
+                        </span>
+                      </div>
+                    )}
+                    <SyntaxHighlighter
+                      style={oneDark} // (もしくは oneLightを指定)
+                      language={language}
+                      PreTag="div"
+                      className="rounded-md bg-black"
+                      showLineNumbers={true} // 行番号を表示
+                      wrapLines={true} // 長い行を折り返す                
+                      customStyle={{
+                        background: '#000000', // コードブロックの背景の色
+                      }}
+                      lineProps={{
+                        style: {
+                          background: '#000000', // 一行ごとのbgの色とcustomStyleのbgを統一
+                          borderLeft: '4px solid transparent'
+                        }
+                      }}
+                      {...props}
+                    >
+                      {String(children).replace(/\n$/, '')}
+                    </SyntaxHighlighter>
+                  </div>
+                ) : (
+                  <code className="" {...props}>
+                    {children}
+                  </code>
+                )
+              }
+            }}
+          >
+            {bodyValue}
+          </ReactMarkdown>
+        </div></>
     )}
   </div>
   );
