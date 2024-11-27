@@ -1,7 +1,7 @@
 import { Editor } from '@monaco-editor/react';
 import React from 'react';
 
-const RunCodeEditor = ({ value, onChange, language, onLanguageChange, editorRef }) => {
+const RunCodeEditor = ({ value, onChange, language, onLanguageChange, editorRef}) => {
   
   const onMount = (editor) => {
     editorRef.current = editor;
@@ -10,7 +10,7 @@ const RunCodeEditor = ({ value, onChange, language, onLanguageChange, editorRef 
   return (
     <>
       <Editor
-        height="30vh"
+        height="34vh"
         theme="vs-dark"
         language={language}
         value={value}

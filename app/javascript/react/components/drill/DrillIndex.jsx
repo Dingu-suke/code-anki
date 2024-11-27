@@ -83,11 +83,11 @@ export const DrillIndex = () => {
         </div>
         <DrillTable filteredDrills={filteredDrills} selectedDrill={selectedDrill} isDrillLoading={isDrillLoading} handleSelectDrill={handleSelectDrill} />
         <Drawer
-          isOpen={isDrawerOpen} 
+          isOpen={isDrawerOpen}
           onClose={handleCloseDrawer}
           onOpen={openDrawer}
           containerRef={containerRef}
-          drillName={selectedDrill?.name}
+          displayName={selectedDrill?.name}
         >
         <DrillShow selectedDrill={selectedDrill} />
       </Drawer>
