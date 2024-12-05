@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 export const useEditorMethod = (
-  // props をそのままうけとって return するもの
+  // 親からの props を引数としてうけとり、これをそのまま return する (コンテクストで使えるようにする)
   card,
   runUserCode,
   runAnswerCode,
@@ -76,11 +76,25 @@ export const useEditorMethod = (
     if (toggleBlur) {
       toggleBlur(cardId)
     } else {
-      toggleBlur2(!isBlur)
+      toggleBlur(!isBlur)
     }
   }
 
   return {
+    card,
+    runUserCode,
+    runAnswerCode,
+    userIsLoading,
+    answerIsLoading,
+    userEditorRef,
+    answerEditorRef,
+    setCurrentCardId,
+    editorHeight,
+    bluredCards,
+    toggleBlur,
+    toggleBlur2,
+    isBlur,
+    
     userEditorContent,  setUserEditorContent,
     activeTab, setActiveTab,
     
