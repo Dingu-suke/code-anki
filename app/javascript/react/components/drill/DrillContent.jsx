@@ -100,6 +100,7 @@ export const DrillContennt = ({ previewCardList, card, setPreviewCard, moveToNex
                 answerEditorRef={answerEditorRef}
                 setCurrentCardId={setCurrentCardId}
                 editorHeight="25vh"
+                diffEditorHeight="60vh"
                 bluredCards={bluredCards}
                 toggleBlur={toggleBlur}
                 // toggleBlur2={toggleBlur2}

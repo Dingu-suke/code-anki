@@ -166,7 +166,7 @@ export const EditorForAnswer = () => {
 export const DiffEditorContent = () => {
   const {
     card,                                   // LanguageLabel コンポーネント用 props
-    editorHeight, handleDiffEditorDidMount  // Editor コンポーネント用 props
+    diffEditorHeight, handleDiffEditorDidMount  // Editor コンポーネント用 props
   } = useEditor()
 
   return (
@@ -175,7 +175,7 @@ export const DiffEditorContent = () => {
       <LanguageLabel language={card?.language} />
     </div>
     <DiffEditor
-      height={editorHeight || "15vh"}
+      height={diffEditorHeight || "15vh"}
       theme="vs-dark"
       language={card?.language}
       original=""
