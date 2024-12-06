@@ -7,9 +7,9 @@ const Output = (props) => {
 
   useEffect(() => {
     if (isError) {
-      setOutputHeight? setOutputHeight("300px"): ""
+      setOutputHeight? setOutputHeight("600px"): ""
     } else {
-      setOutputHeight? setOutputHeight("130px"): ""
+      setOutputHeight? setOutputHeight("600px"): ""
     }
   }, [isError, output, setOutputHeight])
 
@@ -30,42 +30,42 @@ const Output = (props) => {
   };
 
   return (
-    <div className={`border rounded-md overflow-hidden bg-black ${getBorderColor()} flex flex-col`} style={{ height }}>
+    <div className={`border rounded-md overflow-hidden bg-black ${getBorderColor()} flex flex-col h-full`}>
       <div className={`
-        font-mono text-sm px-2 py-1
+        font-mono text-sm pl-4 py-2
         bg-slate-900 ${getTextColor()}
         focus:outline-none 
       `}>
         {titleText}
       </div>
 
-      <textarea 
-        value={
-          output 
-            ? output.join('\n')
-            : message 
-              ? message 
-              : "Run ▷ to see the output here and check the code."
-        }
-        readOnly
-        className={`
-          font-mono text-sm p-2 
-          bg-black
-          ${isError 
-            ? "text-red-400"
-            : output 
-              ? activeOutput === 'answer'
-                ? "text-purple-400"
-                : "text-cyan-400"
-            : "text-green-400"
+      <div className="h-full">
+        <textarea 
+          value={
+            output 
+              ? output.join('\n')
+              : message 
+                ? message 
+                : "Run ▷ to see the output here and check the code."
           }
-          focus:outline-none
-          border-t ${getBorderColor()}
-          flex-grow
-          resize-none
-          w-full
-        `}
-      />
+          readOnly
+          className={`
+            font-mono text-sm p-2
+            bg-black
+            ${isError 
+              ? "text-red-400"
+              : output 
+                ? activeOutput === 'answer'? "text-purple-400" : "text-cyan-400"
+                : "text-green-400"
+            }
+            focus:outline-none
+            border-t ${getBorderColor()}
+            flex-grow
+            resize-none
+            w-full
+          `}
+        />
+      </div>
     </div>
   );
 };

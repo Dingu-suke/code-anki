@@ -9,8 +9,6 @@ export const Drawer = ({ isOpen, onClose, onOpen, containerRef, displayName, chi
   useEffect(() => {
     const updateDrawerWidth = () => {
       const element = containerRef?.current;
-      console.log("dispalyName", displayName)
-
       try {
         const containerWidth = element.offsetWidth;
         if (typeof containerWidth === 'number') {  // 型チェック
