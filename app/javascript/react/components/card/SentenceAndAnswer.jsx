@@ -1,6 +1,7 @@
 import { Editor } from '@monaco-editor/react';
 import React, { useRef, useState } from 'react';
 import Markdown from 'react-markdown';
+import { activeTabClassOrange, inactiveTabClassOrange, tabClass } from '../../tabStylesAndFunc/styleClass';
 import { LanguageLabel } from '../runCodeEditorDaisyUI/LanguageController';
 
 export const SentenceAndAnswer = ({ card }) => {
@@ -10,10 +11,6 @@ export const SentenceAndAnswer = ({ card }) => {
   const handleTabChange = (tabName) => {
     setActiveTab(tabName);
   };
-
-  const tabClass = "px-4 border-t border-x rounded-t-sm font-bold focus:outline-none relative";
-  const activeTabClass = "bg-slate-950 text-orange-500 border-yellow-800 border-b-0 after:absolute after:bottom-[-1px] after:left-0 after:right-0 after:h-[1px] after:bg-slate-950";
-  const inactiveTabClass = "bg-slate-900 text-yellow-900 border-transparent hover:text-amber-700";
 
   const MarkdownContent = (
     <div className="col-span-4">
@@ -61,7 +58,7 @@ export const SentenceAndAnswer = ({ card }) => {
       <div role="tablist" className="flex border-b border-yellow-800">
         <button
           role="tab"
-          className={`${tabClass} ${activeTab === 'question' ? activeTabClass : inactiveTabClass} cursor-auto h-7 text-sm`}
+          className={`${tabClass} ${activeTab === 'question' ? activeTabClassOrange : inactiveTabClassOrange} cursor-auto h-7 text-sm`}
           onClick={() => handleTabChange('question')}
           aria-selected={activeTab === 'question'}
           aria-controls="question-panel"
@@ -70,7 +67,7 @@ export const SentenceAndAnswer = ({ card }) => {
         </button>
         <button
           role="tab"
-          className={`${tabClass} ${activeTab === 'editor' ? activeTabClass : inactiveTabClass} cursor-auto h-7 text-sm `}
+          className={`${tabClass} ${activeTab === 'editor' ? activeTabClassOrange : inactiveTabClassOrange} cursor-auto h-7 text-sm `}
           onClick={() => handleTabChange('editor')}
           aria-selected={activeTab === 'editor'}
           aria-controls="answer-panel"
