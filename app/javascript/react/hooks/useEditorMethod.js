@@ -48,6 +48,8 @@ export const useEditorMethod = (
     answerEditorRef.current = editor;
   };
 
+ // DiffEditor用の関数とuseEffect
+
   const handleDiffEditorDidMount = (editor) => {
     diffEditorRef.current = editor;
     const originalEditor = editor.getOriginalEditor();
@@ -60,6 +62,13 @@ export const useEditorMethod = (
       originalEditor.setValue(userEditorRef.current.getValue() || "");
     }
   }, [userEditorRef]);
+
+  useEffect(() => {
+    if (userEditorContent) {
+      updateDiffEditor();
+    }
+  }, [userEditorContent, updateDiffEditor]);
+
 
   const handleTabChange = (tabName) => {
     setActiveTab(tabName);

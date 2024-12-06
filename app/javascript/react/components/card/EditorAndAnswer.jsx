@@ -1,11 +1,12 @@
 import { DiffEditor, Editor } from "@monaco-editor/react";
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { LanguageLabel } from '../runCodeEditorDaisyUI/LanguageController';
-import RunButton from '../runCodeEditorDaisyUI/runButton&Output/RunButton';
+import { useEditor } from "../../context/useEditor";
 import { useEditorMethod } from "../../hooks/useEditorMethod";
+import { activeTabClassOrange, inactiveTabClassOrange, tabClass } from "../../tabStylesAndFunc/styleClass";
+import RunButton from "../runCodeEditorDaisyUI/runButton-Output/RunButton";
 
-export const EditorAndAnswer = ({ 
-  className = "", 
+export const EditorAndAnswer = ({   
   card,
   runUserCode,
   runAnswerCode,
@@ -20,10 +21,6 @@ export const EditorAndAnswer = ({
   toggleBlur2,
   isBlur
 }) => {  
-
-  const tabClass = "px-4 border-t border-x rounded-t-sm font-bold focus:outline-none relative";
-  const activeTabClass = "bg-slate-950 text-orange-500 border-yellow-800 border-b-0 after:absolute after:bottom-[-1px] after:left-0 after:right-0 after:h-[1px] after:bg-slate-950";
-  const inactiveTabClass = "bg-slate-900 text-yellow-900 border-transparent hover:text-amber-700";
 
   const {
     userEditorContent,  setUserEditorContent,
@@ -52,16 +49,16 @@ export const EditorAndAnswer = ({
     editorHeight,
     bluredCards,
     toggleBlur,
-    toggleBlur2,
-    isBlur
-  )  
+    // toggleBlur2,
+    // isBlur
+  )
 
   return (
     <div className="w-full">
       <div role="tablist" className="flex border-b border-yellow-800">
         <button
           role="tab"
-          className={`${tabClass} ${activeTab === 'editor' ? activeTabClass : inactiveTabClass} cursor-auto h-7 text-sm`}
+          className={`${tabClass} ${activeTab === 'editor' ? activeTabClassOrange : inactiveTabClassOrange} cursor-auto h-7 text-sm`}
           onClick={() => handleTabChange('editor')}
           aria-selected={activeTab === 'editor'}
           aria-controls="editor-panel"
@@ -70,7 +67,7 @@ export const EditorAndAnswer = ({
         </button>
         <button
           role="tab"
-          className={`${tabClass} ${activeTab === 'diff' ? activeTabClass : inactiveTabClass} cursor-auto h-7 text-sm `}
+          className={`${tabClass} ${activeTab === 'diff' ? activeTabClassOrange : inactiveTabClassOrange} cursor-auto h-7 text-sm `}
           onClick={() => handleTabChange('diff')}
           aria-selected={activeTab === 'diff'}
           aria-controls="diff-panel"
@@ -84,47 +81,25 @@ export const EditorAndAnswer = ({
           id="editor-panel"
           className={`p-6 ${activeTab === 'editor' ? '' : 'hidden'}`}
         >
-          <EditorForUser 
-                          card={card}
-                          runUserCode={runUserCode}
-                          userIsLoading={userIsLoading}
-                          handleUserEditorDidMount={handleUserEditorDidMount}
-                          handleUserEditorChange={handleUserEditorChange}
-
-                          />
-          <EditorAnswer 
-                          card={card}
-                          runAnswerCode={runAnswerCode}
-                          answerIsLoading={answerIsLoading}
-                          pointToggleBlur={pointToggleBlur}
-                          bluredCards={bluredCards}
-                          isBlur={isBlur}
-                          editorHeight={editorHeight}
-                          handleAnswerEditorDidMount={handleAnswerEditorDidMount}
-          />
-
         </div>
         <div
           role="tabpanel"
           id="diff-panel"
           className={`p-6 ${activeTab === 'diff' ? '' : 'hidden'}`}
         >
-          <DiffEditorContent
-                            card={card}
-                            editorHeight={editorHeight}
-                            handleDiffEditorDidMount={handleDiffEditorDidMount}
-          />
         </div>
       </div>
     </div>
   );
 };
 
-export const EditorForUser = ({
-                                card, // LanguageLabel 、Editor コンポーネント用
-                                runUserCode, userIsLoading, // RunButton コンポーネント用
-                                editorHeight, userEditorContent, handleUserEditorDidMount, handleUserEditorChange // Editor コンポーネント用
-}) => {
+export const EditorForUser = () => {
+  const {
+    card,                       // LanguageLabel 、Editor コンポーネント用
+    runUserCode, userIsLoading, // RunButton コンポーネント用
+    editorHeight, userEditorContent, handleUserEditorDidMount, handleUserEditorChange 
+  } = useEditor();
+
   return (
     <div className="border border-cyan-900 bg-slate-950 p-4 rounded-sm">
       <div className="flex pb-2">
@@ -147,23 +122,20 @@ export const EditorForUser = ({
   )
 }
 
-export const EditorAnswer = ({
-                        card,
-                        runAnswerCode,
-                        answerIsLoading,
-                        pointToggleBlur,
-                        bluredCards,
-                        isBlur,
-                        editorHeight,
-                        handleAnswerEditorDidMount
+export const EditorForAnswer = () => {
+  const {
+          card,                                     // LanguageLabel 、Editor コンポーネント用 props
+          runAnswerCode, answerIsLoading,           // RunButton コンポーネント用 props
+          pointToggleBlur, bluredCards, isBlur,
+          editorHeight, handleAnswerEditorDidMount  // Editor コンポーネント用 props
+  } = useEditor()
 
-}) => {
   return (
     <div className="border border-purple-900 bg-slate-950 p-4 rounded-sm">
         <div className="flex flex-wrap pb-2">
           <LanguageLabel language={card?.language} />
           <RunButton runCode={runAnswerCode} isLoading={answerIsLoading} />
-          <button role="button" className="border border-blue-950 bg-black hover:bg-orange-950 min-w-44 flex justify-center items-center font-bold min-h-0 h-8 px-2 rounded-md" 
+          <button role="button" className="border border-blue-950 bg-black hover:bg-orange-950 text-gray-400 hover:text-gray-300 min-w-44 flex justify-center items-center font-bold min-h-0 h-8 px-2 rounded-md" 
                   // onClick={() => {setIsAnserEditorBlur(!isAnserEditorBlur)}}
                   onClick={() => pointToggleBlur(card?.id)}
           >
@@ -172,7 +144,6 @@ export const EditorAnswer = ({
               ? (bluredCards[card?.id] ? "解答例を表示する" : "解答例を隠す")
               : (isBlur ? "解答例を隠す" : "解答例を表示する")}
           </button>
-          {/* bluredCards && とすることで 初回レンダリングのエラーを防いでいるけど、きれいではない気はする */}
         </div>
         <div className={`${bluredCards && bluredCards[card?.id] ? "blur-lg" : ""}`}>
           <Editor
@@ -192,14 +163,15 @@ export const EditorAnswer = ({
   )
 }
 
-export const DiffEditorContent = ({
-                                    card,
-                                    editorHeight,
-                                    handleDiffEditorDidMount
-  }) => {
+export const DiffEditorContent = () => {
+  const {
+    card,                                   // LanguageLabel コンポーネント用 props
+    editorHeight, handleDiffEditorDidMount  // Editor コンポーネント用 props
+  } = useEditor()
+
   return (
   <div className="border border-green-900 bg-slate-950 p-4 rounded-md">
-    <div className="pb-2">
+    <div className="flex pb-2">
       <LanguageLabel language={card?.language} />
     </div>
     <DiffEditor
