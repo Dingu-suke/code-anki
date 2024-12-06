@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Markdown from "react-markdown";
 import { useRunCode } from "../../hooks/useRunCode";
-import Output from "../runCodeEditorDaisyUI/runButton&Output/Output";
 import { EditorAndAnswer } from "../card/EditorAndAnswer";
+import { MarkdownView } from "../editor/MarkdownView";
+import Output from "../runCodeEditorDaisyUI/runButton-Output/Output";
 
 
 export const PreviewCard = ({ previewCardList, card, setPreviewCard, moveToNextCard, moveToPreviousCard}) => {
@@ -30,22 +31,6 @@ export const PreviewCard = ({ previewCardList, card, setPreviewCard, moveToNextC
     isLoading: answerIsLoading,
     setIsError: setAnswerIsError
   } = useRunCode(currentCard.language);
-
-  useEffect(() => {
-    if (previewCardList && previewCardList.length > 0)
-    {    
-      setCurrentCardId
-    }
-    }, [previewCardList])
-
-  const [activeOutput, setActiveOutput] = useState('user');
-  const [outputHeight, setOutputHeight] = useState('130px');  // 初期高さを130pxに設定
-  const [isBlur, setIsBlur] = useState(true);
-
-  const handleRunUserCode = () => {
-    runUserCode();
-    setActiveOutput('user');
-  };
 
   const handleRunAnswerCode = () => {
     runAnswerCode();
@@ -79,27 +64,19 @@ export const PreviewCard = ({ previewCardList, card, setPreviewCard, moveToNextC
       </div>
       <br />
       <div
-          className="grid grid-cols-6 gap-4 mb-4"
+          className="grid grid-cols-12 gap-4 mb-4"
         >
-          <div className="col-span-4">
+          <div className="col-span-6">
             <div className="border border-slate-600 bg-stone-950 text-cyan-50 rounded overflow-hidden">
               <div className="bg-slate-800 px-4 py-2 font-semibold">
                 問題文
               </div>
-              <div className="p-4 h-[calc(30vh-2rem)] overflow-auto">
-                <Markdown>{card.body}</Markdown>
+              <div className="p-4 h-[calc(60vh-2rem)] overflow-auto">
+                <MarkdownView bodyValue={card.body}></MarkdownView>
               </div>
             </div>
           </div>
-          <div className="col-span-2 flex flex-col h-[calc(34vh-2rem)]">
-            <div className="border border-slate-600 hover:border-cyan-600 hover:text-cyan-50 text-blue-950 mb-2 rounded shadow flex-grow overflow-auto">
-              <div className="bg-slate-800 text-cyan-100 px-4 py-2 font-semibold">
-                備考･メモ
-              </div>
-              <div className="px-4 py-4">
-                <Markdown>{card.remarks}</Markdown>
-              </div>
-            </div>
+          <div className="col-span-6 flex flex-col h-[calc(34vh-2rem)]">
               <Output
                 editorRef={activeOutput === 'user' ? userEditorRef : answerEditorRef}
                 language={activeOutput === 'user' ? userLanguage : answerLanguage}
@@ -115,7 +92,7 @@ export const PreviewCard = ({ previewCardList, card, setPreviewCard, moveToNextC
                 setOutputHeight={setOutputHeight}
               />
           </div>
-          <div className="col-span-6">
+          <div className="col-span-12">
             <EditorAndAnswer
               card={card} 
               runUserCode={handleRunUserCode}
