@@ -111,7 +111,7 @@ export const PreviewCardList = ({checkedCards, setCheckedCards, previewCard, set
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="py-4 pl-2 pr-2">
         <div className="border border-slate-600 bg-stone-950 text-cyan-50 rounded overflow-hidden">
-          <div className="h-[calc(18vh-2rem)]">
+          <div className="h-[130px]">
             <div className="flex flex-col overflow-x-auto">
               <Droppable droppableId="checkedCards" direction="horizontal">
                 {(provided) => (

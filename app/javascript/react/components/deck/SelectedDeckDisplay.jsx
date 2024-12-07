@@ -11,7 +11,7 @@ export const SelectedDeckDisplay = ({ selectedDeck }) => {
 
   return (
     <div className="border border-slate-600 bg-stone-950 text-cyan-50 rounded-b overflow-hidden">
-      <div className="h-[calc(18vh-2rem)]">
+      <div className="h-[130px]">
         <div className="text-cyan-400 p-2 h-full">
           <div
             className="relative cursor-pointer group h-full"
@@ -19,7 +19,7 @@ export const SelectedDeckDisplay = ({ selectedDeck }) => {
           >
             <div className="grid grid-rows-12 grid-cols-6 h-full gap-1">
               {/* 上部セクション */}
-              <div className="row-start-1 row-span-6 col-span-6">
+              <div className="row-start-1 row-span-6 col-span-6" >
                 <div className={`border ${
                   selectedDeck ? "border-blue-800 hover:border-blue-700" : "border-slate-700 hover:border-slate-500"
                 } bg-stone-950 text-cyan-50 rounded h-full`}>
@@ -28,10 +28,12 @@ export const SelectedDeckDisplay = ({ selectedDeck }) => {
                   }`}>
                     {selectedDeck ? (
                       <div className="w-full h-full">
-                        <div className="px-2 text-xl flex items-center h-full">
-                          <div className="bg-stone-950 text-cyan-300 rounded px-2 text-sm truncate">
-                            <div className="flex items-center ">
-                              {selectedDeck.name}
+                        <div className="px-2 text-xl h-full">
+                          <div className="flex items-center h-full">
+                            <div className="flex-1 min-w-0">
+                              <div className="bg-stone-950 text-cyan-300 rounded px-2 text-sm truncate">
+                                {selectedDeck.name}
+                              </div>
                             </div>
                           </div>
                         </div>
