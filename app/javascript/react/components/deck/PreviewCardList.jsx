@@ -144,13 +144,13 @@ export const PreviewCardList = ({checkedCards, setCheckedCards, previewCard, set
                                       <span className="step-number"></span>
                                       <div
                                         {...provided.dragHandleProps}
-                                        className={`flex-shrink-0 w-48 border p-4 m-2 rounded shadow hover:bg-slate-950
+                                        className={`flex-shrink-0 w-32 border p-2 m-2 rounded shadow hover:bg-slate-950
                                           ${card === previewCard ? 'bg-slate-950 border-green-400 text-green-400 hover:text-green-400' : 'bg-slate-950 border-cyan-900 text-cyan-400 hover:text-green-400 hover:border-green-700'}
                                           ${snapshot.isDragging ? 'opacity-50' : ''}
                                         `}
                                         onClick={() => setPreviewCard(card)}
                                       >
-                                        <h2 className="text-xl text-center font-semibold truncate">
+                                        <h2 className="text-sm text-center font-semibold truncate">
                                           {card.title}
                                         </h2>
                                       </div>

@@ -12,7 +12,6 @@ import ReactMarkdown from 'react-markdown';
 export const MarkdownView = ({ bodyValue }) => {
   return (
     <><style>{markdownStyles}</style>
-        <div className="border-2 border-blue-950 rounded p-4 overflow-y-scroll h-[428px] text-gray-400">
           <ReactMarkdown
             className="markdown-body prose p-2 max-w-none text-gray-400"
             remarkPlugins={[remarkGfm]}
@@ -106,6 +105,6 @@ export const MarkdownView = ({ bodyValue }) => {
           >
           {bodyValue}
         </ReactMarkdown>
-      </div></>
+      </>
   )
 }

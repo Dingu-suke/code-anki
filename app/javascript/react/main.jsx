@@ -2,8 +2,6 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import MonacoModal from "./components/editor/MonacoModal";
-import MarkdownView from "./components/editorView/MarkdownView";
-
 import { Answer } from "./components/card/AnswerCard";
 import { CardList } from "./components/card/CardIndex";
 import QuestionCard from "./components/card/QuiestionCard";
@@ -32,7 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const cardFormRoot      = document.getElementById("cardForm");
   
   const runCodeEditorRoot = document.getElementById("runCodeEditor");
-  const markdownViewRoot  = document.getElementById("markdownView");
   const markdownEditorRoot= document.getElementById("markdownEditor");
   const CardIndexRoot     = document.getElementById("CardIndex");
   const DraggableModalRoot= document.getElementById("draggableModal");
@@ -59,7 +56,6 @@ document.addEventListener("DOMContentLoaded", () => {
   cardFormRoot      && createRoot(cardFormRoot)     .render(<CardForm />);
 
   runCodeEditorRoot && createRoot(runCodeEditorRoot).render(<RunCodeEditor />);
-  markdownViewRoot  && createRoot(markdownViewRoot) .render(<MarkdownView />);
   CardIndexRoot     && createRoot(CardIndexRoot    ).render(<CardList />)
   DrillIndexRoot     && createRoot(DrillIndexRoot)    .render(<DrillIndex />)
   DraggableModalRoot&& createRoot(DraggableModalRoot).render(<ParentComponent />)

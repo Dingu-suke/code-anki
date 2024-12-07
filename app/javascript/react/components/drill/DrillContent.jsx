@@ -5,6 +5,7 @@ import { useRunCode } from "../../hooks/useRunCode";
 import { activeTabClassOrange, inactiveTabClassOrange, tabClass } from "../../tabStylesAndFunc/styleClass";
 import { DiffEditorContent, EditorForAnswer, EditorForUser } from "../card/EditorAndAnswer";
 import Output from "../runCodeEditorDaisyUI/runButton-Output/Output";
+import { MarkdownView } from "../editor/MarkdownView";
 
 export const DrillContennt = ({ previewCardList, card, setPreviewCard, moveToNextCard, moveToPreviousCard}) => {
   const [currentCardId, setCurrentCardId] = useState(card?.id)
@@ -150,12 +151,12 @@ export const DrillContennt = ({ previewCardList, card, setPreviewCard, moveToNex
                 >
                   <div className="grid grid-cols-2 grid-rows-2 gap-4">
                     <div className="col-start-1 col-span-1 row-start-1 row-span-2">
-                      <div className="border border-slate-600 bg-stone-950 text-cyan-50 rounded overflow-hidden h-full">
-                        <div className="bg-slate-800 px-4 py-2 font-semibold">
+                      <div className="border border-slate-600 bg-stone-950 text-cyan-50 rounded h-[calc(71vh-2rem)] flex flex-col overflow-y-scroll">
+                        <div className="bg-slate-800 px-4 py-2 font-semibold sticky top-0 z-10">
                           {card?.title}
                         </div>
-                        <div className="p-4 h-overflow-auto h-[calc(100%-2.5rem)]">
-                          <Markdown>{card?.body}</Markdown>
+                        <div className="p-4 h-overflow-auto h-[calc(100%-2.5rem)]">                        
+                          <MarkdownView bodyValue={card?.body} />
                         </div>
                       </div>
                     </div>
