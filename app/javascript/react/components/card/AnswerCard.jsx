@@ -4,8 +4,8 @@ import { RemarksEditor } from '../editor/MarkdownEditor';
 import RunCodeEditor from '../runCodeEditorDaisyUI/CodeEditor';
 import { CODE_SNIPPETS, LANGUAGE_LABELS } from '../runCodeEditorDaisyUI/constants';
 import { LanguageSelector } from '../runCodeEditorDaisyUI/LanguageController';
-import Output from '../runCodeEditorDaisyUI/runButton&Output/Output';
-import RunButton from '../runCodeEditorDaisyUI/runButton&Output/RunButton';
+import Output from '../runCodeEditorDaisyUI/runButton-Output/Output';
+import RunButton from '../runCodeEditorDaisyUI/runButton-Output/RunButton';
 
 
 export const Answer = ({ value, onChange, language, onLanguageChange, selectedCard, error }) => {  

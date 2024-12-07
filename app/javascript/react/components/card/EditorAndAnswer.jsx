@@ -1,10 +1,12 @@
 import { DiffEditor, Editor } from "@monaco-editor/react";
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { LanguageLabel } from '../runCodeEditorDaisyUI/LanguageController';
-import RunButton from '../runCodeEditorDaisyUI/runButton&Output/RunButton';
+import { useEditor } from "../../context/useEditor";
+import { useEditorMethod } from "../../hooks/useEditorMethod";
+import { activeTabClassOrange, inactiveTabClassOrange, tabClass } from "../../tabStylesAndFunc/styleClass";
+import RunButton from "../runCodeEditorDaisyUI/runButton-Output/RunButton";
 
-export const EditorAndAnswer = ({ 
-  className = "", 
+export const EditorAndAnswer = ({   
   card,
   runUserCode,
   runAnswerCode,
@@ -14,104 +16,126 @@ export const EditorAndAnswer = ({
   answerEditorRef,
   setCurrentCardId,
   editorHeight,
-  // isAnserEditorBlur,
-  // setIsAnserEditorBlur,
   bluredCards,
   toggleBlur,
   toggleBlur2,
   isBlur
-}) => {
-  const diffEditorRef = useRef(null);
-  const [userEditorContent,  setUserEditorContent]  = useState("");
-  const prevCardIdRef = useRef(null);
-  const userEditorContentMap = useRef(new Map());
-  const [activeTab, setActiveTab] = useState('editor')  
-  
-  useEffect(() => {
-    if (prevCardIdRef.current !== card?.id) {
-      // カードが変更された場合
-      if (prevCardIdRef.current) {
-        // 前のカードの内容を保存
-        userEditorContentMap.current.set(prevCardIdRef.current, userEditorContent);
-      }
-      
-      // 新しいカードの内容をロード（存在する場合）または空にする
-      const newContent = userEditorContentMap.current.get(card?.id) || "";
-      setUserEditorContent(newContent);
-      
-      prevCardIdRef.current = card?.id;
-    }
-  }, [card?.id, userEditorContent]);
+}) => {  
 
-  const handleUserEditorDidMount = (editor) => {
-    userEditorRef.current = editor;
-    setCurrentCardId(card?.id);
-  };
+  const {
+    userEditorContent,  setUserEditorContent,
+    activeTab, setActiveTab,
+    
+    prevCardIdRef,
+    userEditorContentMap,
+    handleUserEditorDidMount,
+    handleAnswerEditorDidMount,
+    handleDiffEditorDidMount,
+    updateDiffEditor,
+    handleTabChange,
+    handleUserEditorChange,
+    pointToggleBlur
 
-  const handleAnswerEditorDidMount = (editor) => {
-    answerEditorRef.current = editor;
-  };
+                              } = useEditorMethod(
 
-  const handleDiffEditorDidMount = (editor) => {
-    diffEditorRef.current = editor;
-    const originalEditor = editor.getOriginalEditor();
-    originalEditor.updateOptions({ readOnly: false });
-  };
+    card,
+    runUserCode,
+    runAnswerCode,
+    userIsLoading,
+    answerIsLoading,
+    userEditorRef,
+    answerEditorRef,
+    setCurrentCardId,
+    editorHeight,
+    bluredCards,
+    toggleBlur,
+    // toggleBlur2,
+    // isBlur
+  )
 
-  const updateDiffEditor = useCallback(() => {
-    if (diffEditorRef.current && userEditorRef.current) {
-      const originalEditor = diffEditorRef.current.getOriginalEditor();
-      originalEditor.setValue(userEditorRef.current.getValue() || "");
-    }
-  }, [userEditorRef]);
-
-  const handleTabChange = (tabName) => {
-    setActiveTab(tabName);
-    if (tabName === 'diff') {
-      updateDiffEditor();
-    }
-  };
-
-  const handleUserEditorChange = (value) => {
-    setUserEditorContent(value);
-  };
-
-  const pointToggleBlur = (cardId) => {
-    if (toggleBlur) {
-      toggleBlur(cardId)
-    } else {
-      toggleBlur2(!isBlur)
-    }
-  }
-  const tabClass = "px-4 border-t border-x rounded-t-sm font-bold focus:outline-none relative";
-  const activeTabClass = "bg-slate-950 text-orange-500 border-yellow-800 border-b-0 after:absolute after:bottom-[-1px] after:left-0 after:right-0 after:h-[1px] after:bg-slate-950";
-  const inactiveTabClass = "bg-slate-900 text-yellow-900 border-transparent hover:text-amber-700";
-
-  const editorContent = (
-    <div className={`grid grid-cols-2 gap-4 ${className}`}>
-      <div className="border border-cyan-900 bg-slate-950 p-4 rounded-sm">
-        <div className="flex pb-2">
-          <LanguageLabel language={card?.language} />
-          <RunButton runCode={runUserCode} isLoading={userIsLoading} />
-        </div>
-        <Editor
-          height={editorHeight || "15vh"}
-          theme="vs-dark"
-          language={card?.language}
-          value={userEditorContent}
-          defaultValue=""
-          options={{
-            fontSize: 14
-          }}
-          onMount={handleUserEditorDidMount}
-          onChange={handleUserEditorChange}
-        />
+  return (
+    <div className="w-full">
+      <div role="tablist" className="flex border-b border-yellow-800">
+        <button
+          role="tab"
+          className={`${tabClass} ${activeTab === 'editor' ? activeTabClassOrange : inactiveTabClassOrange} cursor-auto h-7 text-sm`}
+          onClick={() => handleTabChange('editor')}
+          aria-selected={activeTab === 'editor'}
+          aria-controls="editor-panel"
+        >
+          Editor
+        </button>
+        <button
+          role="tab"
+          className={`${tabClass} ${activeTab === 'diff' ? activeTabClassOrange : inactiveTabClassOrange} cursor-auto h-7 text-sm `}
+          onClick={() => handleTabChange('diff')}
+          aria-selected={activeTab === 'diff'}
+          aria-controls="diff-panel"
+        >
+          Diff
+        </button>
       </div>
-      <div className="border border-purple-900 bg-slate-950 p-4 rounded-sm">
+      <div className="bg-slate-950 border-x border-b border-yellow-800 rounded-b-md">
+        <div
+          role="tabpanel"
+          id="editor-panel"
+          className={`p-6 ${activeTab === 'editor' ? '' : 'hidden'}`}
+        >
+        </div>
+        <div
+          role="tabpanel"
+          id="diff-panel"
+          className={`p-6 ${activeTab === 'diff' ? '' : 'hidden'}`}
+        >
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const EditorForUser = () => {
+  const {
+    card,                       // LanguageLabel 、Editor コンポーネント用
+    runUserCode, userIsLoading, // RunButton コンポーネント用
+    editorHeight, userEditorContent, handleUserEditorDidMount, handleUserEditorChange 
+  } = useEditor();
+
+  return (
+    <div className="border border-cyan-900 bg-slate-950 p-4 rounded-sm">
+      <div className="flex pb-2">
+        <LanguageLabel language={card?.language} />
+        <RunButton runCode={runUserCode} isLoading={userIsLoading} />
+      </div>
+      <Editor
+        height={editorHeight || "15vh"}
+        theme="vs-dark"
+        language={card?.language}
+        value={userEditorContent}
+        defaultValue=""
+        options={{
+          fontSize: 14
+        }}
+        onMount={handleUserEditorDidMount}
+        onChange={handleUserEditorChange}
+      />
+    </div>
+  )
+}
+
+export const EditorForAnswer = () => {
+  const {
+          card,                                     // LanguageLabel 、Editor コンポーネント用 props
+          runAnswerCode, answerIsLoading,           // RunButton コンポーネント用 props
+          pointToggleBlur, bluredCards, isBlur,
+          editorHeight, handleAnswerEditorDidMount  // Editor コンポーネント用 props
+  } = useEditor()
+
+  return (
+    <div className="border border-purple-900 bg-slate-950 p-4 rounded-sm">
         <div className="flex flex-wrap pb-2">
           <LanguageLabel language={card?.language} />
           <RunButton runCode={runAnswerCode} isLoading={answerIsLoading} />
-          <button role="button" className="border border-blue-950 bg-black hover:bg-orange-950 min-w-44 flex justify-center items-center font-bold min-h-0 h-8 px-2 rounded-md" 
+          <button role="button" className="border border-blue-950 bg-black hover:bg-orange-950 text-gray-400 hover:text-gray-300 min-w-44 flex justify-center items-center font-bold min-h-0 h-8 px-2 rounded-md" 
                   // onClick={() => {setIsAnserEditorBlur(!isAnserEditorBlur)}}
                   onClick={() => pointToggleBlur(card?.id)}
           >
@@ -120,7 +144,6 @@ export const EditorAndAnswer = ({
               ? (bluredCards[card?.id] ? "解答例を表示する" : "解答例を隠す")
               : (isBlur ? "解答例を隠す" : "解答例を表示する")}
           </button>
-          {/* bluredCards && とすることで 初回レンダリングのエラーを防いでいるけど、きれいではない気はする */}
         </div>
         <div className={`${bluredCards && bluredCards[card?.id] ? "blur-lg" : ""}`}>
           <Editor
@@ -137,69 +160,33 @@ export const EditorAndAnswer = ({
           />
         </div>
       </div>
-    </div>
-  );
+  )
+}
 
-  const diffEditorContent = (
-    <div className="border border-green-900 bg-slate-950 p-4 rounded-md">
-      <div className="pb-2">
-        <LanguageLabel language={card?.language} />
-      </div>
-      <DiffEditor
-        height={editorHeight || "15vh"}
-        theme="vs-dark"
-        language={card?.language}
-        original=""
-        modified={card?.answer}
-        options={{
-          fontSize: 14,
-          renderSideBySide: true,
-          readOnly: true,
-          originalEditable: false,
-        }}
-        onMount={handleDiffEditorDidMount}
-      />
-    </div>
-  );
+export const DiffEditorContent = () => {
+  const {
+    card,                                   // LanguageLabel コンポーネント用 props
+    diffEditorHeight, handleDiffEditorDidMount  // Editor コンポーネント用 props
+  } = useEditor()
 
   return (
-    <div className="w-full">
-      <div role="tablist" className="flex border-b border-yellow-800">
-        <button
-          role="tab"
-          className={`${tabClass} ${activeTab === 'editor' ? activeTabClass : inactiveTabClass} cursor-auto h-7 text-sm`}
-          onClick={() => handleTabChange('editor')}
-          aria-selected={activeTab === 'editor'}
-          aria-controls="editor-panel"
-        >
-          Editor
-        </button>
-        <button
-          role="tab"
-          className={`${tabClass} ${activeTab === 'diff' ? activeTabClass : inactiveTabClass} cursor-auto h-7 text-sm `}
-          onClick={() => handleTabChange('diff')}
-          aria-selected={activeTab === 'diff'}
-          aria-controls="diff-panel"
-        >
-          Diff
-        </button>
-      </div>
-      <div className="bg-slate-950 border-x border-b border-yellow-800 rounded-b-md">
-        <div
-          role="tabpanel"
-          id="editor-panel"
-          className={`p-6 ${activeTab === 'editor' ? '' : 'hidden'}`}
-        >
-          {editorContent}
-        </div>
-        <div
-          role="tabpanel"
-          id="diff-panel"
-          className={`p-6 ${activeTab === 'diff' ? '' : 'hidden'}`}
-        >
-          {diffEditorContent}
-        </div>
-      </div>
+  <div className="border border-green-900 bg-slate-950 p-4 rounded-md">
+    <div className="flex pb-2">
+      <LanguageLabel language={card?.language} />
     </div>
-  );
-};
+    <DiffEditor
+      height={diffEditorHeight || "15vh"}
+      theme="vs-dark"
+      language={card?.language}
+      original=""
+      modified={card?.answer}
+      options={{
+        fontSize: 14,
+        renderSideBySide: true,
+        readOnly: true,
+        originalEditable: false,
+      }}
+      onMount={handleDiffEditorDidMount}
+    />
+  </div>
+)};

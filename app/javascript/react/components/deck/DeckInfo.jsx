@@ -9,6 +9,7 @@ import { SelectCardIndex } from './SelectCardIndex';
 import { SelectedDeckDisplay } from './SelectedDeckDisplay';
 import { YourDecksIndex } from './YourDecksIndex';
 import { Toast } from '../toast/Toust';
+import { activeTabClassGreen, borderCalss, inactiveTabClassGreen, tabClass } from '../../tabStylesAndFunc/styleClass';
 
 export const DeckInfo = () => {
   
@@ -84,11 +85,6 @@ export const DeckInfo = () => {
     // 🍉 useEffect で更新
   };
   
-  const borderCalss = "border-teal-700 text-emerald-400 text-bold"
-  const tabClass = "px-4 border-t border-x rounded-t-sm font-bold focus:outline-none relative";
-  const activeTabClass = `bg-slate-950 ${borderCalss} border-b-0 after:absolute after:bottom-[-1px] after:left-0 after:right-0 after:h-[1px] after:bg-slate-950`;
-  const inactiveTabClass = "bg-slate-900 text-emerald-700 border-transparent hover:text-green-600";
-  
   const handleTabChange = (tabName) => {
     setActiveTab(tabName);
   };
@@ -135,7 +131,7 @@ export const DeckInfo = () => {
         {toast.show && <Toast message={toast.message} type={toast.type} />}
       <div className="grid grid-cols-6">
         <div className="tooltip tooltip-right" data-tip="デッキ選択後、カードを選択し編成しましょう">
-          <div className="col-start-1 col-span-1 py-4 pl-4 pr-10">
+          <div className="col-start-1 col-span-1 pt-4 pr-2">
             <SelectedDeckDisplay selectedDeck={selectedDeck}/>
           </div>
         </div>
@@ -150,7 +146,7 @@ export const DeckInfo = () => {
         <div role="tablist" className={`flex border-b ${borderCalss}`}>
           <button
             role="tab"
-            className={`${tabClass} ${activeTab === 'deckIndex' ? activeTabClass : inactiveTabClass} cursor-auto h-7 text-sm`}
+            className={`${tabClass} ${activeTab === 'deckIndex' ? activeTabClassGreen : inactiveTabClassGreen} cursor-auto h-7 text-sm`}
             onClick={() => handleTabChange('deckIndex')}
             aria-selected={activeTab === 'deckIndex'}
             aria-controls="deckIndex-panel"
@@ -159,7 +155,7 @@ export const DeckInfo = () => {
           </button>
           <button
             role="tab"
-            className={`${tabClass} ${activeTab === 'cardIndex' ? activeTabClass : inactiveTabClass} cursor-auto h-7 text-sm`}
+            className={`${tabClass} ${activeTab === 'cardIndex' ? activeTabClassGreen : inactiveTabClassGreen} cursor-auto h-7 text-sm`}
             onClick={() => handleTabChange('cardIndex')}
             aria-selected={activeTab === 'cardIndex'}
             aria-controls="cardIndex-panel"
@@ -168,7 +164,7 @@ export const DeckInfo = () => {
           </button>
           <button
             role="tab"
-            className={`${tabClass} ${activeTab === 'preview' ? activeTabClass : inactiveTabClass} cursor-auto h-7 text-sm`}
+            className={`${tabClass} ${activeTab === 'preview' ? activeTabClassGreen : inactiveTabClassGreen} cursor-auto h-7 text-sm`}
             onClick={() => handleTabChange('preview')}
             aria-selected={activeTab === 'preview'}
             aria-controls="preview-panel"

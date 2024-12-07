@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
+import { activeTabClassGreen, borderCalss, inactiveTabClassGreen, tabClass } from '../../tabStylesAndFunc/styleClass';
 import { MyDrill } from './MyDrill';
-
-const borderCalss = "border-teal-700 text-emerald-400 text-bold"
-const tabClass = "px-4 border-t border-x rounded-t-sm font-bold focus:outline-none relative";
-const activeTabClass = `bg-slate-950 ${borderCalss} border-b-0 after:absolute after:bottom-[-1px] after:left-0 after:right-0 after:h-[1px] after:bg-slate-950`;
-const inactiveTabClass = "bg-slate-900 text-emerald-700 border-transparent hover:text-green-600";
 
 export const MyPage = () => {
 
@@ -20,7 +16,7 @@ export const MyPage = () => {
         <div role="tablist" className={`flex border-b ${borderCalss}`}>
           <button
             role="tab"
-            className={`${tabClass} ${activeTab === 'myDrill' ? activeTabClass : inactiveTabClass} cursor-auto h-7 text-sm`}
+            className={`${tabClass} ${activeTab === 'myDrill' ? activeTabClassGreen : inactiveTabClassGreen} cursor-auto h-7 text-sm`}
             onClick={() => handleTabChange('myDrill')}
             aria-selected={activeTab === 'myDrill'}
             aria-controls="myDrill-panel"

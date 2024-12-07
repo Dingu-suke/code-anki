@@ -1,71 +1,91 @@
 import React, { useEffect } from 'react';
 import { AiTwotoneTags } from "react-icons/ai";
 import { IoWarning } from "react-icons/io5";
-import { CATEGORY } from '../runCodeEditorDaisyUI/constants';
+import { CATEGORY, LanguageIcon } from '../runCodeEditorDaisyUI/constants';
+import { algorithmColor, methodLearningColor, refactoringColor, tradeOffColor } from '../../tabStylesAndFunc/styleClass';
+import { Toggle } from '../toggle/Toggle';
 
 export const SelectedDeckDisplay = ({ selectedDeck }) => {
   useEffect(() => {
+  }, [selectedDeck]);
 
-  }, [selectedDeck])
-  return(
-    <>
-    <div className="border border-slate-600 bg-stone-950 text-cyan-50 rounded-t overflow-hidden border-b-transparent">
-      {selectedDeck
-        ? <div className="flex items-center justify-center overflow-hidden">
-            <div className="w-full bg-slate-800 py-1 text-xs font-semibold truncate">選択中デッキ</div>
-        </div>
-        : <div className="flex items-center justify-center overflow-hidden">
-            <div className="w-full bg-slate-800 py-1 text-xs font-semibold truncate">デッキ未選択</div>
-        </div>
-        }
-    </div>
-    <div className="border border-slate-600 bg-stone-950 text-cyan-50 rounded-b overflow-hidden border-t-transparent">
-      <div className="h-[calc(15.2vh-2rem)]">
-        <div className="text-cyan-400 p-2">
+  return (
+    <div className="border border-slate-600 bg-stone-950 text-cyan-50 rounded-b overflow-hidden">
+      <div className="h-[calc(18vh-2rem)]">
+        <div className="text-cyan-400 p-2 h-full">
           <div
-            className="relative w-full h-full cursor-pointer group"
+            className="relative cursor-pointer group h-full"
             onClick={() => console.log(selectedDeck)}
           >
-            <div className={`border h-hull ${selectedDeck ? "border-blue-500 hover:border-blue-600" : "border-slate-700 hover:border-slate-500"} bg-stone-950 text-cyan-50 rounded h-[calc(13.7vh-2rem)] truncate`}>
-              <div className={`overflow-hide h-full ${selectedDeck ? "flex flex-col" : "flex items-center justify-center"}`}>
-                {selectedDeck
-                  ? (
-                    <div className="grid grid-rows-3 grid-cols-6 w-full h-full ">
-                      <div className="row-start-1 row-span-1 col-start-1 col-span-6 px-2 text-xl flex overflow-hidden items-center">
-                        <div className="bg-stone-950 text-cyan-300 rounded truncate">
-                          {selectedDeck.name}
+            <div className="grid grid-rows-12 grid-cols-6 h-full gap-1">
+              {/* 上部セクション */}
+              <div className="row-start-1 row-span-6 col-span-6">
+                <div className={`border ${
+                  selectedDeck ? "border-blue-800 hover:border-blue-700" : "border-slate-700 hover:border-slate-500"
+                } bg-stone-950 text-cyan-50 rounded h-full`}>
+                  <div className={`h-full ${
+                    selectedDeck ? "flex flex-col" : "flex items-center justify-center"
+                  }`}>
+                    {selectedDeck ? (
+                      <div className="w-full h-full">
+                        <div className="px-2 text-xl flex items-center h-full">
+                          <div className="bg-stone-950 text-cyan-300 rounded px-2 text-sm truncate">
+                            <div className="flex items-center ">
+                              {selectedDeck.name}
+                            </div>
+                          </div>
                         </div>
                       </div>
-                      <div className={`text-sm font-medium rounded min-w-8 text-center flex items-center justify-center 
-                                      ${selectedDeck.cards?.length > 4 
-                                        ? "border border-lime-900 bg-sky-950 text-yellow-100"
-                                        : "bg-red-950 text-pink-400 border border-red-900" }`
-                      }>
-                        {selectedDeck.cards ? selectedDeck.cards.length : 0}
+                    ) : (
+                      <div className="flex items-center justify-center h-full text-gray-500">
+                        {"デッキ未選択"}
                       </div>
-                      <div className="row-start-3 row-span-1 col-start-1 col-span-1 flex overflow-hidden items-center justify-center">
-                        <div className="bg-stone-950 text-cyan-300 rounded truncate px-1">
-                          <AiTwotoneTags />
-                        </div>
-                      </div>
-                      <div className="row-start-3 row-span-1 col-start-2 col-span-5 flex overflow-hidden items-center ">
-                        <div className="bg-stone-950 text-cyan-300 rounded truncate">
-                          {selectedDeck ? CATEGORY[`${selectedDeck.category}`] : ""}
-                        </div>
-                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* カード数表示セクション */}
+              {selectedDeck && (
+              <>
+                <div className="row-start-7 row-span-3 col-start-1 col-span-2 w-full">
+                  <div className="h-full w-full">
+                    <div className={`${selectedDeck?.language && "flex -centitemser justify-center border border-gray-700 rounded-sm"}`}>
+                      {selectedDeck?.language ? <LanguageIcon language={selectedDeck.language} size={27} /> : ""}
                     </div>
-                  )
-                  : (
-                    <div className="flex items-center justify-center h-full">
-                      <IoWarning className="text-[3rem] font-semibold text-slate-600" />
+                  </div>
+                </div>
+                <div className="row-start-7 row-span-3 col-start-3 col-span-2">
+                  <div className="h-full w-full">
+                    <div className={`h-full w-full text-sm font-medium rounded flex items-center justify-center px-4 ${
+                      selectedDeck.cards?.length > 4
+                        ? "border border-lime-900 bg-sky-950 text-yellow-100"
+                        : "bg-red-950 text-pink-400 border border-red-900"
+                    }`}>
+                      {selectedDeck.cards ? selectedDeck.cards.length : 0}
                     </div>
-                  )}
+                  </div>
+                </div>
+                </>
+              )}
+
+              {/* カテゴリー表示セクション */}
+              <div className="row-start-10 row-span-3 col-start-1 col-span-6">
+                <div className={`text-sm font-medium rounded truncate px-4 py-1 
+                        ${selectedDeck && selectedDeck?.category && "border border-gray-600"}
+                        ${selectedDeck && selectedDeck?.category === "methodLearning" && methodLearningColor}
+                        ${selectedDeck && selectedDeck?.category === "algorithm" && algorithmColor}
+                        ${selectedDeck && selectedDeck?.category === "refactoring" && refactoringColor}
+                        ${selectedDeck && selectedDeck?.category === "tradeOff" && tradeOffColor}`}>
+                  {selectedDeck ? CATEGORY[`${selectedDeck.category}`] : ""}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </>
-  )
-}
+  );
+};
+
+export default SelectedDeckDisplay;

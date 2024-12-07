@@ -4,11 +4,7 @@ import { DeckEdit } from '../form/DeckForm';
 import { CATEGORY, LanguageIcon } from '../runCodeEditorDaisyUI/constants';
 import { Toggle } from '../toggle/Toggle';
 import { NewResponsiveWindow } from '../window/NewResponsiveWindow';
-
-const methodLearningColor = "bg-yellow-950 text-amber-200 bg-opacity-55"
-const algorithmColor = "bg-green-950 text-emerald-200"
-const refactoringColor = "bg-blue-950 text-cyan-200"
-const tradeOffColor = "bg-fuchsia-950 text-pink-200 bg-opacity-60"
+import { algorithmColor, methodLearningColor, refactoringColor, tradeOffColor } from '../../tabStylesAndFunc/styleClass';
 
 const editButtonCell = "py-2 w-10 truncate text-center"
 const deckTitleCell = "px-4 py-3 min-w-64 truncate text-start"
@@ -17,12 +13,6 @@ const deckLanguageCell = "pl-4 pr-2 py-3 min-w-20 max-w-28 truncate text-center"
 const deckCategoryCell = "px-4 py-3 min-w-32 max-w-40 truncate"
 const deckUpadateDateCell = "px-4 py-3 min-w-20 max-w-28 truncate text-center"
 const deckStatusCell = "px-4 py-3 min-w-28 max-w-40 truncate text-center"
-
-  
-const borderCalss = "border-teal-700 text-emerald-400 text-bold"
-const tabClass = "px-4 border-t border-x rounded-t-sm font-bold focus:outline-none relative";
-const activeTabClass = `bg-slate-950 ${borderCalss} border-b-0 after:absolute after:bottom-[-1px] after:left-0 after:right-0 after:h-[1px] after:bg-slate-950`;
-const inactiveTabClass = "bg-slate-900 text-emerald-700 border-transparent hover:text-green-600";
 
 export const DeckTable = (
     { 
