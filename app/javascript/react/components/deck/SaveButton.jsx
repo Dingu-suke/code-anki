@@ -29,7 +29,7 @@ export const SaveButton = ({ selectedDeck, checkedCards, editDeck, fetchDecks })
           <div className="flex justify-center items-center w-full h-full px-3">
           <button
             type="button"
-            className="font-bold text-lg py-3 px-5 w-32 flex items-center justify-center rounded-sm text-sky-500 bg-slate-900 hover:text-sky-400 hover:bg-indigo-950 border border-sky-800 hover:border-cyan-600 font-courier cursor-default"
+            className="font-bold text-sm py-3 px-5 w-32 flex items-center justify-center rounded-sm text-sky-500 bg-slate-900 hover:text-sky-400 hover:bg-indigo-950 border border-sky-800 hover:border-cyan-600 font-courier cursor-default"
             onClick={() => {SaveDeckOrganization(selectedDeck, checkedCards)}}
           >
             更新する

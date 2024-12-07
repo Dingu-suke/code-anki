@@ -107,6 +107,7 @@ export const PreviewCardList = ({checkedCards, setCheckedCards, previewCard, set
   };
 
   return (
+    <div>                      
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="py-4 pl-2 pr-2">
         <div className="border border-slate-600 bg-stone-950 text-cyan-50 rounded overflow-hidden">
@@ -119,59 +120,98 @@ export const PreviewCardList = ({checkedCards, setCheckedCards, previewCard, set
                     ref={provided.innerRef}
                     className="bg-stone-950 text-cyan-50 rounded overflow-hidden"
                   >
-                    <div className="p-1 m-1">
+                    <div className="px-1 py-3 mx-1 my-3">
                       {checkedCards && checkedCards.length > 0 && (
                         <div
                           className="space-x-4 overflow-x-auto flex justify-start items-start"
                           ref={scrollContainerRef}
                         >
-                          <div className='flex flex-col'>
-                            <ul className="steps steps-horizontal flex w-max min-w-full">
-                              {checkedCards.map((card, index) => (
-                                <Draggable key={card.id} draggableId={card.id.toString()} index={index}>
-                                  {(provided, snapshot) => (
-                                  <li
-                                    ref={provided.innerRef}
-                                    {...provided.draggableProps}
-                                    key={card.id}
-                                    className={`step flex flex-col items-center flex-shrink-0 ${(index+1) % 5 === 0 ? "step-neutral" : "step-neutral"}`}
-                                    style={{
-                                      ...provided.draggableProps.style,
-                                      backgroundColor: (index+1) % 5 === 0 ? "#631166" : "#0f3c63"
-                                    }}
-                                    data-content={`${index+1}`}
+                          <div className="flex-col">
+
+                            <div className='flex flex-col'>
+                              <ul className="flex w-max min-w-full relative">
+                                {checkedCards.map((card, index) => (
+                                <li key={card.id} className="relative">
+                                  <div
+                                    className="flex-shrink-0 w-32 mx-2 rounded shadow hover:bg-slate-950"
+                                    onClick={() => setPreviewCard(card)}
                                   >
-                                      <span className="step-number"></span>
-                                      <div
-                                        {...provided.dragHandleProps}
-                                        className={`flex-shrink-0 w-32 border p-2 m-2 rounded shadow hover:bg-slate-950
-                                          ${card === previewCard ? 'bg-slate-950 border-green-400 text-green-400 hover:text-green-400' : 'bg-slate-950 border-cyan-900 text-cyan-400 hover:text-green-400 hover:border-green-700'}
-                                          ${snapshot.isDragging ? 'opacity-50' : ''}
-                                        `}
-                                        onClick={() => setPreviewCard(card)}
-                                      >
-                                        <h2 className="text-sm text-center font-semibold truncate">
-                                          {card.title}
-                                        </h2>
+                                      {/* 接続線 - 最初以外の要素に対して左線を表示 */}
+                                      {index !== 0 && (
+                                        <div className="absolute top-1/2 left-0 w-1/2 h-0.5 bg-sky-800 -translate-y-1/2" />
+                                      )}
+                                      {/* 接続線 - 最後以外の要素に対して右線を表示 */}
+                                      {index !== checkedCards.length - 1 && (
+                                        <div className="absolute top-1/2 left-1/2 w-1/2 h-0.5 bg-sky-800 -translate-y-1/2" />
+                                      )}
+                                      
+                                      <div className="flex justify-center relative z-10">
+                                        <div className={`
+                                          w-10 h-8
+                                          flex items-center justify-center
+                                          rounded-full
+                                          ${(index + 1) % 5 === 0 
+                                            ? "border-2 border-fuchsia-900 bg-fuchsia-950" 
+                                            : "border-2 border-sky-800 bg-cyan-950"}
+                                          relative
+                                        `}>
+                                          <span className="text-md font-semibold text-gray-400">
+                                            {index + 1}
+                                          </span>
+                                        </div>
                                       </div>
+                                    </div>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+
+                            {/* ドラッグ&ドロップができるカード群 ↓ */}
+
+                            <div className='flex flex-col'>
+                              <ul className="flex w-max min-w-full">
+                                {checkedCards.map((card, index) => (
+                                    <li
+                                      key={card.id}
+                                      className={``}
+                                      data-content={`${index+1}`}
+                                    >                                    
+                                      <Draggable key={card.id} draggableId={card.id.toString()} index={index}>
+                                        {(provided, snapshot) => (
+                                        <div
+                                          {...provided.dragHandleProps}
+                                          className={`flex-shrink-0 w-32 border p-2 m-2 rounded shadow hover:bg-slate-950
+                                            ${card === previewCard ? 'bg-slate-950 border-green-400 text-green-400 hover:text-green-400' : 'bg-slate-950 border-cyan-900 text-cyan-400 hover:text-green-400 hover:border-green-700'}
+                                            ${snapshot.isDragging ? 'opacity-50' : ''}
+                                          `}
+                                          onClick={() => setPreviewCard(card)}
+                                          ref={provided.innerRef}
+                                          {...provided.draggableProps}
+                                        >
+                                          <h2 className="text-sm text-center font-semibold truncate">
+                                            {card.title}
+                                          </h2>
+                                        </div>
+                                        )}
+                                      </Draggable>
                                     </li>
-                                  )}
-                                </Draggable>
-                              ))}
-                            </ul>
+                                ))}
+                              </ul>
+                            </div>
+                            </div>
                           </div>
-                        </div>
-                      )}
-                      {provided.placeholder}
+                        )}
+                        {provided.placeholder}
+                      </div>
                     </div>
-                  </div>
-                )}
-              </Droppable>
+                  )}
+                </Droppable>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </DragDropContext>
+      </DragDropContext>
+    </div>
   );
 };
 
