@@ -43,7 +43,7 @@
   <%= link_to decks_path, class: "p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-sky-900
                                 #{current_page?(decks_path) ? 'bg-sky-950 border border-sky-700 text-white' : 'text-gray-400 hover:text-gray-200'}" do %>
     <i class="bi bi-house-door-fill"></i>
-    <span class="text-[15p4x] ml-4 font-bold">みんなのデッキ</span>
+    <span class="text-[15p4x] ml-4 font-bold">みんなの公開デッキ</span>
   <% end %>
 
   <%= link_to mypage_path, class: "p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-sky-900
@@ -57,25 +57,19 @@
   <%= link_to your_decks_path, class: "p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-sky-900
                                 #{current_page?(your_decks_path) ? 'bg-sky-950 border border-sky-700 text-white' : 'text-gray-400 hover:text-gray-200'}" do %>
     <i class="bi bi-person-fill"></i>
-    <span class="text-[15px] ml-4 font-bold">デッキ編集</span>
+    <span class="text-[15px] ml-4 font-bold">デッキ 作成･編集</span>
   <% end %>
 
   <%= link_to your_cards_path, class: "p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-sky-900
                                   #{current_page?(your_cards_path) ? 'bg-sky-950 border border-sky-700 text-white' : 'text-gray-400 hover:text-gray-200'}" do %>
     <i class="bi bi-person-fill"></i>
-    <span class="text-[15px] ml-4 font-bold">カード編集</span>
-  <% end %>
-
-  <%= link_to new_card_path, class: "p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-sky-900
-                                  #{current_page?(new_card_path) ? 'bg-sky-950 border border-sky-700 text-white' : 'text-gray-400 hover:text-gray-200'}" do %>
-    <i class="bi bi-person-fill"></i>
-    <span class="text-[15px] ml-4 font-bold">TestPage</span>
+    <span class="text-[15px] ml-4 font-bold">カード  作成･編集</span>
   <% end %>
 
 <% else %>
   <%= link_to decks_path, class: "p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-sky-900
                                 #{current_page?(decks_path) ? 'bg-sky-950 border border-sky-700 text-white' : 'text-gray-400 hover:text-gray-200{}'}" do %>
     <i class="bi bi-house-door-fill"></i>
-    <span class="text-[15p4x] ml-4 font-bold">みんなのデッキ</span>
+    <span class="text-[15p4x] ml-4 font-bold">みんなの公開デッキ</span>
   <% end %>
 <% end %>
