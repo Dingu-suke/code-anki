@@ -65,7 +65,7 @@ export const DrillTable = ({filteredDrills, selectedDrill, isDrillLoading, handl
                       <div className="flex justify-center items-center">
                         <div className={`
                           text-sm font-medium rounded min-w-8 text-center
-                          ${drill.cards?.length > 4
+                          ${drill.cards?.length > 2
                             ? "border border-lime-900 bg-sky-950 text-green-400"
                             : "bg-red-950 text-pink-400 border border-red-900" }`
                           }>

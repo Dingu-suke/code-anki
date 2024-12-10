@@ -27,7 +27,7 @@ export const useToast = () => {
     setToast({ show: true, message, type });
     setTimeout(() => {
       setToast({ show: false, message: '', type: 'success' });
-    }, 3000);
+    }, 5000);
   }, []);
 
   return {

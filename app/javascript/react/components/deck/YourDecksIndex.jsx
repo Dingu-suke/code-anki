@@ -20,7 +20,8 @@ export const YourDecksIndex = ({
                                   setSelectedLanguage,
                                   setStatus,
                                   setSelectedCategory,
-                                  reRenderDeckList
+                                  reRenderDeckList,
+                                  showToast
                                   // handleCheckCardsOfDeck
                                 }) => {
 
@@ -123,6 +124,7 @@ export const YourDecksIndex = ({
           selectedDeck={selectedDeck}
           setSelectedDeck={setSelectedDeck}
           reRenderDeckList={reRenderDeckList}
+          showToast={showToast}
           // handleCheckCardsOfDeck={handleCheckCardsOfDeck}
         />
       </div>

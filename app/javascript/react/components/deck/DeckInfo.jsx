@@ -42,7 +42,7 @@ export const DeckInfo = () => {
     searchTerm, setSearchTerm,
     error, setError
     ,
-    toast,
+    toast, showToast,
     addDeck,
     updateDeckInfo,
     fetchDecks,
@@ -192,6 +192,7 @@ export const DeckInfo = () => {
             setStatus={setStatus}
             setSearchTermAndFilter={setSearchTermAndFilter}
             reRenderDeckList={reRenderDeckList}
+            showToast={showToast}
           />
           </div>
           <div

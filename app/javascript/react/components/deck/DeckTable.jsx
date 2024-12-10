@@ -24,7 +24,8 @@ export const DeckTable = (
       selectedDeck,
       setSelectedDeck,
       handleCheckCardsOfDeck,
-      reRenderDeckList
+      reRenderDeckList,
+      showToast
     }) => {
 
   const [] = useState('')
@@ -105,7 +106,7 @@ export const DeckTable = (
                   <div className="flex justify-center items-center">
                     <div className={`
                       text-sm font-medium rounded min-w-8 text-center
-                      ${deck.cards?.length > 4
+                      ${deck.cards?.length > 2
                         ? "border border-lime-900 bg-sky-950 text-green-400"
                         : "bg-red-950 text-pink-400 border border-red-900" }`
                       }>
@@ -143,7 +144,7 @@ export const DeckTable = (
                 </td>
                 <td className={`${deckStatusCell}`}>
                   <div className="flex justify-center">
-                    <Toggle initialStatus={deck.status} deck={deck}/>
+                    <Toggle initialStatus={deck.status} deck={deck} showToast={showToast}/>
                   </div>
                 </td>
               </tr>

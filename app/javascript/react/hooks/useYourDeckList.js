@@ -94,7 +94,7 @@ export const useYourDeckList = (url) => {
 
   const addDeck = useCallback(async (data) => {
     try {
-      const response = await axios.post('/your_decks',
+      const response = await axios.post('/decks',
         { deck: data },
         { headers: {
           'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
@@ -226,6 +226,7 @@ const editDeck = useCallback(async (selectedDeck, checkedCards) => {
     error, setError
     ,
     toast,
+    showToast,
     addDeck,
     updateDeckInfo,
     editDeck,

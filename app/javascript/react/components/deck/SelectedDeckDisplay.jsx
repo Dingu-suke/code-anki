@@ -60,7 +60,7 @@ export const SelectedDeckDisplay = ({ selectedDeck }) => {
                 <div className="row-start-7 row-span-3 col-start-3 col-span-2">
                   <div className="h-full w-full">
                     <div className={`h-full w-full text-sm font-medium rounded flex items-center justify-center px-4 ${
-                      selectedDeck.cards?.length > 4
+                      selectedDeck.cards?.length > 2
                         ? "border border-lime-900 bg-sky-950 text-yellow-100"
                         : "bg-red-950 text-pink-400 border border-red-900"
                     }`}>
