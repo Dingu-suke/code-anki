@@ -37,13 +37,16 @@ export const SelectCardIndex = (
     filteredCards } = useCards(language);
 
   const handleCheckboxClick = (card) => {
-    setCheckedCards(prevCheckedCards => {
-      if (prevCheckedCards?.some(c => c.id === card.id)) {
-        return prevCheckedCards.filter(c => c.id !== card.id);
-      } else {
-        return [...prevCheckedCards, card];
-      }
-    });
+    if (selectedDeck) {
+      setCheckedCards(prevCheckedCards => {
+        if (prevCheckedCards?.some(c => c.id === card.id)) {
+          return prevCheckedCards.filter(c => c.id !== card.id);
+        } else {
+          return [...prevCheckedCards, card];
+        }
+      });
+    } else {
+    }
   };
 
   const onSelect = (newLanguage) => {
@@ -112,52 +115,64 @@ export const SelectCardIndex = (
                 </tr>
               </thead>
               <tbody>
-              {filteredCards.map((card) => (
-                <tr
-                key={card.id}
-                className={`border-b bg-gray-800 border-gray-700 ${selectedCard && selectedCard.id === card.id ? 'bg-indigo-900 hover:bg-blue-900' : 'hover:bg-cyan-900'}`}
-                onClick={(event) => {
-                    if (!event.target.closest('td:first-child')) {
-                    handleCardClick(event, card);
-                  }
-                }}
-              >
-                <td className={`font-medium whitespace-nowrap text-cyan-400 ${checkCell}`}>
-                  <input
-                    className="checkbox checkbox-md checkbox-secondary hover:bg-pink-900"
-                    type="checkbox"
-                    checked={checkedCards?.some((c) => c.id === card.id)}
-                    onChange={(event) => {
-                      // イベントの伝播を停止、カード全体の onClick の阻止
-                      event.stopPropagation();
-                      handleCheckboxClick(card);
+                <>
+                  {filteredCards.map((card) => (
+                    <tr
+                    key={card.id}
+                    className={`border-b bg-gray-800 border-gray-700 ${selectedCard && selectedCard.id === card.id ? 'bg-indigo-900 hover:bg-blue-900' : 'hover:bg-cyan-900'}`}
+                    onClick={(event) => {
+                        if (!event.target.closest('td:first-child')) {
+                          handleCardClick(event, card);
+                        }
                     }}
-                  />                  
-                </td>
-              
-                  <td className={`${titleCell} font-medium text-cyan-400`}>
-                    <div>
-                      {card.title}
-                    </div>
-                  </td>
-                  <td className={`${langCell}`}>
-                    <div className="flex items-center justify-center">
-                      {card.language ? <LanguageIcon language={card.language} /> : ""}
-                    </div>
-                  </td>
-                  <td className={`${dateCell}`}>
-                  <div>
-                    {new Date(card.updated_at).toLocaleDateString()}
-                  </div>
+                  >
+                    <td className={`font-medium whitespace-nowrap text-cyan-400 ${checkCell}`}>
+                      <input
+                        className="checkbox checkbox-md checkbox-secondary hover:bg-pink-900"
+                        type="checkbox"
+                        checked={checkedCards?.some((c) => c.id === card.id)}
+                        onChange={(event) => {
+                          // イベントの伝播を停止、カード全体の onClick の阻止
+                          event.stopPropagation();
+                          handleCheckboxClick(card);
+                        }}
+                      />                  
+                    </td>
 
-                  </td>
-                </tr>
-              ))}
+                      <td className={`${titleCell} font-medium text-cyan-400`}>
+                        <div>
+                          {card.title}
+                        </div>
+                      </td>
+                      <td className={`${langCell}`}>
+                        <div className="flex items-center justify-center">
+                          {card.language ? <LanguageIcon language={card.language} /> : ""}
+                        </div>
+                      </td>
+                      <td className={`${dateCell}`}>
+                      <div>
+                        {new Date(card.updated_at).toLocaleDateString()}
+                      </div>
+
+                      </td>
+                    </tr>
+                  ))}
+                </>
+
                 
               </tbody>
             </table>
             <br/><br/><br/><br/>
-            <br/><br/><br/><br/>
+            <br/><br/>
+            {filteredCards.length == 0 && (
+              <div className="flex justify-center text-gray-400 text-lg">
+                カード作成・編集ページは 
+                <a href="/your_cards" className="border-b border-sky-500 text-sky-500 ml-1">
+                  こちら
+                </a>
+              </div>
+            )}
+            <br/><br/>
             <br/><br/><br/><br/>
             <br/><br/><br/><br/>
             <br/><br/><br/><br/>

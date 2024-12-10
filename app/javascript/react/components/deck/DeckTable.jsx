@@ -25,7 +25,8 @@ export const DeckTable = (
       setSelectedDeck,
       handleCheckCardsOfDeck,
       reRenderDeckList,
-      showToast
+      showToast,
+      openNewDeckWindow
     }) => {
 
   const [] = useState('')
@@ -153,6 +154,18 @@ export const DeckTable = (
           </tbody>
         </table>
         <br/><br/><br/>
+        {filteredDecks.length == 0 &&
+        (
+          <div className="flex justify-center">
+            <button
+              className="col-span-2 p-4 rounded-md bg-slate-900 border border-pink-500 text-pink-500 hover:bg-slate-800 truncate"
+              onClick={openNewDeckWindow}
+            >
+              デッキ +作成
+            </button>
+          </div> 
+        )
+        }        
         <br/><br/><br/><br/>
         <br/><br/><br/><br/>
         <br/><br/><br/><br/>
@@ -172,6 +185,7 @@ export const DeckTable = (
                   setIsDeckEditWindowOpen={setIsDeckEditWindowOpen}
         />
       </NewResponsiveWindow>
+      
     </div>
   );
 };

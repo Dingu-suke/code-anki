@@ -221,7 +221,11 @@ export const CardEditForm = ({useInWindow, selectedCard, setSelectedCard, onUpda
                 )
                 : (
                   <div className="flex justify-center">
-                    <div className={"btn disabled text-gray-400 bg-gray-800 border border-gray-600 hover:bg-gray-800 hover:border-gray-600 hover:text-transparent font-courier w-full"}>{buttonText}</div>
+                    <div className={"btn disabled text-gray-400 bg-gray-800 border border-gray-600 hover:bg-gray-800 hover:border-gray-600 hover:text-transparent font-courier w-full"}>  
+                      {formatErrors(errors) && (
+                        <div className="text-red-400">{formatErrors(errors)}</div>
+                      )}
+                    </div>
                   </div>
                 )}
             </div>

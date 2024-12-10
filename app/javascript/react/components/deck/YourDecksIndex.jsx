@@ -5,7 +5,7 @@ import { CATEGORY, LANGUAGE_LABELS, getLabelKey } from '../runCodeEditorDaisyUI/
 import { NewResponsiveWindow } from '../window/NewResponsiveWindow';
 import { DeckTable } from './DeckTable';
 
-export const YourDecksIndex = ({ 
+export const YourDecksIndex = ({
                                   selectedDeck, setSelectedDeck,
                                   checkedCards, setCheckedCards,
                                   filteredDecks,
@@ -111,7 +111,7 @@ export const YourDecksIndex = ({
           className="col-span-2 p-2 rounded-md bg-slate-900 border border-pink-500 text-pink-500 hover:bg-slate-800 truncate"
           onClick={openNewDeckWindow}
         >
-          + New Deck
+          デッキ +作成
         </button>
       </div>
       
@@ -125,6 +125,7 @@ export const YourDecksIndex = ({
           setSelectedDeck={setSelectedDeck}
           reRenderDeckList={reRenderDeckList}
           showToast={showToast}
+          openNewDeckWindow={openNewDeckWindow}
           // handleCheckCardsOfDeck={handleCheckCardsOfDeck}
         />
       </div>
