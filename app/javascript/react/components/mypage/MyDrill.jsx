@@ -26,7 +26,20 @@ export const MyDrill = () => {
     reRenderDeckList,    
     updateDeckAndCard
     
-  } = useYourDeckList('/mypage')
+  } = useYourDeckList('/my_deck')
+
+  useEffect(() => {
+    if (selectedDrill && selectedDrill.cards && selectedDrill.deck_cards) {
+      // position順にカードをソート
+      const sortedCards = [...selectedDrill.cards].sort((a, b) => {
+        const positionA = selectedDrill.deck_cards.find(dc => dc.card_id === a.id)?.position || 0;
+        const positionB = selectedDrill.deck_cards.find(dc => dc.card_id === b.id)?.position || 0;
+        return positionA - positionB;
+      });
+      
+      setCheckedCards(sortedCards);
+    }
+  }, [selectedDrill]);
 
     const handleSelectDrill = (drill) => {
       setSelectedDrill(drill);

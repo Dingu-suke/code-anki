@@ -1,9 +1,14 @@
 Rails.application.routes.draw do
   resources :tags
-  resources :decks, except: %i[show]
+  resources :decks, except: %i[show] do
+    member do
+      patch :update_card_position
+    end
+  end
   resources :cards
   
   get 'mypage', to: 'mypage#show', as: 'mypage'
+  get 'my_deck', to: 'mypage#my_deck', as: 'my_deck'
   
   root 'top#index'
   # root 'hello_console#index'

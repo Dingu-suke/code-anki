@@ -1,17 +1,21 @@
 class DecksController < ApplicationController
   before_action :set_deck, only: %i[ show edit destroy ]
-  before_action :set_your_deck, only: %i[ update ]
+  before_action :set_your_deck, only: %i[ update update_card_position ]
   before_action :authenticate, except: %i[ index deck_cards ]
 
   # GET /decks or /decks.json
   def index
-    # @q = Deck.ransack(params[:q])
-    # @all_decks = @q.result(distinct: true)#.includes(:user)
-    # @cards = Card.all
-    @decks = Deck.all
+    @decks = Deck.includes(:cards, :deck_cards).all
     respond_to do |format|
-      format.html # your_cards.html.erb を描画
-      format.json { render json: @decks }
+      format.html
+      format.json { 
+        render json: @decks.as_json(
+          include: {
+            cards: { only: [:id, :title, :body, :language, :answer, :remarks] },
+            deck_cards: { only: [:card_id, :position] }
+          }
+        )
+      }
     end
   end
 
@@ -47,6 +51,27 @@ class DecksController < ApplicationController
     end
   end
 
+  def update_card_position
+    ActiveRecord::Base.transaction do
+      @deck.deck_cards.destroy_all
+      
+      params[:deck][:deck_cards].each do |card_data|
+        @deck.deck_cards.create!(
+          card_id: card_data[:card_id],
+          position: card_data[:position]
+        )
+      end
+  
+      # deck_cardsの情報も含めてJSON化
+      render json: @deck.as_json(
+        include: {
+          cards: { only: [:id, :title, :body, :language, :answer, :remarks] },
+          deck_cards: { only: [:card_id, :position] }
+        }
+      )
+    end
+  end
+
   # DELETE /decks/1 or /decks/1.json
   def destroy
     @deck = Deck.find(params[:id])
@@ -59,24 +84,34 @@ class DecksController < ApplicationController
 
   # 使用ユーザーのみのデッキ一覧
   def your_decks
-    @your_decks = current_user.decks.includes(:user).order(created_at: :desc)
-    @your_cards = current_user.cards.includes(:user).order(created_at: :desc)
+    @your_decks = current_user.decks.includes(:user, :deck_cards, :cards).all.order(created_at: :desc)
+    
     respond_to do |format|
       format.html
       format.json {
         render json: @your_decks.as_json(
-        include: { cards: { only: [:id, :title, :body, :language, :answer, :remarks]} }
+          include: {
+            cards: { only: [:id, :title, :body, :language, :answer, :remarks] },
+            deck_cards: { only: [:card_id, :position] }
+          }
         )
       }
     end
   end
 
   def deck_cards
-    @deck = Deck.find(params[:id])
+    @deck = Deck.includes(:user, :deck_cards, :cards).find(params[:id]) 
     @cards = @deck.cards
     respond_to do |format|
     format.html
-    format.json { render json: { deck: @deck, cards: @cards } }
+    format.json {
+        render json: @decks.as_json(
+          include: {
+            cards: { only: [:id, :title, :body, :language, :answer, :remarks] },
+            deck_cards: { only: [:card_id, :position] }
+          }
+        )
+      }
     end
   end
 
@@ -101,6 +136,15 @@ class DecksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def deck_params
-      params.require(:deck).permit(:name, :tag_names, :language, :category, :status, card_ids: [])
+      p "params"
+      pp params
+      params.require(:deck).permit(
+        :name,
+        :tag_names,
+        :language,
+        :category,
+        :status,
+        deck_cards: [:card_id, :position]
+        )
     end
 end

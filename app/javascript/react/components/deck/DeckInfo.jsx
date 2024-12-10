@@ -129,12 +129,10 @@ export const DeckInfo = () => {
   return (
     <div>
         {toast.show && <Toast message={toast.message} type={toast.type} />}
-      <div className="grid grid-cols-6">
-        <div className="tooltip tooltip-right" data-tip="デッキ選択後、カードを選択し編成しましょう">
-          <div className="col-start-1 col-span-1 pt-4 pr-2">
-            <SelectedDeckDisplay selectedDeck={selectedDeck}/>
-          </div>
-        </div>
+      <div className="grid grid-cols-6">        
+        <div className="col-start-1 col-span-1 p-4 pr-2">
+          <SelectedDeckDisplay selectedDeck={selectedDeck}/>
+        </div>        
         <div className="col-start-2 col-span-4">
           <PreviewCardList checkedCards={checkedCards} setCheckedCards={setCheckedCards} previewCard={previewCard} setPreviewCard={setPreviewCard} selectedDeck={selectedDeck} />
         </div>
