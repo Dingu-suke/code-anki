@@ -9,6 +9,31 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
     <meta name="turbo-visit-control" content="reload">
+    <%= display_meta_tags(
+      {
+      site: 'code-anki',
+      title: 'プログラミング学習フォーマット',
+      reverse: true,
+      charset: 'utf-8',
+      description: '覚えたいプログラムを登録して学習しよう',
+      keywords: 'プログラミング,プログラミング初学者,python,ruby',
+      canonical: request.original_url,
+      separator: '|',
+      og: {
+        site_name: :site,
+        title: :title,
+        description: :description,
+        type: 'website',
+        url: request.original_url,
+        image: image_url('ogp.png'), # 配置するパスやファイル名によって変更すること
+        local: 'ja-JP'
+      },
+      # Twitter用の設定を個別で設定する
+      twitter: {
+        card: 'summary_large_image', # Twitterで表示する場合は大きいカードにする
+        image: image_url('ogp.png') # 配置するパスやファイル名によって変更すること
+      }}
+    ) %>
   </head>
 
 <body class="bg-black min-h-screen flex flex-col">

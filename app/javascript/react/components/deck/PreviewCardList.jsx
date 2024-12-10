@@ -238,7 +238,7 @@ export const PreviewCardList = ({
                                   {"カード未選択"}
                                 </div>
                                 <dialog id="my_modal_1" className="modal">
-                                  <div className="modal-box text-black bg-slate-800 max-w-5xl p-2">
+                                  <div className="modal-box text-black bg-slate-800 max-w-5xl p-12">
                                       <SelectCardIndex
                                         selectedCard={selectedCard}
                                         searchCard={searchCard}
