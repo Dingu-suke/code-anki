@@ -49,7 +49,7 @@ export const TopPage = () => {
         </div><br/>
         <div className="flex flex-wrap">
           <div className='text-[30px]'>
-              カードが5枚以上のデッキは全体に公開できます
+              カードが3枚以上のデッキは全体に公開できます
           </div><br/>
           <div className="text-[30px] text-cyan-700 pl-10">
             ｢みんなのデッキ｣から全体に公開されているデッキに取り組めます

@@ -12,6 +12,7 @@ export const inactiveTabClassOrange = "bg-slate-900 text-yellow-900 border-trans
 export const inactiveTabClassGreen = "bg-slate-900 text-emerald-700 border-transparent hover:text-green-600"; // DeckInfo.jsx, Mypage.jsx
 
 
+export const baseLearningColor = "bg-gray-950 text-amber-100 bg-opacity-55"
 export const methodLearningColor = "bg-yellow-950 text-amber-200 bg-opacity-55"
 export const algorithmColor = "bg-green-950 text-emerald-200"
 export const refactoringColor = "bg-blue-950 text-cyan-200"

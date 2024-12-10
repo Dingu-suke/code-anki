@@ -1,5 +1,6 @@
 import React from 'react';
 import { CATEGORY, LanguageIcon } from '../runCodeEditorDaisyUI/constants';
+import { baseLearningColor } from '../../tabStylesAndFunc/styleClass';
 
 const editButtonCell = "py-2 w-10 truncate text-center"
 const drillTitleCell = "px-4 py-3 min-w-64 truncate text-start"
@@ -83,6 +84,7 @@ export const DrillTable = ({filteredDrills, selectedDrill, isDrillLoading, handl
                         {drill.category
                         ? 
                         <div className={`inline-block text-xs font-medium rounded truncate px-2
+                            ${drill.category === "baseLearning" && baseLearningColor}  
                             ${drill.category === "methodLearning" && methodLearningColor}
                             ${drill.category === "algorithm" && algorithmColor}
                             ${drill.category === "refactoring" && refactoringColor}

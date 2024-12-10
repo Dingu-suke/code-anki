@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { AiTwotoneTags } from "react-icons/ai";
 import { IoWarning } from "react-icons/io5";
 import { CATEGORY, LanguageIcon } from '../runCodeEditorDaisyUI/constants';
-import { algorithmColor, methodLearningColor, refactoringColor, tradeOffColor } from '../../tabStylesAndFunc/styleClass';
+import { algorithmColor, baseLearningColor, methodLearningColor, refactoringColor, tradeOffColor } from '../../tabStylesAndFunc/styleClass';
 import { Toggle } from '../toggle/Toggle';
 
 export const SelectedDeckDisplay = ({ selectedDeck }) => {
@@ -75,6 +75,7 @@ export const SelectedDeckDisplay = ({ selectedDeck }) => {
               <div className="row-start-10 row-span-3 col-start-1 col-span-6">
                 <div className={`text-sm font-medium rounded truncate px-4 py-1 
                         ${selectedDeck && selectedDeck?.category && "border border-gray-600"}
+                        ${selectedDeck && selectedDeck?.category === "baseLearning" && baseLearningColor}
                         ${selectedDeck && selectedDeck?.category === "methodLearning" && methodLearningColor}
                         ${selectedDeck && selectedDeck?.category === "algorithm" && algorithmColor}
                         ${selectedDeck && selectedDeck?.category === "refactoring" && refactoringColor}

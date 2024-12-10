@@ -4,7 +4,7 @@ import { DeckEdit } from '../form/DeckForm';
 import { CATEGORY, LanguageIcon } from '../runCodeEditorDaisyUI/constants';
 import { Toggle } from '../toggle/Toggle';
 import { NewResponsiveWindow } from '../window/NewResponsiveWindow';
-import { algorithmColor, methodLearningColor, refactoringColor, tradeOffColor } from '../../tabStylesAndFunc/styleClass';
+import { algorithmColor, baseLearningColor, methodLearningColor, refactoringColor, tradeOffColor } from '../../tabStylesAndFunc/styleClass';
 
 const editButtonCell = "py-2 w-10 truncate text-center"
 const deckTitleCell = "px-4 py-3 min-w-64 truncate text-start"
@@ -124,6 +124,7 @@ export const DeckTable = (
                     {deck.category
                     ? 
                     <div className={`inline-block text-xs font-medium rounded truncate px-2
+                        ${deck.category === "baseLearning" && baseLearningColor} 
                         ${deck.category === "methodLearning" && methodLearningColor}
                         ${deck.category === "algorithm" && algorithmColor}
                         ${deck.category === "refactoring" && refactoringColor}
