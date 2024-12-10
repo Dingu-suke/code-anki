@@ -28,7 +28,7 @@ export const DeckNew = ({ addDeck, onSuccess }) => {
         ...data,
         cards_id: []
       }
-    );
+    );    
     if (newDeck) {
       reset(); // フォームをリセット
       if (onSuccess) onSuccess(newDeck); // 成功時のコールバック

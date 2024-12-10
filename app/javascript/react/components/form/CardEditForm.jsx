@@ -220,13 +220,13 @@ export const CardEditForm = ({useInWindow, selectedCard, setSelectedCard, onUpda
                   </div>
                 )
                 : (
-                  <div className="flex justify-center">
-                    <div className={"btn disabled text-gray-400 bg-gray-800 border border-gray-600 hover:bg-gray-800 hover:border-gray-600 hover:text-transparent font-courier w-full"}>  
-                      {formatErrors(errors) && (
-                        <div className="text-red-400">{formatErrors(errors)}</div>
-                      )}
-                    </div>
+                  <div className="pt-6 flex justify-center">
+                  <div className={"btn disabled text-gray-400 bg-gray-800 border border-gray-600 hover:bg-gray-800 hover:border-red-700 hover:text-transparent font-courier w-full"}>  
+                    {formatErrors(errors) && (
+                      <div className="text-red-500">{formatErrors(errors)}</div>
+                    )}
                   </div>
+                </div>
                 )}
             </div>
               <button type="button" className="col-start-11 col-span-1 font-bold text-lg min-w-12 max-w-12 p-3 rounded-md text-gray-400 bg-cyan-950 hover:text-red-500 hover:bg-blue-950 border border-red-800 hover:border-red-500 font-courier xl:w-auto xl:inline-block cursor-default px-1" 
