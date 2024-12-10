@@ -41,8 +41,15 @@ export const PreviewCardList = ({checkedCards, setCheckedCards, previewCard, set
   
   // カードを編集したときにDOMにも変更を反映
   useEffect(() => {
-    if (selectedDeck && selectedDeck.cards) {
-      setCheckedCards(selectedDeck.cards);
+    if (selectedDeck && selectedDeck.cards && selectedDeck.deck_cards) {
+      // position順にカードをソート
+      const sortedCards = [...selectedDeck.cards].sort((a, b) => {
+        const positionA = selectedDeck.deck_cards.find(dc => dc.card_id === a.id)?.position || 0;
+        const positionB = selectedDeck.deck_cards.find(dc => dc.card_id === b.id)?.position || 0;
+        return positionA - positionB;
+      });
+      
+      setCheckedCards(sortedCards);
     }
   }, [selectedDeck]);
 
@@ -90,7 +97,7 @@ export const PreviewCardList = ({checkedCards, setCheckedCards, previewCard, set
 
   // ------------------------------------------------
   
-  // ドラッグ ドロップ 実行関数
+  // ドラッグ ドロップ 実行関数 配列で順序を監視
   const onDragEnd = useCallback((result) => {
     if (!result.destination) {
       return;

@@ -39,9 +39,39 @@ export const DrillNavi = ({checkedCards, setCheckedCards, previewCard, setPrevie
     prevSelectedDeckRef.current = selectedDeck;
   }, [checkedCards, selectedDeck]);
   
+  // useEffect(() => {
+  //   if (selectedDeck && selectedDeck.cards) {
+  //     setCheckedCards(selectedDeck?.cards);
+  //   }
+  //   console.log("checkedCards", checkedCards)
+  // }, [selectedDeck]);
+
   useEffect(() => {
-    if (selectedDeck && selectedDeck.cards) {
-      setCheckedCards(selectedDeck?.cards);
+    if (selectedDeck?.cards) {
+      // デバッグ用のログ
+      console.log('selectedDeck:', selectedDeck);
+      console.log('deck_cards:', selectedDeck.deck_cards);
+      
+      // deck_cardsが存在しない場合は通常の配列をセット
+      if (!selectedDeck.deck_cards) {
+        setCheckedCards(selectedDeck.cards);
+        return;
+      }
+  
+      try {
+        // position順にカードをソート
+        const sortedCards = [...selectedDeck.cards].sort((a, b) => {
+          const positionA = selectedDeck.deck_cards?.find(dc => dc.card_id === a.id)?.position ?? 0;
+          const positionB = selectedDeck.deck_cards?.find(dc => dc.card_id === b.id)?.position ?? 0;
+          return positionA - positionB;
+        });
+        
+        setCheckedCards(sortedCards);
+      } catch (error) {
+        console.error('カードのソートに失敗:', error);
+        // エラー時は通常の配列をセット
+        setCheckedCards(selectedDeck.cards);
+      }
     }
   }, [selectedDeck]);
 
