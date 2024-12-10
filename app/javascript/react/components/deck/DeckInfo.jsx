@@ -10,6 +10,7 @@ import { SelectedDeckDisplay } from './SelectedDeckDisplay';
 import { YourDecksIndex } from './YourDecksIndex';
 import { Toast } from '../toast/Toust';
 import { activeTabClassGreen, arrowTabClass, borderCalss, inactiveTabClassGreen, tabClass } from '../../tabStylesAndFunc/styleClass';
+import XShareButton from '../../XShare';
 
 export const DeckInfo = () => {
   
@@ -128,7 +129,7 @@ export const DeckInfo = () => {
 
   return (
     <div>
-        {toast.show && <Toast message={toast.message} type={toast.type} />}
+        {toast.show && <Toast message={toast.message} type={toast.type} showShareButton={toast.showShareButton} />}
       <div className="grid grid-cols-6">        
         <div className="col-start-1 col-span-1 p-4 pr-2">
           <SelectedDeckDisplay 

@@ -2,6 +2,7 @@ import axios from 'axios';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { setupCSRFToken } from '../form/setupCSRFToken';
+import XShareButton from '../../XShare';
 
 export const Toggle = ({initialStatus, deck, showToast}) => {
   const [status, setStatus] = useState(initialStatus || "private");  
@@ -26,9 +27,9 @@ export const Toggle = ({initialStatus, deck, showToast}) => {
         deck: { status: newStatus }
       });
       if (newStatus === "public"){
-        showToast("カードを公開しました")
+        showToast("デッキを公開しました", "success", true)
       } else {
-        showToast("カードを非公開にしました")
+        showToast("デッキを非公開にしました", "success", false)
       }
     } catch (error) {
       console.error('Error updating status:', error)
