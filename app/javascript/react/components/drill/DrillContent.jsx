@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Markdown from "react-markdown";
 import { EditorProvider } from '../../context/EditorProvider';
 import { useRunCode } from "../../hooks/useRunCode";
 import { activeTabClassOrange, inactiveTabClassOrange, tabClass } from "../../tabStylesAndFunc/styleClass";
 import { DiffEditorContent, EditorForAnswer, EditorForUser } from "../card/EditorAndAnswer";
-import Output from "../runCodeEditorDaisyUI/runButton-Output/Output";
 import { MarkdownView } from "../editor/MarkdownView";
+import Output from "../runCodeEditorDaisyUI/runButton-Output/Output";
 
 export const DrillContennt = ({ previewCardList, card, setPreviewCard, moveToNextCard, moveToPreviousCard}) => {
   const [currentCardId, setCurrentCardId] = useState(card?.id)

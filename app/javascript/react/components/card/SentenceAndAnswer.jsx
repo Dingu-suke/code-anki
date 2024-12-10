@@ -3,6 +3,7 @@ import React, { useRef, useState } from 'react';
 import Markdown from 'react-markdown';
 import { activeTabClassOrange, inactiveTabClassOrange, tabClass } from '../../tabStylesAndFunc/styleClass';
 import { LanguageLabel } from '../runCodeEditorDaisyUI/LanguageController';
+import { MarkdownView } from '../editor/MarkdownView';
 
 export const SentenceAndAnswer = ({ card }) => {
   const editorEditorRef = useRef(null);
@@ -18,8 +19,8 @@ export const SentenceAndAnswer = ({ card }) => {
         <div className="bg-slate-800 px-4 py-2 font-semibold">
           {card.title}
         </div>
-        <div className="p-4 h-[calc(23vh-2rem)] overflow-auto">
-          <Markdown>{card.body}</Markdown>
+        <div className="p-4 h-[calc(64vh-2rem)] overflow-auto">
+          <MarkdownView bodyValue={card?.body} />
         </div>
       </div>
     </div>
@@ -38,7 +39,7 @@ export const SentenceAndAnswer = ({ card }) => {
         </div>
       </div>
       <Editor
-        height="20vh"
+        height="60vh"
         theme="vs-dark"
         language={card.language}
         value={card.answer}
@@ -54,7 +55,7 @@ export const SentenceAndAnswer = ({ card }) => {
   );
 
   return (
-    <div className="w-full">
+    <div className="w-full h-full">
       <div role="tablist" className="flex border-b border-yellow-800">
         <button
           role="tab"

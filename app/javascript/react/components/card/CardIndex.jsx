@@ -127,7 +127,7 @@ export const CardList = () => {
               className="col-span-3 max-w-32 p-2 rounded-md bg-slate-900 border border-pink-500 text-pink-500 hover:bg-slate-800 truncate mb-4"
               onClick={() => handleSelectCard()}
               >
-              + New Card
+              カード +作成
             </button>
         </div>
         <div className="">
@@ -171,12 +171,24 @@ export const CardList = () => {
                   </tbody>
                 </table>
                 <br/><br/><br/><br/>
+                <div className="flex justify-center">
+                  {filteredCards.length == 0 &&
+                  (
+                  <button
+                    className="col-span-3 max-w-32 p-2 rounded-md bg-slate-900 border border-pink-500 text-pink-500 hover:bg-slate-800 truncate mb-4"
+                    onClick={() => handleSelectCard()}
+                    >
+                    カード +作成
+                  </button>
+                  )
+                  }
+                </div>
                 <br/><br/><br/><br/>
                 <br/><br/><br/><br/>
                 <br/><br/><br/><br/>
                 <br/><br/><br/><br/>
                 
-                </div>
+              </div>
                 
                 <Drawer
                   isOpen={isDrawerOpen} 

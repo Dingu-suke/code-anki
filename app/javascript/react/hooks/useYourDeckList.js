@@ -94,7 +94,7 @@ export const useYourDeckList = (url) => {
 
   const addDeck = useCallback(async (data) => {
     try {
-      const response = await axios.post('/your_decks',
+      const response = await axios.post('/decks',
         { deck: data },
         { headers: {
           'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
@@ -125,41 +125,41 @@ export const useYourDeckList = (url) => {
     // setDecks(prevDecks => prevDecks.cards.map(card => card.id === updatedDeck.card.id ? updatedDeck.card : card));
 }
 
-const editDeck = useCallback(async (selectedDeck, checkedCards) => {
-  setError(null);
-  const deckId = selectedDeck.id
-  try {
-    // カードの位置情報を含めたデータを作成
-    const cardPositions = checkedCards.map((card, index) => ({
-      card_id: card.id,
-      position: index + 1
-    }));
+  const editDeck = useCallback(async (selectedDeck, checkedCards) => {
+    setError(null);
+    const deckId = selectedDeck.id
+    try {
+      // カードの位置情報を含めたデータを作成
+      const cardPositions = checkedCards.map((card, index) => ({
+        card_id: card.id,
+        position: index + 1
+      }));
 
-    const response = await axios.patch(`/decks/${deckId}/update_card_position`, {
-      deck: {
-        deck_cards: cardPositions
+      const response = await axios.patch(`/decks/${deckId}/update_card_position`, {
+        deck: {
+          deck_cards: cardPositions
+        }
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }}
+      );
+
+      if (response.data) {
+        updateDeckAndCard(response.data)
+        showToast('デッキを更新しました');
       }
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-      }}
-    );
-
-    if (response.data) {
-      updateDeckAndCard(response.data)
-      showToast('デッキを更新しました');
+      fetchDecks()
+    } catch (error) {
+      setError('デッキの更新に失敗しました: ' + error.message);
+      showToast('デッキの更新に失敗しました: ' + error.message, 'error');
+      console.error('Error updating deck:', error);
     }
-    fetchDecks()
-  } catch (error) {
-    setError('デッキの更新に失敗しました: ' + error.message);
-    showToast('デッキの更新に失敗しました: ' + error.message, 'error');
-    console.error('Error updating deck:', error);
-  }
-}, [fetchDecks, updateDeckAndCard, showToast]);
-  
+  }, [fetchDecks, updateDeckAndCard, showToast]);
+    
   const updateDeckInfo = useCallback(async(deckId, data) => {
     try {
       const response = await axios.patch(`decks/${deckId}`, data);
@@ -226,6 +226,7 @@ const editDeck = useCallback(async (selectedDeck, checkedCards) => {
     error, setError
     ,
     toast,
+    showToast,
     addDeck,
     updateDeckInfo,
     editDeck,

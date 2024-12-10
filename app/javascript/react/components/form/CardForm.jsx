@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
-import { Answer, Remarks } from '../card/AnswerCard';
+import { Answer } from '../card/AnswerCard';
 import QuestionCard from '../card/QuiestionCard';
 import { CODE_SNIPPETS } from '../runCodeEditorDaisyUI/constants';
 import { setupCSRFToken } from './setupCSRFToken';
@@ -172,9 +172,13 @@ const CardForm = ({useInWindow, windowWidth, setFilteredCards, filteredCards, sh
               </div>
             )
             : (
-              <div className="pt-6 flex justify-center">
-                <div className={"btn disabled text-gray-400 bg-gray-800 border border-gray-600 hover:bg-gray-800 hover:border-gray-600 hover:text-transparent font-courier w-full"}>{buttonText}</div>
-              </div>
+                <div className="pt-6 flex justify-center">
+                  <div className={"btn disabled text-gray-400 bg-gray-800 border border-gray-600 hover:bg-gray-800 hover:border-red-700 hover:text-transparent font-courier w-full"}>  
+                    {formatErrors(errors) && (
+                      <div className="text-red-500">{formatErrors(errors)}</div>
+                    )}
+                  </div>
+                </div>
             )}
         </form>
       </div>

@@ -9,7 +9,8 @@ import { SelectCardIndex } from './SelectCardIndex';
 import { SelectedDeckDisplay } from './SelectedDeckDisplay';
 import { YourDecksIndex } from './YourDecksIndex';
 import { Toast } from '../toast/Toust';
-import { activeTabClassGreen, borderCalss, inactiveTabClassGreen, tabClass } from '../../tabStylesAndFunc/styleClass';
+import { activeTabClassGreen, arrowTabClass, borderCalss, inactiveTabClassGreen, tabClass } from '../../tabStylesAndFunc/styleClass';
+import XShareButton from '../../XShare';
 
 export const DeckInfo = () => {
   
@@ -42,7 +43,7 @@ export const DeckInfo = () => {
     searchTerm, setSearchTerm,
     error, setError
     ,
-    toast,
+    toast, showToast,
     addDeck,
     updateDeckInfo,
     fetchDecks,
@@ -128,13 +129,53 @@ export const DeckInfo = () => {
 
   return (
     <div>
-        {toast.show && <Toast message={toast.message} type={toast.type} />}
+        {toast.show && <Toast message={toast.message} type={toast.type} showShareButton={toast.showShareButton} />}
       <div className="grid grid-cols-6">        
         <div className="col-start-1 col-span-1 p-4 pr-2">
-          <SelectedDeckDisplay selectedDeck={selectedDeck}/>
+          <SelectedDeckDisplay 
+          // selectedDeck 以外のpropsはモーダル表示用。useContextにした方がスマート
+            selectedDeck={selectedDeck} setSelectedDeck={setSelectedDeck}
+            checkedCards={checkedCards} setCheckedCards={setCheckedCards}
+            filteredDecks={filteredDecks}
+            updateDeckInfo={updateDeckInfo}
+            isDeckLoading={isDeckLoading}
+            searchTerm={searchTerm}
+            error={error}
+            addDeck={addDeck}
+            deleteDeck={deleteDeck}
+            setSelectedLanguage={setSelectedLanguage}
+            setSelectedCategory={setSelectedCategory}
+            setStatus={setStatus}
+            setSearchTermAndFilter={setSearchTermAndFilter}
+            reRenderDeckList={reRenderDeckList}
+            showToast={showToast}
+            />
         </div>        
         <div className="col-start-2 col-span-4">
-          <PreviewCardList checkedCards={checkedCards} setCheckedCards={setCheckedCards} previewCard={previewCard} setPreviewCard={setPreviewCard} selectedDeck={selectedDeck} />
+          <PreviewCardList 
+            checkedCards={checkedCards}
+            setCheckedCards={setCheckedCards}
+            previewCard={previewCard}
+            setPreviewCard={setPreviewCard}
+            selectedDeck={selectedDeck} 
+
+            // これより下のプロップスはモーダル用。
+            
+            selectedCard={selectedCard}
+            searchCard={searchCard}
+            setSearchCard={setSearchCard}
+            filteredCards={filteredCards}
+            isWindowOpen={isWindowOpen}
+            closeWindow={closeWindow}
+            handleCardClick={handleCardClick}
+            // CheckCard={CheckCard}
+            // checkedCards={checkedCards}
+            // setCheckedCards={setCheckedCards}
+            handleCardUpdate={handleCardUpdate}
+            updateDeckAndCard={updateDeckAndCard}
+            setActiveTab={setActiveTab}
+            // selectedDeck={selectedDeck}          
+            />
         </div>
         <div className="col-start-6 col-span-1 py-4">
           <SaveButton selectedDeck={selectedDeck} checkedCards={checkedCards} editDeck={editDeck} fetchDecks={fetchDecks}/>
@@ -144,31 +185,31 @@ export const DeckInfo = () => {
         <div role="tablist" className={`flex border-b ${borderCalss}`}>
           <button
             role="tab"
-            className={`${tabClass} ${activeTab === 'deckIndex' ? activeTabClassGreen : inactiveTabClassGreen} cursor-auto h-7 text-sm`}
+            className={`${arrowTabClass} ${activeTab === 'deckIndex' ? activeTabClassGreen : inactiveTabClassGreen} cursor-auto h-7 text-sm`}
             onClick={() => handleTabChange('deckIndex')}
             aria-selected={activeTab === 'deckIndex'}
             aria-controls="deckIndex-panel"
             >
-            デッキ選択
+            デッキ選択  ➔➔
           </button>
-          <button
-            role="tab"
-            className={`${tabClass} ${activeTab === 'cardIndex' ? activeTabClassGreen : inactiveTabClassGreen} cursor-auto h-7 text-sm`}
-            onClick={() => handleTabChange('cardIndex')}
-            aria-selected={activeTab === 'cardIndex'}
-            aria-controls="cardIndex-panel"
-            >
-            カード選択
-          </button>
-          <button
-            role="tab"
-            className={`${tabClass} ${activeTab === 'preview' ? activeTabClassGreen : inactiveTabClassGreen} cursor-auto h-7 text-sm`}
-            onClick={() => handleTabChange('preview')}
-            aria-selected={activeTab === 'preview'}
-            aria-controls="preview-panel"
-            >
-            プレビュー
-          </button>
+            <button
+              role="tab"
+              className={`${arrowTabClass} ${activeTab === 'cardIndex' ? activeTabClassGreen : inactiveTabClassGreen} cursor-auto h-7 text-sm`}
+              onClick={() => handleTabChange('cardIndex')}
+              aria-selected={activeTab === 'cardIndex'}
+              aria-controls="cardIndex-panel"
+              >
+              カード選択  ➔➔
+            </button>
+            <button
+              role="tab"
+              className={`${tabClass} ${activeTab === 'preview' ? activeTabClassGreen : inactiveTabClassGreen} cursor-auto h-7 text-sm`}
+              onClick={() => handleTabChange('preview')}
+              aria-selected={activeTab === 'preview'}
+              aria-controls="preview-panel"
+              >
+              プレビュー
+            </button>
         </div>
         <div className={`bg-slate-950 border-x border-b rounded-b-md ${borderCalss}`}>
           <div
@@ -192,6 +233,7 @@ export const DeckInfo = () => {
             setStatus={setStatus}
             setSearchTermAndFilter={setSearchTermAndFilter}
             reRenderDeckList={reRenderDeckList}
+            showToast={showToast}
           />
           </div>
           <div

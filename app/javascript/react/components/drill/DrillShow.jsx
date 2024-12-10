@@ -50,7 +50,7 @@ export const DrillShow = ({selectedDrill}) => {
           
           {/* 外側で col-start を書き、flex itmes-center をかき、そのなかに button タグを入れる。(ここにかく) */}
         <div className="col-start-1 col-span-2 row-start-1 row-span-1 flex items-center">
-          <button className="bg-slate-800 hover:bg-slate-700 px-4 py-2  font-semibold rounded-full rounded-r-lg flex items-center justify-center cursor-default border-r border-gray-700 h-[calc(9vh-2rem)] w-full"
+          <button className="text-gray-300 hover:text-gray-200 bg-slate-800 hover:bg-slate-700 px-4 py-2  font-semibold rounded-full rounded-r-lg flex items-center justify-center cursor-default border-r border-gray-700 h-[calc(9vh-2rem)] w-full"
           onClick={moveToPreviousCard}
           >
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
@@ -61,7 +61,7 @@ export const DrillShow = ({selectedDrill}) => {
         </div>
 
         <div className="col-start-11 col-span-2 row-start-1 row-span-1 flex items-center">
-          <button className="bg-slate-800 hover:bg-slate-700 px-4 py-2 font-semibold rounded-full rounded-l-lg flex items-center justify-center cursor-default border-l border-gray-700 h-[calc(9vh-2rem)] w-full"
+          <button className="text-gray-300 hover:text-gray-200 bg-slate-800 hover:bg-slate-700 px-4 py-2 font-semibold rounded-full rounded-l-lg flex items-center justify-center cursor-default border-l border-gray-700 h-[calc(9vh-2rem)] w-full"
           onClick={moveToNextCard}
           >
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">

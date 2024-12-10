@@ -2,8 +2,9 @@ import axios from 'axios';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { setupCSRFToken } from '../form/setupCSRFToken';
+import XShareButton from '../../XShare';
 
-export const Toggle = ({initialStatus, deck}) => {
+export const Toggle = ({initialStatus, deck, showToast}) => {
   const [status, setStatus] = useState(initialStatus || "private");  
   const [togglePosition, setTogglePosition] = useState(22)
 
@@ -11,10 +12,11 @@ export const Toggle = ({initialStatus, deck}) => {
     status === "public" ? setTogglePosition(2) : setTogglePosition(22)
   }, [status])
 
+
   const handleToggle = async () => {
-    if (deck.cards.length < 5) {
-      console.log("カードが5枚以上のデッキのみ公開できます")
+    if (deck.cards.length < 2) {
       // トースト追加したい
+      showToast("カードが3枚以上のデッキのみ公開できます")
       return
     }
     const newStatus = status === "public" ? "private" : "public"
@@ -24,6 +26,11 @@ export const Toggle = ({initialStatus, deck}) => {
       await axios.patch(`decks/${deck.id}`, {
         deck: { status: newStatus }
       });
+      if (newStatus === "public"){
+        showToast("デッキを公開しました", "success", true)
+      } else {
+        showToast("デッキを非公開にしました", "success", false)
+      }
     } catch (error) {
       console.error('Error updating status:', error)
       setStatus(status)

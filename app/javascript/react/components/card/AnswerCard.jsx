@@ -4,8 +4,8 @@ import { RemarksEditor } from '../editor/MarkdownEditor';
 import RunCodeEditor from '../runCodeEditorDaisyUI/CodeEditor';
 import { CODE_SNIPPETS, LANGUAGE_LABELS } from '../runCodeEditorDaisyUI/constants';
 import { LanguageSelector } from '../runCodeEditorDaisyUI/LanguageController';
-import Output from '../runCodeEditorDaisyUI/runButton-Output/Output';
 import RunButton from '../runCodeEditorDaisyUI/runButton-Output/RunButton';
+import Output from '../runCodeEditorDaisyUI/runButton-Output/Output';
 
 
 export const Answer = ({ value, onChange, language, onLanguageChange, selectedCard, error }) => {  
@@ -48,8 +48,8 @@ export const Answer = ({ value, onChange, language, onLanguageChange, selectedCa
               error={error}
             />
           </div>
-          <div className="pt-5">
-            <Output editorRef={editorRef} language={language} output={output} setOutput={setOutput} isError={isError} setIsError={setIsError} height="172px"/>
+          <div className="pt-5 h-48">
+            <Output editorRef={editorRef} language={language} output={output} setOutput={setOutput} isError={isError} setIsError={setIsError} />
           </div>
         </div>
       </div>

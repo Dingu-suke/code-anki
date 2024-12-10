@@ -1,5 +1,6 @@
 
 export const tabClass = "px-6 border-t border-x rounded-t-sm font-bold focus:outline-none relative"; // SentenceAndAnswer.jsx, DeckInfo.jsx,  Mypage.jsx
+export const arrowTabClass = "pl-6 pr-2 border-t border-x rounded-t-sm font-bold focus:outline-none relative"; // SentenceAndAnswer.jsx, DeckInfo.jsx,  Mypage.jsx
 
 export const borderCalss = "border-teal-700 text-emerald-400 text-bold"// DeckInfo.jsx, Mypage.jsx
 
@@ -12,6 +13,7 @@ export const inactiveTabClassOrange = "bg-slate-900 text-yellow-900 border-trans
 export const inactiveTabClassGreen = "bg-slate-900 text-emerald-700 border-transparent hover:text-green-600"; // DeckInfo.jsx, Mypage.jsx
 
 
+export const baseLearningColor = "bg-gray-950 text-orange-400 bg-opacity-55"
 export const methodLearningColor = "bg-yellow-950 text-amber-200 bg-opacity-55"
 export const algorithmColor = "bg-green-950 text-emerald-200"
 export const refactoringColor = "bg-blue-950 text-cyan-200"

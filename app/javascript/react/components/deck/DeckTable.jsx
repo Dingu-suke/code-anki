@@ -4,7 +4,7 @@ import { DeckEdit } from '../form/DeckForm';
 import { CATEGORY, LanguageIcon } from '../runCodeEditorDaisyUI/constants';
 import { Toggle } from '../toggle/Toggle';
 import { NewResponsiveWindow } from '../window/NewResponsiveWindow';
-import { algorithmColor, methodLearningColor, refactoringColor, tradeOffColor } from '../../tabStylesAndFunc/styleClass';
+import { algorithmColor, baseLearningColor, methodLearningColor, refactoringColor, tradeOffColor } from '../../tabStylesAndFunc/styleClass';
 
 const editButtonCell = "py-2 w-10 truncate text-center"
 const deckTitleCell = "px-4 py-3 min-w-64 truncate text-start"
@@ -24,7 +24,9 @@ export const DeckTable = (
       selectedDeck,
       setSelectedDeck,
       handleCheckCardsOfDeck,
-      reRenderDeckList
+      reRenderDeckList,
+      showToast,
+      openNewDeckWindow
     }) => {
 
   const [] = useState('')
@@ -105,7 +107,7 @@ export const DeckTable = (
                   <div className="flex justify-center items-center">
                     <div className={`
                       text-sm font-medium rounded min-w-8 text-center
-                      ${deck.cards?.length > 4
+                      ${deck.cards?.length > 2
                         ? "border border-lime-900 bg-sky-950 text-green-400"
                         : "bg-red-950 text-pink-400 border border-red-900" }`
                       }>
@@ -123,6 +125,7 @@ export const DeckTable = (
                     {deck.category
                     ? 
                     <div className={`inline-block text-xs font-medium rounded truncate px-2
+                        ${deck.category === "baseLearning" && baseLearningColor} 
                         ${deck.category === "methodLearning" && methodLearningColor}
                         ${deck.category === "algorithm" && algorithmColor}
                         ${deck.category === "refactoring" && refactoringColor}
@@ -143,7 +146,7 @@ export const DeckTable = (
                 </td>
                 <td className={`${deckStatusCell}`}>
                   <div className="flex justify-center">
-                    <Toggle initialStatus={deck.status} deck={deck}/>
+                    <Toggle initialStatus={deck.status} deck={deck} showToast={showToast}/>
                   </div>
                 </td>
               </tr>
@@ -151,6 +154,18 @@ export const DeckTable = (
           </tbody>
         </table>
         <br/><br/><br/>
+        {filteredDecks.length == 0 &&
+        (
+          <div className="flex justify-center">
+            <button
+              className="col-span-2 p-4 rounded-md bg-slate-900 border border-pink-500 text-pink-500 hover:bg-slate-800 truncate"
+              onClick={openNewDeckWindow}
+            >
+              デッキ +作成
+            </button>
+          </div> 
+        )
+        }        
         <br/><br/><br/><br/>
         <br/><br/><br/><br/>
         <br/><br/><br/><br/>
@@ -170,6 +185,7 @@ export const DeckTable = (
                   setIsDeckEditWindowOpen={setIsDeckEditWindowOpen}
         />
       </NewResponsiveWindow>
+      
     </div>
   );
 };

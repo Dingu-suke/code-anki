@@ -29,9 +29,8 @@ class DecksController < ApplicationController
     @deck = current_user.decks.find(params[:id])
     @deck.tag_names = @deck.tags.map(&:name).join(',')
   end
-
-  # POST /decks or /decks.json
-  def create
+  
+  def create # post
     @deck = current_user.decks.build(deck_params)
     
     if @deck.save
@@ -42,8 +41,7 @@ class DecksController < ApplicationController
     end
   end
 
-  # PATCH/PUT /decks/1 or /decks/1.json
-  def update
+  def update # patch
     if @deck.update(deck_params)
       render json: @deck
     else
@@ -51,25 +49,23 @@ class DecksController < ApplicationController
     end
   end
 
-  def update_card_position
-    ActiveRecord::Base.transaction do
-      @deck.deck_cards.destroy_all
-      
-      params[:deck][:deck_cards].each do |card_data|
-        @deck.deck_cards.create!(
-          card_id: card_data[:card_id],
-          position: card_data[:position]
-        )
-      end
-  
-      # deck_cardsの情報も含めてJSON化
-      render json: @deck.as_json(
-        include: {
-          cards: { only: [:id, :title, :body, :language, :answer, :remarks] },
-          deck_cards: { only: [:card_id, :position] }
-        }
+  def update_card_position # patch
+    @deck.deck_cards.destroy_all
+    
+    params[:deck][:deck_cards].each do |card_data|
+      @deck.deck_cards.create!(
+        card_id: card_data[:card_id],
+        position: card_data[:position]
       )
     end
+
+    # deck_cardsの情報も含めてJSON化
+    render json: @deck.as_json(
+      include: {
+        cards: { only: [:id, :title, :body, :language, :answer, :remarks] },
+        deck_cards: { only: [:card_id, :position] }
+      }
+    )
   end
 
   # DELETE /decks/1 or /decks/1.json
